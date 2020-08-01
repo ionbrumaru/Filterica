@@ -46,9 +46,16 @@ struct FilterView: View {
                     }.navigationBarTitle(filterItem.name, displayMode: .large)
                     
                     
+                    HStack(){
+                        Spacer()
+                        Text("Hold photo to see without filter") .font(.system(size: 12))
+                        Spacer()
+                    }
+                    
+                    Divider().padding(.bottom, 8).padding(.leading).padding(.trailing)
                     
                     HStack{
-                        Text(filterItem.tags ?? "").bold().opacity(0.7)
+                        Text("#" + (filterItem.tags ?? "Filter")).bold()
                         
                         Button(action: {
                             showImageInfo.toggle()
