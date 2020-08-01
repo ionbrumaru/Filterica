@@ -9,7 +9,13 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        FiltersList()
+        FiltersList().environmentObject(UserData()).onAppear(){
+            DispatchQueue.main.async {
+                StorageManager().loadFiltersFromServer() 
+                
+                }
+            
+        }
             /*
             .onAppear {
             

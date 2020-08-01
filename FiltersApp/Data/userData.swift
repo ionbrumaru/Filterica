@@ -8,5 +8,9 @@
 import Foundation
 final class UserData: ObservableObject {
     @Published var realm = realmData
+    
+    @Published var locFilters = localFilters
+    
+    @Published var servFilters = serverFilters
 }
 

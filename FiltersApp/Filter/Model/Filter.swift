@@ -17,7 +17,9 @@ class filter: Object {
     @objc dynamic var imageBefore: Data? = nil
     @objc dynamic var imageAfter: Data? = nil
     
-    convenience init (name: String, filterDescription: String, tags: String?, filterFileURL: String, imageBefore: Data?, imageAfter: Data?) {
+    @objc dynamic var filterSettings: imageSettings? = nil
+    
+    convenience init (name: String, filterDescription: String, tags: String?, filterFileURL: String, imageBefore: Data?, imageAfter: Data?, filterSettings: imageSettings?) {
         self.init()
         self.name = name
         self.filterDescription = filterDescription
@@ -25,6 +27,7 @@ class filter: Object {
         self.filterFileURL = filterFileURL
         self.imageBefore = imageBefore
         self.imageAfter = imageAfter
+        self.filterSettings = filterSettings
     }
 }
 
