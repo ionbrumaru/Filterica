@@ -23,7 +23,7 @@ struct FiltersCategory: View {
             HStack(alignment: .center){
                 Text(categoryName).padding(.leading, 4).foregroundColor(Color.primary)
                 
-            }.padding(.leading).padding(.trailing)
+            }
         }
     }
 }

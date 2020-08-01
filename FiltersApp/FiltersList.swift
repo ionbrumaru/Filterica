@@ -14,24 +14,43 @@ struct FiltersList: View {
     
     @State private var selectedFilter: filter?
     
+    private var circleCategories: [String] = ["All", "Travel", "Color", "Nature", "Urban", "Summer", "Atmosphere"]
+    
+    @State private var circleCategoriesFilters: [filter] = []
+    
     private var summerFilters: [filter] = UserData().locFilters.filter{ $0.tags!.contains("Summer") }
     
     private var colorfulFilters: [filter] = UserData().locFilters.filter{ $0.tags!.contains("Color") }
     
     private var apmosphereFilters: [filter] = UserData().locFilters.filter{ $0.tags!.contains("Atmosphere") }
     
+    @State private var categorySelection = 0
+    
     var body: some View {
         NavigationView{
             VStack(alignment: .leading) {
-                ScrollView(.vertical) {
+                ScrollView(.vertical, showsIndicators: false) {
                     
                     ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 0) {
-                            ForEach(0..<5) { counter in
-                                FiltersCategory(categoryName: "Urban", categoryImage: Image(uiImage: UIImage(named: "test")!))
+                        HStack(spacing: 14) {
+                            ForEach(0..<6) { counter in
+                                FiltersCategory(categoryName: circleCategories[counter], categoryImage: Image(uiImage: UIImage(named: "\(circleCategories[counter])_small")!))
+                                    .onTapGesture {
+                                        
+                                        if (counter != 0)
+                                        {
+                                        
+                                        circleCategoriesFilters = UserData().locFilters.filter{ $0.tags!.contains(circleCategories[counter]) }
+                                        }
+                                        categorySelection = counter
+                                        
+                                    }
                             }
-                        }
+                        }.padding(.leading)
                     }
+                    Divider()
+                    
+                    if (categorySelection == 0) {
                     
                     CategoryTitle(name: "Summer", buttonName: "All").padding(.top, 16)
                     
@@ -73,6 +92,22 @@ struct FiltersList: View {
                         }.padding()
                         
                     }.frame(height: 270)
+                    }
+                    else {
+                        CategoryTitle(name: circleCategories[categorySelection], buttonName: "").padding(.top, 16)
+                        
+                        ScrollView(.vertical, showsIndicators: false) {
+                            VStack(alignment: .leading, spacing: 16) {
+                                ForEach(0..<circleCategoriesFilters.count, id: \.self) { counter in
+                                    NavigationLink(destination: FilterView(filterItem: circleCategoriesFilters[counter])) {
+                                        FilterPreviewCard(filterItem: circleCategoriesFilters[counter]).fixedSize()
+                                    }
+                                    
+                                }
+                            }.padding(.leading).padding(.trailing).navigationBarTitle(circleCategories[categorySelection], displayMode: .large)
+                            
+                        }
+                    }
     
                 }
             }
