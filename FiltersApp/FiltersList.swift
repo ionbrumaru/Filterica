@@ -8,7 +8,7 @@
 import SwiftUI
 import RealmSwift
 struct FiltersList: View {
-    @EnvironmentObject private var userData: UserData
+    @EnvironmentObject var userData : UserData
     
     @State private var filters: Results<filter>! = try? Realm(configuration: Realm.Configuration(schemaVersion: 1)).objects(filter.self)
     
@@ -18,11 +18,11 @@ struct FiltersList: View {
     
     @State private var circleCategoriesFilters: [filter] = []
     
-    private var summerFilters: [filter] = UserData().locFilters.filter{ $0.tags!.contains("Summer") }
+    private var summerFilters: [filter] = UserData().child.localFilters.filter{ $0.tags!.contains("Summer") }
     
-    private var colorfulFilters: [filter] = UserData().locFilters.filter{ $0.tags!.contains("Color") }
+    private var colorfulFilters: [filter] = UserData().child.localFilters.filter{ $0.tags!.contains("Color") }
     
-    private var apmosphereFilters: [filter] = UserData().locFilters.filter{ $0.tags!.contains("Atmosphere") }
+    private var apmosphereFilters: [filter] = UserData().child.localFilters.filter{ $0.tags!.contains("Atmosphere") }
     
     @State private var categorySelection = 0
     
@@ -40,7 +40,7 @@ struct FiltersList: View {
                                         if (counter != 0)
                                         {
                                         
-                                        circleCategoriesFilters = UserData().locFilters.filter{ $0.tags!.contains(circleCategories[counter]) }
+                                            circleCategoriesFilters = userData.child.localFilters.filter{ $0.tags!.contains(circleCategories[counter]) }
                                         }
                                         categorySelection = counter
                                         
@@ -52,7 +52,7 @@ struct FiltersList: View {
                     
                     if (categorySelection == 0) {
                     
-                    CategoryTitle(name: "Summer", buttonName: "All").padding(.top, 16)
+                        CategoryTitle(name: "Summer", buttonName: "All").padding(.top, 16)
                     
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 16) {
@@ -92,6 +92,14 @@ struct FiltersList: View {
                         }.padding()
                         
                     }.frame(height: 270)
+                        
+                        if (userData.child.getSize() != 0) {
+                            VStack {
+                                ForEach(userData.child.serverPacks, id: \.self) { serverpack in
+                                    PackPreview(packItem: serverpack, filters: userData.child.serverFilters.filter{ $0.isInPack == userData.child.serverPacks[0].id  }).frame( height: 400)
+                                }
+                            }
+                        }
                     }
                     else {
                         CategoryTitle(name: circleCategories[categorySelection], buttonName: "").padding(.top, 16)
@@ -115,11 +123,6 @@ struct FiltersList: View {
     }
 }
 
-struct FiltersList_Previews: PreviewProvider {
-    static var previews: some View {
-        FiltersList()
-    }
-}
 
 struct CategoryTitle: View {
     var name: String
@@ -127,7 +130,7 @@ struct CategoryTitle: View {
     var body: some View {
         HStack{
             Text(name)
-                .font(.title2)
+                .font(.title)
                 .bold()
                 .padding(.leading)
             

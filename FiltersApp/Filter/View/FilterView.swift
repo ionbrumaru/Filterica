@@ -19,6 +19,8 @@ struct FilterView: View {
     
     @State private var fileurl : String?
     
+    var showTutorial: Bool =  true
+    
     var body: some View {
         
         GeometryReader { geometry in
@@ -82,7 +84,9 @@ struct FilterView: View {
                     
                     Divider().padding(.bottom, 8).padding(.leading).padding(.trailing)
                     
+                    if (showTutorial){
                     TutorialView().padding(.leading,8).padding(.trailing, 8)
+                    }
                     
                 }
                 

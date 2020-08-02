@@ -19,7 +19,9 @@ class serverFilter: Object {
     
     @objc dynamic var filterSettings: imageSettings? = nil
     
-    convenience init (name: String, filterDescription: String, tags: String?, filterFileURL: String, imageBefore: String, imageAfter: String, filterSettings: imageSettings?) {
+    @objc dynamic var isInPack: Int = 0
+    
+    convenience init (name: String, filterDescription: String, tags: String?, filterFileURL: String, imageBefore: String, imageAfter: String, filterSettings: imageSettings?, isInPack: Int) {
         self.init()
         self.name = name
         self.filterDescription = filterDescription
@@ -28,6 +30,7 @@ class serverFilter: Object {
         self.imageBefore = imageBefore
         self.imageAfter = imageAfter
         self.filterSettings = filterSettings
+        self.isInPack = isInPack
     }
 }
 
