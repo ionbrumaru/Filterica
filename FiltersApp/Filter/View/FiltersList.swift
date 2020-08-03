@@ -8,9 +8,11 @@
 import SwiftUI
 import RealmSwift
 struct FiltersList: View {
-    @EnvironmentObject var userData : UserData
+
     
-    @State private var filters: Results<filter>! = try? Realm(configuration: Realm.Configuration(schemaVersion: 1)).objects(filter.self)
+    @State private var filters: [filter] = Array(try! Realm(configuration: Realm.Configuration(schemaVersion: 1)).objects(filter.self))
+    
+    @State private var packs: [pack] = Array(try! Realm(configuration: Realm.Configuration(schemaVersion: 1)).objects(pack.self))
     
     @State private var selectedFilter: filter?
     
@@ -18,11 +20,7 @@ struct FiltersList: View {
     
     @State private var circleCategoriesFilters: [filter] = []
     
-    private var summerFilters: [filter] = UserData().child.localFilters.filter{ $0.tags!.contains("Summer") }
-    
-    private var colorfulFilters: [filter] = UserData().child.localFilters.filter{ $0.tags!.contains("Color") }
-    
-    private var apmosphereFilters: [filter] = UserData().child.localFilters.filter{ $0.tags!.contains("Atmosphere") }
+
     
     @State private var categorySelection = 0
     
@@ -40,7 +38,7 @@ struct FiltersList: View {
                                         if (counter != 0)
                                         {
                                         
-                                            circleCategoriesFilters = userData.child.localFilters.filter{ $0.tags!.contains(circleCategories[counter]) }
+                                            circleCategoriesFilters = filters.filter{ $0.tags!.contains(circleCategories[counter]) }
                                         }
                                         categorySelection = counter
                                         
@@ -48,20 +46,21 @@ struct FiltersList: View {
                             }
                         }.padding(.leading)
                     }
-                    Divider()
+                    Divider().onAppear() {
+                        
+                            print(filters)
+                        
+                    }
                     
                     if (categorySelection == 0) {
                     
-                        CategoryTitle(name: "Summer", buttonName: "All").padding(.top, 16).onTapGesture(count: 1, perform: {
-                            print(userData.child.serverPacks.self)
-                            print(userData.child.getSize())
-                        })
+                        CategoryTitle(name: "Summer", buttonName: "All").padding(.top, 16)
                     
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 16) {
-                            ForEach(0..<summerFilters.count) { counter in
-                                NavigationLink(destination: FilterView(filterItem: summerFilters[counter], related: userData.child.localFilters.filter{ $0.tags!.contains(summerFilters[counter].tags ?? "nonTag") &&  $0.name != summerFilters[counter].name }).environmentObject(userData)) {
-                                    FilterPreviewCard(filterItem: summerFilters[counter])
+                            ForEach(0..<filters.filter{ $0.tags!.contains("Summer") }.count) { counter in
+                                NavigationLink(destination: FilterView(filterItem: filters.filter{ $0.tags!.contains("Summer") }[counter], filters: $filters, related: filters.filter{ $0.tags!.contains(filters.filter{ $0.tags!.contains("Summer") }[counter].tags ?? "nonTag") &&  $0.name != filters.filter{ $0.tags!.contains("Summer") }[counter].name })) {
+                                    FilterPreviewCard(filterItem: filters.filter{ $0.tags!.contains("Summer") }[counter])
                                 }
                                 
                             }
@@ -71,11 +70,12 @@ struct FiltersList: View {
 
                     CategoryTitle(name: "Way to colorize", buttonName: "All").padding(.top,8)
                     
+                        
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 16) {
-                            ForEach(0..<colorfulFilters.count) { counter in
-                                NavigationLink(destination: FilterView(filterItem: colorfulFilters[counter], related: userData.child.localFilters.filter{ $0.tags!.contains(colorfulFilters[counter].tags ?? "nonTag") &&  $0.name != colorfulFilters[counter].name }).environmentObject(userData)) {
-                                    FilterPreviewCard(filterItem: colorfulFilters[counter])
+                            ForEach(0..<filters.filter{ $0.tags!.contains("Color") }.count) { counter in
+                                NavigationLink(destination: FilterView(filterItem: filters.filter{ $0.tags!.contains("Color") }[counter], filters: $filters, related: filters.filter{ $0.tags!.contains(filters.filter{ $0.tags!.contains("Color") }[counter].tags ?? "nonTag") &&  $0.name != filters.filter{ $0.tags!.contains("Color") }[counter].name })) {
+                                    FilterPreviewCard(filterItem: filters.filter{ $0.tags!.contains("Color") }[counter])
                                 }   
                             }
                         }.padding()
@@ -85,24 +85,28 @@ struct FiltersList: View {
                     
                     CategoryTitle(name: "Atmosphere", buttonName: "All").padding(.top,8)
                     
+                        
+                        
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 16) {
-                            ForEach(0..<apmosphereFilters.count) { counter in
-                                NavigationLink(destination: FilterView(filterItem: apmosphereFilters[counter], related: userData.child.localFilters.filter{ $0.tags!.contains(apmosphereFilters[counter].tags ?? "nonTag")  &&  $0.name != apmosphereFilters[counter].name }).environmentObject(userData)) {
-                                    FilterPreviewCard(filterItem: apmosphereFilters[counter])
+                            ForEach(0..<filters.filter{ $0.tags!.contains("Atmosphere") }.count) { counter in
+                                NavigationLink(destination: FilterView(filterItem: filters.filter{ $0.tags!.contains("Atmosphere") }[counter], filters: $filters, related: filters.filter{ $0.tags!.contains(filters.filter{ $0.tags!.contains("Atmosphere") }[counter].tags ?? "nonTag") &&  $0.name != filters.filter{ $0.tags!.contains("Atmosphere") }[counter].name })) {
+                                    FilterPreviewCard(filterItem: filters.filter{ $0.tags!.contains("Atmosphere") }[counter])
                                 }
                             }
                         }.padding()
                         
                     }.frame(height: 270)
+                     
                         
-                        if (userData.child.getSize() != 0) {
-                            ForEach(userData.child.serverPacks, id: \.self) { serverpack in
+                        if (packs.count != 0) {
+                            ForEach(packs, id: \.self) { serverpack in
                                 
                                 
-                                PackPreview(packItem: serverpack, filters: userData.child.serverFilters.filter{ $0.isInPack == userData.child.serverPacks[0].id  }).frame( height: 400).padding(.top)
+                                PackPreview(packItem: serverpack, filters: filters.filter{ $0.isInPack == packs[0].id  }).frame( height: 400).padding(.top)
                             }
                         }
+ 
                     }
                     else {
                         CategoryTitle(name: circleCategories[categorySelection], buttonName: "").padding(.top, 16)
@@ -110,7 +114,7 @@ struct FiltersList: View {
                         ScrollView(.vertical, showsIndicators: false) {
                             VStack(alignment: .leading, spacing: 16) {
                                 ForEach(0..<circleCategoriesFilters.count, id: \.self) { counter in
-                                    NavigationLink(destination: FilterView(filterItem: circleCategoriesFilters[counter])) {
+                                    NavigationLink(destination: FilterView(filterItem: circleCategoriesFilters[counter], filters: $filters)) {
                                         FilterPreviewCard(filterItem: circleCategoriesFilters[counter]).fixedSize()
                                     }
                                     

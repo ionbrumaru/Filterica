@@ -11,7 +11,7 @@ import URLImage
 
 struct PackPreview: View {
     var packItem: pack?
-    var filters: [serverFilter]?
+    var filters: [filter]?
     @State private var currentImage = 0
         var body: some View {
             GeometryReader { geometry in
@@ -21,7 +21,11 @@ struct PackPreview: View {
                     
                         ZStack(alignment: .leading) {
                             HStack{
-                                
+                                if (filters![currentImage].imageBefore.contains("LOCAL_")) {
+                                    Image(uiImage:
+                                            UIImage(named: filters![currentImage].imageAfter.replacingOccurrences(of: "LOCAL_", with: ""))!)
+                                }
+                                else {
                                 URLImage(URL(string: filters![currentImage].imageAfter)!, delay: 0.25,placeholder: Image(systemName: "circle")) { proxy in
                                         proxy.image
                                             .renderingMode(.original)
@@ -30,6 +34,7 @@ struct PackPreview: View {
                                             .frame(width: geometry.size.width, height: 300)
                                             .clipped()
                                         }
+                                }
                                 
                             }
                             

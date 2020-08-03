@@ -6,10 +6,10 @@
 //
 
 import SwiftUI
-
+import URLImage
 struct FilterView: View {
-    @EnvironmentObject var userData : UserData
     var filterItem: filter
+    @Binding var filters: [filter]
     @State private var isOriginalShowing = false
     @State private var showShareSheet = false
     
@@ -35,7 +35,9 @@ struct FilterView: View {
                     
                     HStack{
                         
-                        Image(uiImage: isOriginalShowing ? UIImage(data: filterItem.imageBefore!)! : UIImage(data: filterItem.imageAfter!)!
+                        if (filterItem.imageBefore.contains("LOCAL_")) {
+                        Image(uiImage: isOriginalShowing ?
+                                UIImage(named: filterItem.imageBefore.replacingOccurrences(of: "LOCAL_", with: ""))! : UIImage(named: filterItem.imageAfter.replacingOccurrences(of: "LOCAL_", with: ""))!
                         )
                         .renderingMode(.original)
                         .resizable()
@@ -48,6 +50,16 @@ struct FilterView: View {
                         }) {
                             isOriginalShowing = false
                             
+                        }
+                        }
+                        else {
+                        URLImage(URL(string: isOriginalShowing ? filterItem.imageBefore : filterItem.imageAfter)!, delay: 0.25,placeholder: Image(systemName: "circle")) { proxy in
+                                    proxy.image
+                                        .renderingMode(.original)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width: geometry.size.width)
+                                    }
                         }
                     }.navigationBarTitle(filterItem.name, displayMode: .large)
                     
@@ -95,7 +107,7 @@ struct FilterView: View {
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 16) {
                                 ForEach(0..<related!.count) { counter in
-                                    NavigationLink(destination: FilterView(filterItem: related![counter], related: userData.child.localFilters.filter{ $0.tags!.contains(related![counter].tags ?? "nonTag") &&  $0.name != related![counter].name})) {
+                                    NavigationLink(destination: FilterView(filterItem: related![counter], filters: $filters, related: filters.filter{ $0.tags!.contains(related![counter].tags ?? "nonTag") &&  $0.name != related![counter].name})) {
                                         FilterPreviewCard(filterItem: related![counter]).frame(height: 200).cornerRadius(6).clipped()
                                     }
                                 }
