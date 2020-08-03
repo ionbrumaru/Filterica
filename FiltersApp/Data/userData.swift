@@ -79,12 +79,18 @@ class Child: ObservableObject {
     
     func appendServerPacks(pck: pack) {
         DispatchQueue.main.async {
-        print("APPENDING")
             self.serverPacks.append(pck)
 
         }
         }
     
+    func appendServerFilters(srvflt: serverFilter) {
+        DispatchQueue.main.async {
+        print("appending filter")
+            self.serverFilters.append(srvflt)
+
+        }
+        }
     
 
 }

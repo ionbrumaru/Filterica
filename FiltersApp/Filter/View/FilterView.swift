@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct FilterView: View {
+    @EnvironmentObject var userData : UserData
     var filterItem: filter
     @State private var isOriginalShowing = false
     @State private var showShareSheet = false
@@ -20,6 +21,9 @@ struct FilterView: View {
     @State private var fileurl : String?
     
     var showTutorial: Bool =  true
+    
+    @State private var showRelated: Bool = false
+    var related: [filter]?
     
     var body: some View {
         
@@ -84,6 +88,22 @@ struct FilterView: View {
                     
                     Divider().padding(.bottom, 8).padding(.leading).padding(.trailing)
                     
+                    if (showRelated) {
+                        
+                        Text("More like this").font(.title).bold().padding(.leading).padding(.bottom, 6)
+                        
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(spacing: 16) {
+                                ForEach(0..<related!.count) { counter in
+                                    NavigationLink(destination: FilterView(filterItem: related![counter], related: userData.child.localFilters.filter{ $0.tags!.contains(related![counter].tags ?? "nonTag") &&  $0.name != related![counter].name})) {
+                                        FilterPreviewCard(filterItem: related![counter]).frame(height: 200).cornerRadius(6).clipped()
+                                    }
+                                }
+                            }.padding()
+                            
+                        }.frame(height: 200)
+                    }
+                    
                     if (showTutorial){
                     TutorialView().padding(.leading,8).padding(.trailing, 8)
                     }
@@ -107,6 +127,11 @@ struct FilterView: View {
             )
         }
         .onAppear() {
+            
+            if (related?.count ?? 0 > 1)
+            {
+                showRelated = true
+            }
             
             fileurl = getURLtoFile()
             DispatchQueue.main.async {
@@ -149,11 +174,3 @@ struct FilterView: View {
     
 }
 
-struct FilterView_Previews: PreviewProvider {
-    
-    
-    
-    static var previews: some View {
-        FilterView(filterItem: filter())
-    }
-}

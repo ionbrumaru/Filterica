@@ -52,12 +52,15 @@ struct FiltersList: View {
                     
                     if (categorySelection == 0) {
                     
-                        CategoryTitle(name: "Summer", buttonName: "All").padding(.top, 16)
+                        CategoryTitle(name: "Summer", buttonName: "All").padding(.top, 16).onTapGesture(count: 1, perform: {
+                            print(userData.child.serverPacks.self)
+                            print(userData.child.getSize())
+                        })
                     
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 16) {
                             ForEach(0..<summerFilters.count) { counter in
-                                NavigationLink(destination: FilterView(filterItem: summerFilters[counter])) {
+                                NavigationLink(destination: FilterView(filterItem: summerFilters[counter], related: userData.child.localFilters.filter{ $0.tags!.contains(summerFilters[counter].tags ?? "nonTag") &&  $0.name != summerFilters[counter].name }).environmentObject(userData)) {
                                     FilterPreviewCard(filterItem: summerFilters[counter])
                                 }
                                 
@@ -71,7 +74,7 @@ struct FiltersList: View {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 16) {
                             ForEach(0..<colorfulFilters.count) { counter in
-                                NavigationLink(destination: FilterView(filterItem: colorfulFilters[counter])) {
+                                NavigationLink(destination: FilterView(filterItem: colorfulFilters[counter], related: userData.child.localFilters.filter{ $0.tags!.contains(colorfulFilters[counter].tags ?? "nonTag") &&  $0.name != colorfulFilters[counter].name }).environmentObject(userData)) {
                                     FilterPreviewCard(filterItem: colorfulFilters[counter])
                                 }   
                             }
@@ -85,7 +88,7 @@ struct FiltersList: View {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 16) {
                             ForEach(0..<apmosphereFilters.count) { counter in
-                                NavigationLink(destination: FilterView(filterItem: apmosphereFilters[counter])) {
+                                NavigationLink(destination: FilterView(filterItem: apmosphereFilters[counter], related: userData.child.localFilters.filter{ $0.tags!.contains(apmosphereFilters[counter].tags ?? "nonTag")  &&  $0.name != apmosphereFilters[counter].name }).environmentObject(userData)) {
                                     FilterPreviewCard(filterItem: apmosphereFilters[counter])
                                 }
                             }
@@ -94,10 +97,10 @@ struct FiltersList: View {
                     }.frame(height: 270)
                         
                         if (userData.child.getSize() != 0) {
-                            VStack {
-                                ForEach(userData.child.serverPacks, id: \.self) { serverpack in
-                                    PackPreview(packItem: serverpack, filters: userData.child.serverFilters.filter{ $0.isInPack == userData.child.serverPacks[0].id  }).frame( height: 400)
-                                }
+                            ForEach(userData.child.serverPacks, id: \.self) { serverpack in
+                                
+                                
+                                PackPreview(packItem: serverpack, filters: userData.child.serverFilters.filter{ $0.isInPack == userData.child.serverPacks[0].id  }).frame( height: 400).padding(.top)
                             }
                         }
                     }

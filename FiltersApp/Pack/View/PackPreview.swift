@@ -16,16 +16,13 @@ struct PackPreview: View {
         var body: some View {
             GeometryReader { geometry in
                 VStack {
-                    HStack() {
-                        Text(packItem!.name).font(.title)
-                        Spacer()
-                        Text("6 presets pack")
-                    }
+                    
+                    CategoryTitle(name: packItem!.name, buttonName: "\(filters!.count) presets").padding(.top,8)
                     
                         ZStack(alignment: .leading) {
                             HStack{
                                 
-                                URLImage(URL(string: filters![currentImage].imageBefore)!, delay: 0.25,placeholder: Image(systemName: "circle")) { proxy in
+                                URLImage(URL(string: filters![currentImage].imageAfter)!, delay: 0.25,placeholder: Image(systemName: "circle")) { proxy in
                                         proxy.image
                                             .renderingMode(.original)
                                             .resizable()
@@ -43,9 +40,9 @@ struct PackPreview: View {
                                 }) {
                                     Image(systemName: "arrow.left")
                                         .resizable()
-                                        .frame(width: 32, height: 32)
-                                        .background(Color.secondary .opacity(0.5)).cornerRadius(50)
-                                }
+                                        .frame(width: 16, height: 16)
+                                        .foregroundColor(Color.white)
+                                }.frame(width: 32, height: 32)
                                 
                                 Spacer()
                                 
@@ -55,9 +52,9 @@ struct PackPreview: View {
                                 }) {
                                     Image(systemName: "arrow.right")
                                         .resizable()
-                                        .frame(width: 32, height: 32)
-                                        .background(Color.secondary .opacity(0.5)).cornerRadius(50)
-                                }
+                                        .frame(width: 16, height: 16)
+                                        .foregroundColor(Color.white)
+                                }.frame(width: 32, height: 32)
                             }.frame(width: geometry.size.width)
                             
                             
