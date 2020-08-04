@@ -8,7 +8,7 @@
 import RealmSwift
 
 //let realmData = try! Realm()
-
+let mainColor = UIColor(named: "MainColor")!
 
 let localFiters: [filter] = [
     

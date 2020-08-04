@@ -27,7 +27,19 @@ struct FiltersList: View {
     var body: some View {
         NavigationView{
             VStack(alignment: .leading) {
+                
+                
+                
+                
                 ScrollView(.vertical, showsIndicators: false) {
+                    
+                    HStack {
+                        Text("Filters")
+                            .font(.largeTitle)
+                            .bold()
+                            .padding(.leading).padding(.top, 8)
+                        Spacer()
+                    }
                     
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 14) {
@@ -133,7 +145,7 @@ struct FiltersList: View {
                         }
                     }
     
-                }
+                }.navigationBarHidden(true)
             }
         }
     }
@@ -152,7 +164,7 @@ struct CategoryTitle: View {
             
             Spacer()
             
-            Text(buttonName).font(.body).foregroundColor(Color.primary)
+            Text(buttonName).font(.body).foregroundColor(Color(mainColor))
                 .padding(.trailing)
         }
     }

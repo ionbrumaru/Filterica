@@ -40,15 +40,16 @@ struct PackPreview: View {
                                         }
                                 }
                                 
-                            }
+                            }.frame(width: geometry.size.width, height: 300)
                             
                             HStack {
                                 
                                 HStack {
                                 Image(systemName: "arrow.left")
                                     .resizable()
-                                    .frame(width: 16, height: 16)
-                                    .foregroundColor(Color.white)
+                                    .font(.largeTitle)
+                                    .frame(width: 22, height: 22)
+                                    .foregroundColor(.white)
                                 }
                                 
                                 .frame(width: 64, height: 300)
@@ -62,8 +63,9 @@ struct PackPreview: View {
                                 HStack {
                                 Image(systemName: "arrow.right")
                                     .resizable()
-                                    .frame(width: 16, height: 16)
-                                    .foregroundColor(Color.white)
+                                    .font(.largeTitle)
+                                    .frame(width: 22, height: 22)
+                                    .foregroundColor(.white)
                                 }
                                 
                                 .frame(width: 64, height: 300)

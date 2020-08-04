@@ -94,9 +94,9 @@ struct FilterView: View {
                             Text("  Get filter  ")
                                 .font(.system(size: 20))
                                 .padding(2)
-                                .foregroundColor(Color.primary)
-                                .background(Color("BWcolor"))
-                                .addBorder(Color.primary, width: 0.8, cornerRadius: 10)
+                                .foregroundColor(Color.white)
+                                .background(Color(mainColor))
+                                .cornerRadius(10)
                         }
                     }.padding(.leading,8).padding(.trailing,8).sheet(isPresented: $showShareSheet) {
                         ShareSheet(activityItems: [NSURL(fileURLWithPath: getURLtoFile())])
