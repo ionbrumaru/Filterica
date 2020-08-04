@@ -19,7 +19,7 @@ struct FilterView: View {
     @State private var showImageInfo: Bool = false
     
     @State private var fileurl : String?
-    
+    @State private var isLoading : Bool = true
     var showTutorial: Bool =  true
     
     @State private var showRelated: Bool = false
@@ -44,6 +44,7 @@ struct FilterView: View {
                         .aspectRatio(contentMode: .fill)
                         .frame(width: geometry.size.width)
                         
+                      
                         
                         .onTouchDown({
                             isOriginalShowing = true
@@ -51,6 +52,7 @@ struct FilterView: View {
                             isOriginalShowing = false
                             
                         }
+                            
                         }
                         else {
                         URLImage(URL(string: isOriginalShowing ? filterItem.imageBefore : filterItem.imageAfter)!, delay: 0.25,placeholder: Image(systemName: "circle")) { proxy in
@@ -83,6 +85,8 @@ struct FilterView: View {
                                 .foregroundColor(Color.secondary)
                         }.padding(.leading,4)
                         Spacer()
+                        
+                        ActivityIndicator(isAnimating: $isLoading, style: .large) /////////////
                         
                         Button(action: {
                             self.showShareSheet.toggle()
@@ -153,7 +157,7 @@ struct FilterView: View {
         }
     }
     
-    func fetchNearbyPlaces(filterfileurl: String) {
+    private func fetchNearbyPlaces(filterfileurl: String) {
         let urlString = filterfileurl
         
         guard let url = URL(string: urlString) else {
@@ -168,7 +172,7 @@ struct FilterView: View {
                 
                 
                 fileurl = (data.dataToFile(fileName: "filter.dng")?.absoluteString)!
-                
+                isLoading = false
             }
             
             // if we're still here it means the request failed somehow

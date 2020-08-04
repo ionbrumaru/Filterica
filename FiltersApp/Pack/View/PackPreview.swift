@@ -13,20 +13,24 @@ struct PackPreview: View {
     var packItem: pack?
     var filters: [filter]?
     @State private var currentImage = 0
+    @State private var isOriginalShowing = false
         var body: some View {
             GeometryReader { geometry in
                 VStack {
-                    
-                    CategoryTitle(name: packItem!.name, buttonName: "\(filters!.count) presets").padding(.top,8)
                     
                         ZStack(alignment: .leading) {
                             HStack{
                                 if (filters![currentImage].imageBefore.contains("LOCAL_")) {
                                     Image(uiImage:
-                                            UIImage(named: filters![currentImage].imageAfter.replacingOccurrences(of: "LOCAL_", with: ""))!)
+                                            UIImage(named:  filters![currentImage].imageAfter.replacingOccurrences(of: "LOCAL_", with: ""))!)
+                                            .renderingMode(.original)
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                            .frame(width: geometry.size.width, height: 300)
+                                            .clipped()
                                 }
                                 else {
-                                URLImage(URL(string: filters![currentImage].imageAfter)!, delay: 0.25,placeholder: Image(systemName: "circle")) { proxy in
+                                    URLImage(URL(string: filters![currentImage].imageAfter)!, delay: 0.25,placeholder: Image(systemName: "circle")) { proxy in
                                         proxy.image
                                             .renderingMode(.original)
                                             .resizable()
@@ -39,27 +43,35 @@ struct PackPreview: View {
                             }
                             
                             HStack {
-                                Button(action: {
-                                    // your action here
-                                    if (currentImage != 0) { currentImage -= 1}
-                                }) {
-                                    Image(systemName: "arrow.left")
-                                        .resizable()
-                                        .frame(width: 16, height: 16)
-                                        .foregroundColor(Color.white)
-                                }.frame(width: 32, height: 32)
                                 
+                                HStack {
+                                Image(systemName: "arrow.left")
+                                    .resizable()
+                                    .frame(width: 16, height: 16)
+                                    .foregroundColor(Color.white)
+                                }
+                                
+                                .frame(width: 64, height: 300)
+                                .contentShape(Rectangle())
+                                .onTapGesture(count: /*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/, perform: {
+                                    if (currentImage != 0) { currentImage -= 1}
+                                }) 
                                 Spacer()
                                 
-                                Button(action: {
-                                    // your action here
+                                
+                                HStack {
+                                Image(systemName: "arrow.right")
+                                    .resizable()
+                                    .frame(width: 16, height: 16)
+                                    .foregroundColor(Color.white)
+                                }
+                                
+                                .frame(width: 64, height: 300)
+                                .contentShape(Rectangle())
+                                .onTapGesture(count: /*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/, perform: {
                                     if (currentImage != filters!.count - 1) { currentImage += 1}
-                                }) {
-                                    Image(systemName: "arrow.right")
-                                        .resizable()
-                                        .frame(width: 16, height: 16)
-                                        .foregroundColor(Color.white)
-                                }.frame(width: 32, height: 32)
+                                })
+                                
                             }.frame(width: geometry.size.width)
                             
                             

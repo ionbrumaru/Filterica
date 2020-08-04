@@ -9,7 +9,6 @@ import RealmSwift
 
 //let realmData = try! Realm()
 
-var serverFilters: [serverFilter] = []
 
 let localFiters: [filter] = [
     

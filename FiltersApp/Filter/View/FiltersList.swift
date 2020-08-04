@@ -103,8 +103,17 @@ struct FiltersList: View {
                             ForEach(packs, id: \.self) { serverpack in
                                 
                                 
-                                PackPreview(packItem: serverpack, filters: filters.filter{ $0.isInPack == packs[0].id  }).frame( height: 400).padding(.top)
-                            }
+                                CategoryTitle(name: serverpack.name, buttonName: "\(filters.filter{ $0.isInPack == packs[0].id  }.count) presets").padding(.top,8)
+                                
+                                
+                                
+                                NavigationLink(destination: PackView(filters_all: $filters, packItem: serverpack, filters: filters.filter{ $0.isInPack == packs[0].id })) {
+                                    PackPreview(packItem: serverpack, filters: filters.filter{ $0.isInPack == packs[0].id  }).frame( height: 300)
+                                }
+                                
+                                
+                                
+                            }.listItemTint(Color.primary)
                         }
  
                     }
