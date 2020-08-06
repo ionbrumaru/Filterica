@@ -57,7 +57,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let url = URL(string: "https://kazantsev-ef.ru/ios.php?p=all_filters")!
 
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
-            guard let data = data else { return }
+            guard let data = data else { self.uploadLocalToRealm(); return }
             do {
                 if let array = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String:[[String:Any]]]{
                     print("recieved data from server")
@@ -128,6 +128,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func loadFiltersFromServer() {
         
         fetchData { (dict, error) in
+            
+            
             print("completion")
             if dict != nil {
                 for fltr_obj in dict!["filters"]! {
