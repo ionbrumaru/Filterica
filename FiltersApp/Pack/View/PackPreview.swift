@@ -15,73 +15,41 @@ struct PackPreview: View {
     @State private var currentImage = 0
     @State private var isOriginalShowing = false
         var body: some View {
-            GeometryReader { geometry in
-                VStack {
-                    
-                        ZStack(alignment: .leading) {
-                            HStack{
-                                if (filters![currentImage].imageBefore.contains("LOCAL_")) {
-                                    Image(uiImage:
-                                            UIImage(named:  filters![currentImage].imageAfter.replacingOccurrences(of: "LOCAL_", with: ""))!)
-                                            .renderingMode(.original)
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fill)
-                                            .frame(width: geometry.size.width, height: 300)
-                                            .clipped()
-                                }
-                                else {
-                                    URLImage(URL(string: filters![currentImage].imageAfter)!, delay: 0.25,placeholder: Image(systemName: "circle")) { proxy in
-                                        proxy.image
-                                            .renderingMode(.original)
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fill)
-                                            .frame(width: geometry.size.width, height: 300)
-                                            .clipped()
-                                        }
-                                }
-                                
-                            }.frame(width: geometry.size.width, height: 300)
-                            
-                            HStack {
-                                
-                                HStack {
-                                Image(systemName: "arrow.left")
+            ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 16) {
+            ForEach(0..<filters!.count) { counter in
+            VStack(alignment: .leading) {
+                HStack{
+                if (filters![counter].imageAfter.contains("LOCAL_")) {
+                Image(uiImage: UIImage(named: filters![counter].imageAfter.replacingOccurrences(of: "LOCAL_", with: ""))!
+                )
+                .renderingMode(.original)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 330, height: 240)
+                .cornerRadius(12)
+                }
+                else {
+                    URLImage(URL(string: filters![counter].imageAfter)!, delay: 0.25,placeholder: Image(systemName: "circle")) { proxy in
+                                proxy.image
+                                    .renderingMode(.original)
                                     .resizable()
-                                    .font(.largeTitle)
-                                    .frame(width: 22, height: 22)
-                                    .foregroundColor(.white)
-                                }
-                                
-                                .frame(width: 64, height: 300)
-                                .contentShape(Rectangle())
-                                .onTapGesture(count: /*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/, perform: {
-                                    if (currentImage != 0) { currentImage -= 1}
-                                }) 
-                                Spacer()
-                                
-                                
-                                HStack {
-                                Image(systemName: "arrow.right")
-                                    .resizable()
-                                    .font(.largeTitle)
-                                    .frame(width: 22, height: 22)
-                                    .foregroundColor(.white)
-                                }
-                                
-                                .frame(width: 64, height: 300)
-                                .contentShape(Rectangle())
-                                .onTapGesture(count: /*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/, perform: {
-                                    if (currentImage != filters!.count - 1) { currentImage += 1}
-                                })
-                                
-                            }.frame(width: geometry.size.width)
-                            
-                            
-                        }
-                    
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 330, height: 240)
+                                    .cornerRadius(12)
+                    }
+                }
+                }.frame(width: 330, height: 240)
+                
+                HStack{
+                    Text(filters![counter].name).bold().padding(.leading, 4).foregroundColor(Color.primary)
+                    Spacer()
+                    Text("#" + (filters![counter].tags ?? "Filter")).font(.footnote).foregroundColor(Color.primary).opacity(0.8)
                 }
             }
-            
         }
+        }
+            }
     }
+}
 

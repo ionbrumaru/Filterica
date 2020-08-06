@@ -9,8 +9,8 @@ import UIKit
 import SwiftUI
 import RealmSwift
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-    var realm = try! Realm()
     private var filters: Results<filter>?
+    private var packs: Results<pack>?
     private var filterstosave: [filter] = []
     private var packstosave: [pack] = []
     var window: UIWindow?
@@ -34,6 +34,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             
             if hasLaunchedBefore {
                 //filters = realm.objects(filter.self)
+                loadFiltersFromServer()
             window.rootViewController = UIHostingController(rootView: contentView)
             } else {
                 //uploadLocalToRealm()
@@ -64,7 +65,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     completion(array, nil)
                 }
             } catch {
-                print("!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+                print("ERROR")
                 print(error)
                 completion(nil, error)
             }
@@ -74,87 +75,125 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     
     func uploadLocalToRealm() {
-        print(Thread.current)
         
         var realm2 = try! Realm()
         filters = realm2.objects(filter.self)
+        packs = realm2.objects(pack.self)
+        print("printing pack")
+        let array = packs!.toArray(ofType: pack.self)
+        print(array)
         //localFiters
         if filters!.count == 0 {
             for element in localFiters {
-                print(1)
+                print("SAVING LOCAL FILTERS")
                 try! realm2.write() {
                    realm2.add(element)
                 }
             }
         }
         for element in filterstosave {
-            print(2)
-            try! realm2.write() {
-               realm2.add(element)
+            print("SAVING SERVER FILTERS")
+            var alreadyHasFilter = false
+            for el in filters?.toArray(ofType: filter.self) ?? [] {
+                if el.name == element.name { alreadyHasFilter = true; break}
+            }
+            if !alreadyHasFilter {
+                print("FINALLY CHECKED THAT THERE IS NO SUCH filter. SAVING IT")
+                try! realm2.write() {
+                   realm2.add(element)
+                }
             }
         }
         
+        
         for element in packstosave {
-            print(2)
+            
+            var alreadyHasPack = false
+            for el in packs?.toArray(ofType: pack.self) ?? [] {
+                if el.name == element.name { alreadyHasPack = true; break}
+            }
+            
+            if !alreadyHasPack {
+                print("FINALLY CHECKED THAT THERE IS NO SUCH PACK. SAVING IT")
             try! realm2.write() {
                realm2.add(element)
             }
         }
     }
-    
-    func saveObject (_ filter: filter) {
-        try! realm.write() {
-            realm.add(filter)
-        }
     }
+    
+
     
     
     func loadFiltersFromServer() {
-        
         
         fetchData { (dict, error) in
             print("completion")
             if dict != nil {
                 for fltr_obj in dict!["filters"]! {
-                    print(fltr_obj)
                     
-                    if self.filters?.contains(where: { ($0 ).name == (fltr_obj["name"] as! String).replacingOccurrences(of: "_", with: " ") }) ?? false || localFiters.contains(where: { ($0 ).name == (fltr_obj["name"] as! String).replacingOccurrences(of: "_", with: " ") }) {
-                         // found
-                        // filter already exists. no need to reload it from server
-                    }
-                    else {
-                         // not
-                    var fltr = filter(name: (fltr_obj["name"] as! String).replacingOccurrences(of: "_", with: " "), filterDescription: "", tags: fltr_obj["name"] as! String , filterFileURL: fltr_obj["filterFileUrl"] as! String, imageBefore: fltr_obj["imageBefore"] as! String, imageAfter: fltr_obj["imageAfter"] as! String, filterSettings: imageSettings(), isInPack: Int(fltr_obj["isInPack"] as! String)!)
                         
-                        print("trying to append")
+                    
+                        
+                    if let settd = fltr_obj["settings"] as? [String: Any] {
+                        var fltr = filter(
+                            name: (fltr_obj["name"] as! String).replacingOccurrences(of: "_", with: " "),
+                            filterDescription: "",
+                            tags: fltr_obj["tags"] as? String ?? "" ,
+                            filterFileURL: fltr_obj["filterFileUrl"] as! String,
+                            imageBefore: fltr_obj["imageBefore"] as! String,
+                            imageAfter: fltr_obj["imageAfter"] as! String,
+                            
+                            filterSettings:
+                                            imageSettings(
+                                                exposure:Float(settd["exposure"] as! String)!,
+                                                contrast: Int(settd["contrast"] as! String)!,
+                                                highlights: Int(settd["highlights"] as! String)!,
+                                                shadows: Int(settd["shadows"] as! String)!,
+                                                whites: Int(settd["whites"] as! String)!,
+                                                blacks: Int(settd["blacks"] as! String)!,
+                                                temperature: Int(settd["temperature"] as! String)!,
+                                                tint: Int(settd["tint"] as! String)!,
+                                                vibrance: Int(settd["vibrance"] as! String)!,
+                                                saturation: Int(settd["saturation"] as! String)!,
+                                                texture: Int(settd["texture"] as! String)!,
+                                                clarity: Int(settd["clarity"] as! String)!,
+                                                dehaze: Int(settd["dehaze"] as! String)!,
+                                                vignette: Int(settd["vignette"] as! String)!,
+                                                grain: Int(settd["grain"] as! String)!,
+                                                size: Int(settd["size"] as! String)!,
+                                                roughness: Int(settd["roughness"] as! String)!,
+                                                sharpening: Int(settd["sharpening"] as! String)!,
+                                                radius: Int(settd["radius"] as! String)!,
+                                                detail: Int(settd["detail"] as! String)!,
+                                                masking: Int(settd["masking"] as! String)!),
+                            isInPack: Int(fltr_obj["isInPack"] as! String)!)
+                        
+                        
                     DispatchQueue.main.async {
                         self.filterstosave.append(fltr)
                     }
-                    print("apppended")
                     
-                }
+                    
+                    }
                 }
                 
                 for fltr_obj in dict!["packs"]! {
                     
-                    if localPacks.contains(where: { ($0 ).name == (fltr_obj["name"] as! String).replacingOccurrences(of: "_", with: " ") }) {
-                         // found
-                        // filter already exists. no need to reload it from server
-                    } else {
+                    
                          // not
+                        
                         var pck = pack(id: Int(fltr_obj["id"] as! String)!, name: (fltr_obj["name"] as! String).replacingOccurrences(of: "_", with: " "), isFree: fltr_obj["isFree"] as! Int)
                         
-                        print("trying to append")
                         DispatchQueue.main.async {
                             self.packstosave.append(pck)
                         }
-                        
-                    }
+                    
+                    
                     
                 }
-                print(Thread.current)
                 
-                print("trying to upload local to realm")
+                print("trying to upload new arrays to realm")
                 self.uploadLocalToRealm()
             }
         }

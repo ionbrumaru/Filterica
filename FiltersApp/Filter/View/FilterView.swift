@@ -22,6 +22,9 @@ struct FilterView: View {
     @State private var isLoading : Bool = true
     var showTutorial: Bool =  true
     
+    @State private var showTutorialSheet: Bool =  false
+    
+    @State private var isShareButtonDisabled: Bool = true
     @State private var showRelated: Bool = false
     var related: [filter]?
     
@@ -128,6 +131,24 @@ struct FilterView: View {
                 
             }
             .navigationBarItems(trailing:
+                                    
+                                    HStack(spacing: 20) {
+                                        Button(action: {
+                                            
+                                            
+                                            self.showTutorialSheet = true
+                                            print("presented")
+                                            
+                                        }) {
+                                            //Image(systemName: "questionmark.circle")
+                                            Text("Help")
+                                            
+                                        }.sheet(isPresented: $showTutorialSheet) {
+                                            ScrollView {
+                                                TutorialView().padding()
+                                            }
+                                        }
+                                    
                                     Button(action: {
                                         
                                         
@@ -137,10 +158,14 @@ struct FilterView: View {
                                     }) {
                                         Image(systemName: "square.and.arrow.up")
                                         
-                                    }.sheet(isPresented: $showImageInfo) {
+                                    }.disabled(isShareButtonDisabled)
+                                    .sheet(isPresented: $showImageInfo) {
                                         ImageInfoView(filterItem: filterItem)
                                     }
+                                    }
             )
+            
+            
         }
         .onAppear() {
             
@@ -172,6 +197,7 @@ struct FilterView: View {
                 
                 
                 fileurl = (data.dataToFile(fileName: "filter.dng")?.absoluteString)!
+                isShareButtonDisabled = false
                 isLoading = false
             }
             

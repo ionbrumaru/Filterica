@@ -16,9 +16,6 @@ class pack: Object {
     @objc dynamic var name: String = ""
     
     @objc dynamic var isFree: Int = 1
-
-    
-    @objc dynamic var filterSettings: imageSettings? = nil
     
     convenience init (id: Int, name: String, isFree: Int) {
         self.init()

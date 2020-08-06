@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import RealmSwift
 public extension View {
     func onTouchDown(
         _ onTouchDown: @escaping () -> Void,
@@ -65,4 +66,10 @@ extension Data {
         return documentsDirectory as NSString
     }
 
+}
+extension Results {
+    func toArray<T>(ofType: T.Type) -> [T] {
+        let array = Array(self) as! [T]
+        return array
+    }
 }
