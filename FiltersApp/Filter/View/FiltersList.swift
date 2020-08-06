@@ -8,7 +8,7 @@
 import SwiftUI
 import RealmSwift
 struct FiltersList: View {
-
+    
     
     @State private var filters: [filter] = Array(try! Realm(configuration: Realm.Configuration(schemaVersion: 1)).objects(filter.self))
     
@@ -20,7 +20,7 @@ struct FiltersList: View {
     
     @State private var circleCategoriesFilters: [filter] = []
     
-
+    
     
     @State private var categorySelection = 0
     
@@ -49,7 +49,7 @@ struct FiltersList: View {
                                         
                                         if (counter != 0)
                                         {
-                                        
+                                            
                                             circleCategoriesFilters = filters.filter{ $0.tags!.contains(circleCategories[counter]) }
                                         }
                                         categorySelection = counter
@@ -61,51 +61,51 @@ struct FiltersList: View {
                     Divider()
                     
                     if (categorySelection == 0) {
-                    
+                        
                         CategoryTitle(name: "Summer", buttonName: "All").padding(.top, 16)
-                    
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 16) {
-                            ForEach(0..<filters.filter{ $0.tags!.contains("Summer") }.count) { counter in
-                                NavigationLink(destination: FilterView(filterItem: filters.filter{ $0.tags!.contains("Summer") }[counter], filters: $filters, related: filters.filter{ $0.tags!.contains(filters.filter{ $0.tags!.contains("Summer") }[counter].tags ?? "nonTag") &&  $0.name != filters.filter{ $0.tags!.contains("Summer") }[counter].name })) {
-                                    FilterPreviewCard(filterItem: filters.filter{ $0.tags!.contains("Summer") }[counter])
+                        
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(spacing: 16) {
+                                ForEach(0..<filters.filter{ $0.tags!.contains("Summer") }.count) { counter in
+                                    NavigationLink(destination: FilterView(filterItem: filters.filter{ $0.tags!.contains("Summer") }[counter], filters: $filters, related: filters.filter{ $0.tags!.contains(filters.filter{ $0.tags!.contains("Summer") }[counter].tags ?? "nonTag") &&  $0.name != filters.filter{ $0.tags!.contains("Summer") }[counter].name })) {
+                                        FilterPreviewCard(filterItem: filters.filter{ $0.tags!.contains("Summer") }[counter])
+                                    }
+                                    
                                 }
-                                
-                            }
-                        }.padding().navigationBarTitle("Filters", displayMode: .large)
+                            }.padding().navigationBarTitle("Filters", displayMode: .large)
+                            
+                        }.frame(height: 270)
                         
-                    }.frame(height: 270)
-
-                    CategoryTitle(name: "Way to colorize", buttonName: "All").padding(.top,8)
-                    
-                        
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 16) {
-                            ForEach(0..<filters.filter{ $0.tags!.contains("Color") }.count) { counter in
-                                NavigationLink(destination: FilterView(filterItem: filters.filter{ $0.tags!.contains("Color") }[counter], filters: $filters, related: filters.filter{ $0.tags!.contains(filters.filter{ $0.tags!.contains("Color") }[counter].tags ?? "nonTag") &&  $0.name != filters.filter{ $0.tags!.contains("Color") }[counter].name })) {
-                                    FilterPreviewCard(filterItem: filters.filter{ $0.tags!.contains("Color") }[counter])
-                                }   
-                            }
-                        }.padding()
-                        
-                    }.frame(height: 270)
-                    
-                    
-                    CategoryTitle(name: "Atmosphere", buttonName: "All").padding(.top,8)
-                    
+                        CategoryTitle(name: "Way to colorize", buttonName: "All").padding(.top,8)
                         
                         
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 16) {
-                            ForEach(0..<filters.filter{ $0.tags!.contains("Atmosphere") }.count) { counter in
-                                NavigationLink(destination: FilterView(filterItem: filters.filter{ $0.tags!.contains("Atmosphere") }[counter], filters: $filters, related: filters.filter{ $0.tags!.contains(filters.filter{ $0.tags!.contains("Atmosphere") }[counter].tags ?? "nonTag") &&  $0.name != filters.filter{ $0.tags!.contains("Atmosphere") }[counter].name })) {
-                                    FilterPreviewCard(filterItem: filters.filter{ $0.tags!.contains("Atmosphere") }[counter])
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(spacing: 16) {
+                                ForEach(0..<filters.filter{ $0.tags!.contains("Color") }.count) { counter in
+                                    NavigationLink(destination: FilterView(filterItem: filters.filter{ $0.tags!.contains("Color") }[counter], filters: $filters, related: filters.filter{ $0.tags!.contains(filters.filter{ $0.tags!.contains("Color") }[counter].tags ?? "nonTag") &&  $0.name != filters.filter{ $0.tags!.contains("Color") }[counter].name })) {
+                                        FilterPreviewCard(filterItem: filters.filter{ $0.tags!.contains("Color") }[counter])
+                                    }
                                 }
-                            }
-                        }.padding()
+                            }.padding()
+                            
+                        }.frame(height: 270)
                         
-                    }.frame(height: 270)
-                     
+                        
+                        CategoryTitle(name: "Atmosphere", buttonName: "All").padding(.top,8)
+                        
+                        
+                        
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(spacing: 16) {
+                                ForEach(0..<filters.filter{ $0.tags!.contains("Atmosphere") }.count) { counter in
+                                    NavigationLink(destination: FilterView(filterItem: filters.filter{ $0.tags!.contains("Atmosphere") }[counter], filters: $filters, related: filters.filter{ $0.tags!.contains(filters.filter{ $0.tags!.contains("Atmosphere") }[counter].tags ?? "nonTag") &&  $0.name != filters.filter{ $0.tags!.contains("Atmosphere") }[counter].name })) {
+                                        FilterPreviewCard(filterItem: filters.filter{ $0.tags!.contains("Atmosphere") }[counter])
+                                    }
+                                }
+                            }.padding()
+                            
+                        }.frame(height: 270)
+                        
                         
                         if (packs.count != 0) {
                             ForEach(packs, id: \.self) { serverpack in
@@ -116,14 +116,16 @@ struct FiltersList: View {
                                 
                                 
                                 NavigationLink(destination: PackView(filters_all: $filters, packItem: serverpack, filters: filters.filter{ $0.isInPack == serverpack.id })) {
-                                    PackPreview(packItem: serverpack, filters: filters.filter{ $0.isInPack == serverpack.id  }).frame( height: 300).padding(.leading)
+                                    PackPreview(packItem: serverpack, filters: filters.filter{ $0.isInPack == serverpack.id  }).frame( height: 300)
+                                        .padding(.leading)
+                                        .padding(.trailing)
                                 }
                                 
                                 
                                 
                             }.listItemTint(Color.primary)
                         }
- 
+                        
                     }
                     else {
                         CategoryTitle(name: circleCategories[categorySelection], buttonName: "").padding(.top, 16)
@@ -140,7 +142,7 @@ struct FiltersList: View {
                             
                         }
                     }
-    
+                    
                 }.navigationBarHidden(true)
             }
         }
