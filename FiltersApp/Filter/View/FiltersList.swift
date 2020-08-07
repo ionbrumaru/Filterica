@@ -16,7 +16,7 @@ struct FiltersList: View {
     
     @State private var selectedFilter: filter?
     
-    private var circleCategories: [String] = ["All", "Travel", "Color", "Nature", "Urban", "Summer", "Atmosphere"]
+    private var circleCategories: [String] = ["All", "travel", "color", "nature", "urban", "summer", "atmosphere"]
     
     @State private var circleCategoriesFilters: [filter] = []
     
@@ -66,9 +66,9 @@ struct FiltersList: View {
                         
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 16) {
-                                ForEach(0..<filters.filter{ $0.tags!.contains("Summer") }.count) { counter in
-                                    NavigationLink(destination: FilterView(filterItem: filters.filter{ $0.tags!.contains("Summer") }[counter], filters: $filters, related: filters.filter{ $0.tags!.contains(filters.filter{ $0.tags!.contains("Summer") }[counter].tags ?? "nonTag") &&  $0.name != filters.filter{ $0.tags!.contains("Summer") }[counter].name })) {
-                                        FilterPreviewCard(filterItem: filters.filter{ $0.tags!.contains("Summer") }[counter])
+                                ForEach(0..<filters.filter{ $0.tags!.contains("summer") }.count) { counter in
+                                    NavigationLink(destination: FilterView(filterItem: filters.filter{ $0.tags!.contains("summer") }[counter], filters: $filters, related: filters.filter{ $0.tags!.contains(filters.filter{ $0.tags!.contains("summer") }[counter].tags ?? "nonTag") &&  $0.name != filters.filter{ $0.tags!.contains("summer") }[counter].name })) {
+                                        FilterPreviewCard(filterItem: filters.filter{ $0.tags!.contains("summer") }[counter])
                                     }
                                     
                                 }
@@ -81,9 +81,9 @@ struct FiltersList: View {
                         
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 16) {
-                                ForEach(0..<filters.filter{ $0.tags!.contains("Color") }.count) { counter in
-                                    NavigationLink(destination: FilterView(filterItem: filters.filter{ $0.tags!.contains("Color") }[counter], filters: $filters, related: filters.filter{ $0.tags!.contains(filters.filter{ $0.tags!.contains("Color") }[counter].tags ?? "nonTag") &&  $0.name != filters.filter{ $0.tags!.contains("Color") }[counter].name })) {
-                                        FilterPreviewCard(filterItem: filters.filter{ $0.tags!.contains("Color") }[counter])
+                                ForEach(0..<filters.filter{ $0.tags!.contains("color") }.count) { counter in
+                                    NavigationLink(destination: FilterView(filterItem: filters.filter{ $0.tags!.contains("color") }[counter], filters: $filters, related: filters.filter{ $0.tags!.contains(filters.filter{ $0.tags!.contains("color") }[counter].tags ?? "nonTag") &&  $0.name != filters.filter{ $0.tags!.contains("color") }[counter].name })) {
+                                        FilterPreviewCard(filterItem: filters.filter{ $0.tags!.contains("color") }[counter])
                                     }
                                 }
                             }.padding()
@@ -97,9 +97,9 @@ struct FiltersList: View {
                         
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 16) {
-                                ForEach(0..<filters.filter{ $0.tags!.contains("Atmosphere") }.count) { counter in
-                                    NavigationLink(destination: FilterView(filterItem: filters.filter{ $0.tags!.contains("Atmosphere") }[counter], filters: $filters, related: filters.filter{ $0.tags!.contains(filters.filter{ $0.tags!.contains("Atmosphere") }[counter].tags ?? "nonTag") &&  $0.name != filters.filter{ $0.tags!.contains("Atmosphere") }[counter].name })) {
-                                        FilterPreviewCard(filterItem: filters.filter{ $0.tags!.contains("Atmosphere") }[counter])
+                                ForEach(0..<filters.filter{ $0.tags!.contains("atmosphere") }.count) { counter in
+                                    NavigationLink(destination: FilterView(filterItem: filters.filter{ $0.tags!.contains("atmosphere") }[counter], filters: $filters, related: filters.filter{ $0.tags!.contains(filters.filter{ $0.tags!.contains("atmosphere") }[counter].tags ?? "nonTag") &&  $0.name != filters.filter{ $0.tags!.contains("atmosphere") }[counter].name })) {
+                                        FilterPreviewCard(filterItem: filters.filter{ $0.tags!.contains("atmosphere") }[counter])
                                     }
                                 }
                             }.padding()
