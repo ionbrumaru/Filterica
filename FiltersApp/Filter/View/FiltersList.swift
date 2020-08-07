@@ -62,7 +62,7 @@ struct FiltersList: View {
                     
                     if (categorySelection == 0) {
                         
-                        CategoryTitle(name: "Summer", buttonName: "All").padding(.top, 16)
+                        CategoryTitle(name: "Summer", buttonName: "").padding(.top, 16)
                         
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 16) {
@@ -76,7 +76,7 @@ struct FiltersList: View {
                             
                         }.frame(height: 270)
                         
-                        CategoryTitle(name: "Way to colorize", buttonName: "All").padding(.top,8)
+                        CategoryTitle(name: "Way to colorize", buttonName: "").padding(.top,8)
                         
                         
                         ScrollView(.horizontal, showsIndicators: false) {
@@ -91,7 +91,20 @@ struct FiltersList: View {
                         }.frame(height: 270)
                         
                         
-                        CategoryTitle(name: "Atmosphere", buttonName: "All").padding(.top,8)
+                        
+                        
+                        if (packs.count != 0) {
+                            ForEach(packs, id: \.self) { serverpack in
+                                
+                                
+                                CategoryTitle(name: serverpack.name, buttonName: "\(filters.filter{ $0.isInPack == serverpack.id  }.count) presets").padding(.top,8)
+                                
+                                PackPreview(packItem: serverpack, filters: filters.filter{ $0.isInPack == serverpack.id  }, filters_all: $filters).frame( height: 330)
+                            }
+                            .listItemTint(Color.primary)
+                        }
+                        
+                        CategoryTitle(name: "Atmosphere", buttonName: "").padding(.top,8)
                         
                         
                         
@@ -105,26 +118,6 @@ struct FiltersList: View {
                             }.padding()
                             
                         }.frame(height: 270)
-                        
-                        
-                        if (packs.count != 0) {
-                            ForEach(packs, id: \.self) { serverpack in
-                                
-                                
-                                CategoryTitle(name: serverpack.name, buttonName: "\(filters.filter{ $0.isInPack == serverpack.id  }.count) presets").padding(.top,8)
-                                
-                                
-                                
-                                NavigationLink(destination: PackView(filters_all: $filters, packItem: serverpack, filters: filters.filter{ $0.isInPack == serverpack.id })) {
-                                    PackPreview(packItem: serverpack, filters: filters.filter{ $0.isInPack == serverpack.id  }).frame( height: 300)
-                                        .padding(.leading)
-                                        .padding(.trailing)
-                                }
-                                
-                                
-                                
-                            }.listItemTint(Color.primary)
-                        }
                         
                     }
                     else {

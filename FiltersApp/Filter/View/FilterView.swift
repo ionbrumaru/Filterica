@@ -42,11 +42,17 @@ struct FilterView: View {
                         Image(uiImage: isOriginalShowing ?
                                 UIImage(named: filterItem.imageBefore.replacingOccurrences(of: "LOCAL_", with: ""))! : UIImage(named: filterItem.imageAfter.replacingOccurrences(of: "LOCAL_", with: ""))!
                         )
+                        /*
                         .renderingMode(.original)
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .frame(width: geometry.size.width)
-                        
+                        */
+                        .renderingMode(.original)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: geometry.size.width, height: 350)
+                        .clipped()
                       
                         
                         .onTouchDown({
@@ -60,10 +66,17 @@ struct FilterView: View {
                         else {
                         URLImage(URL(string: isOriginalShowing ? filterItem.imageBefore : filterItem.imageAfter)!, delay: 0.25,placeholder: Image(systemName: "circle")) { proxy in
                                     proxy.image
+                                        /*
                                         .renderingMode(.original)
                                         .resizable()
                                         .aspectRatio(contentMode: .fill)
                                         .frame(width: geometry.size.width)
+ */
+                                        .renderingMode(.original)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width: geometry.size.width, height: 350)
+                                        .clipped()
                                     }
                         }
                     }.navigationBarTitle(filterItem.name, displayMode: .large)
@@ -105,16 +118,16 @@ struct FilterView: View {
                         ShareSheet(activityItems: [NSURL(fileURLWithPath: getURLtoFile())])
                     }
                     
-                    Divider().padding(.bottom, 8).padding(.leading).padding(.trailing)
+                    Divider().padding(.bottom, 4).padding(.leading).padding(.trailing)
                     
                     if (showRelated) {
                         
-                        Text("More like this").font(.title).bold().padding(.leading).padding(.bottom, 6)
+                        Text("More like this").font(.title).bold().padding(.leading).padding(.bottom, 2)
                         
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 16) {
                                 ForEach(0..<related!.count) { counter in
-                                    NavigationLink(destination: FilterView(filterItem: related![counter], filters: $filters, related: filters.filter{ $0.tags!.contains(related![counter].tags ?? "nonTag") &&  $0.name != related![counter].name})) {
+                                    NavigationLink(destination: FilterView(filterItem: related![counter], filters: $filters, related: filters.filter{ ($0.tags!.split(separator: ",")).intersects(with: related![counter].tags!.split(separator: "," ) ) &&  $0.name != related![counter].name})) {
                                         FilterPreviewCard(filterItem: related![counter]).frame(height: 200).cornerRadius(6).clipped()
                                     }
                                 }

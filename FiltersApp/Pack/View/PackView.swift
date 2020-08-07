@@ -14,13 +14,15 @@ struct PackView: View {
     var packItem: pack?
     var filters: [filter]?
     
-    @State private var currentImage = 0
+    @State var currentImage = 0
     @State private var isOriginalShowing = false
     @State private var showImageInfo: Bool = false
     @State private var showShareSheet = false
     @State private var fileurl : String?
     @State private var isLoading : Bool = false
     @State private var showTutorialSheet : Bool = false
+    @State private var showRelated: Bool = false
+    
     var body: some View {
         GeometryReader { geometry in
             VStack {
@@ -34,7 +36,7 @@ struct PackView: View {
                                     .renderingMode(.original)
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
-                                    .frame(width: geometry.size.width, height: 350)
+                                    .frame(width: geometry.size.width, height: 400)
                                     .clipped()
                                     .contentShape(TapShape())
                             }
@@ -44,13 +46,13 @@ struct PackView: View {
                                         .renderingMode(.original)
                                         .resizable()
                                         .aspectRatio(contentMode: .fill)
-                                        .frame(width: geometry.size.width, height: 350)
+                                        .frame(width: geometry.size.width, height: 400)
                                         .clipped()
                                         .contentShape(TapShape())
                                 }
                             }
                             
-                        }.frame(width: geometry.size.width, height: 350)
+                        }.frame(width: geometry.size.width, height: 400)
                         .onTouchDown({
                             isOriginalShowing = true
                         }) {
@@ -68,7 +70,7 @@ struct PackView: View {
                                     .foregroundColor(.white)
                             }
                             
-                            .frame(width: 64, height: 300)
+                            .frame(width: 64, height: 400)
                             .contentShape(Rectangle())
                             .onTapGesture(count: /*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/, perform: {
                                 if (currentImage != 0) { currentImage -= 1}
@@ -84,7 +86,7 @@ struct PackView: View {
                                     .foregroundColor(.white)
                             }
                             
-                            .frame(width: 64, height: 300)
+                            .frame(width: 64, height: 400)
                             .contentShape(Rectangle())
                             .onTapGesture(count: /*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/, perform: {
                                 if (currentImage != filters!.count - 1) { currentImage += 1}
@@ -155,7 +157,6 @@ struct PackView: View {
                 }
                 
                 Divider().padding(.bottom, 8).padding(.leading).padding(.trailing)
-                
                 
                 
                 
