@@ -78,6 +78,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         var realm2 = try! Realm()
         filters = realm2.objects(filter.self)
+        print(filters)
         packs = realm2.objects(pack.self)
         print("printing pack")
         let array = packs!.toArray(ofType: pack.self)

@@ -20,7 +20,7 @@ struct FilterView: View {
     
     @State private var fileurl : String?
     @State private var isLoading : Bool = true
-    var showTutorial: Bool =  true
+    var showTutorial: Bool =  false
     
     @State private var showTutorialSheet: Bool =  false
     
@@ -55,12 +55,7 @@ struct FilterView: View {
                         .clipped()
                       
                         
-                        .onTouchDown({
-                            isOriginalShowing = true
-                        }) {
-                            isOriginalShowing = false
-                            
-                        }
+                        
                             
                         }
                         else {
@@ -80,6 +75,14 @@ struct FilterView: View {
                                     }
                         }
                     }.navigationBarTitle(filterItem.name, displayMode: .large)
+                    .frame(width: geometry.size.width, height: 350)
+                    .onTouchDown({
+                        isOriginalShowing = true
+                        
+                    }) {
+                        isOriginalShowing = false
+                        
+                    }
                     
                     
                     HStack(){
@@ -88,7 +91,7 @@ struct FilterView: View {
                         Spacer()
                     }
                     
-                    Divider().padding(.bottom, 8).padding(.leading).padding(.trailing)
+                    Divider().padding(.bottom, 2).padding(.leading).padding(.trailing)
                     
                     HStack{
                         Text("#" + (filterItem.tags ?? "Filter")).bold()
@@ -122,22 +125,23 @@ struct FilterView: View {
                     
                     if (showRelated) {
                         
-                        Text("More like this").font(.title).bold().padding(.leading).padding(.bottom, 2)
+                        Text("More like this").font(.title).bold().padding(.leading)
                         
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 16) {
                                 ForEach(0..<related!.count) { counter in
                                     NavigationLink(destination: FilterView(filterItem: related![counter], filters: $filters, related: filters.filter{ ($0.tags!.split(separator: ",")).intersects(with: related![counter].tags!.split(separator: "," ) ) &&  $0.name != related![counter].name})) {
-                                        FilterPreviewCard(filterItem: related![counter]).frame(height: 200).cornerRadius(6).clipped()
+                                        FilterPreviewCard(filterItem: related![counter]).frame(height: 280).cornerRadius(6).clipped()
                                     }
                                 }
                             }.padding()
                             
-                        }.frame(height: 200)
+                        }.frame(height: 250).padding(.bottom, 30)
                     }
                     
                     if (showTutorial){
-                    TutorialView().padding(.leading,8).padding(.trailing, 8)
+                        Divider().padding(.bottom, 4).padding(.leading).padding(.trailing).padding(.top, 4)
+                        TutorialView().padding(.leading,8).padding(.trailing, 8)
                     }
                     
                 }
