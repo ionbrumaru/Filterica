@@ -75,15 +75,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     
     func uploadLocalToRealm() {
-        
+        print("func uploadLocalToRealm")
+        //Thread 3: Fatal error: 'try!' expression unexpectedly raised an error: Error Domain=io.realm Code=1 "Provided schema version 0 is less than last set version 1." UserInfo={NSLocalizedDescription=Provided schema version 0 is less than last set version 1., Error Code=1}
         var realm2 = try! Realm()
         filters = realm2.objects(filter.self)
-        print(filters)
         packs = realm2.objects(pack.self)
-        print("printing pack")
         let array = packs!.toArray(ofType: pack.self)
-        print(array)
         //localFiters
+        
         if filters!.count == 0 {
             for element in localFiters {
                 print("SAVING LOCAL FILTERS")
@@ -93,13 +92,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             }
         }
         for element in filterstosave {
-            print("SAVING SERVER FILTERS")
             var alreadyHasFilter = false
             for el in filters?.toArray(ofType: filter.self) ?? [] {
                 if el.name == element.name { alreadyHasFilter = true; break}
             }
             if !alreadyHasFilter {
-                print("FINALLY CHECKED THAT THERE IS NO SUCH filter. SAVING IT")
+                print("FINALLY CHECKED THAT THERE IS NO SUCH filter \(element.name). SAVING IT")
                 try! realm2.write() {
                    realm2.add(element)
                 }
@@ -108,14 +106,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         
         for element in packstosave {
-            
+            print(" \(element.name)")
             var alreadyHasPack = false
             for el in packs?.toArray(ofType: pack.self) ?? [] {
                 if el.name == element.name { alreadyHasPack = true; break}
             }
             
             if !alreadyHasPack {
-                print("FINALLY CHECKED THAT THERE IS NO SUCH PACK. SAVING IT")
+                print("SAVING SERVER FILTER \(element.name)")
             try! realm2.write() {
                realm2.add(element)
             }
@@ -139,6 +137,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     
                         
                     if let settd = fltr_obj["settings"] as? [String: Any] {
+                        
                         var fltr = filter(
                             name: (fltr_obj["name"] as! String).replacingOccurrences(of: "_", with: " "),
                             filterDescription: "",
@@ -173,9 +172,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                             isInPack: Int(fltr_obj["isInPack"] as! String)!)
                         
                         
-                    DispatchQueue.main.async {
+                    
                         self.filterstosave.append(fltr)
-                    }
+                        print(fltr.name)
+                    
                     
                     
                     }
@@ -187,10 +187,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                          // not
                         
                         var pck = pack(id: Int(fltr_obj["id"] as! String)!, name: (fltr_obj["name"] as! String).replacingOccurrences(of: "_", with: " "), isFree: fltr_obj["isFree"] as! Int)
+
+                        self.packstosave.append(pck)
                         
-                        DispatchQueue.main.async {
-                            self.packstosave.append(pck)
-                        }
                     
                     
                     

@@ -19,10 +19,13 @@ struct FiltersList: View {
     private var circleCategories: [String] = ["All", "travel", "color", "nature", "urban", "summer", "atmosphere"]
     
     @State private var circleCategoriesFilters: [filter] = []
-    
-    
-    
+
     @State private var categorySelection = 0
+    
+    //
+    private var expandableLoad: [String] = ["urban_filters", "nature_filters", "lights_filters" ,"DONTDELETE"]
+    @State private var expandableShowHowMany = 0
+    @State private var showLoadMoreButton = true
     
     var body: some View {
         NavigationView{
@@ -118,6 +121,60 @@ struct FiltersList: View {
                             }.padding()
                             
                         }.frame(height: 270)
+                        
+                        ForEach(0 ..< expandableShowHowMany, id: \.self) { counter1 in
+                            
+                            if (expandableLoad[counter1].contains("_filters")) {
+                                
+                                let currentTag = expandableLoad[counter1].replacingOccurrences(of: "_filters", with: "")
+                                
+                                CategoryTitle(name: currentTag, buttonName: "").padding(.top,8)
+                                
+                                
+                                ScrollView(.horizontal, showsIndicators: false) {
+                                    HStack(spacing: 16) {
+                                        ForEach(0..<filters.filter{ $0.tags!.contains(currentTag) }.count, id: \.self) { counter in
+                                            NavigationLink(destination: FilterView(filterItem: filters.filter{ $0.tags!.contains(currentTag) }[counter], filters: $filters, related: filters.filter{ $0.tags!.contains(filters.filter{ $0.tags!.contains(currentTag) }[counter].tags ?? "nonTag") &&  $0.name != filters.filter{ $0.tags!.contains(currentTag) }[counter].name })) {
+                                                FilterPreviewCard(filterItem: filters.filter{ $0.tags!.contains(currentTag) }[counter])
+                                            }
+                                        }
+                                    }.padding()
+                                    
+                                }.frame(height: 270)
+                                
+                            }
+                        }
+                        
+                        
+                        if showLoadMoreButton {
+                        Button(action: {
+                            //
+                            if (expandableShowHowMany + 3 < expandableLoad.count) {
+                                expandableShowHowMany += 3
+                            }
+                            else if (expandableShowHowMany + 2 < expandableLoad.count) {
+                                expandableShowHowMany += 2
+                            }
+                            else if (expandableShowHowMany + 1 < expandableLoad.count) {
+                                expandableShowHowMany += 1
+                            }
+                            else {
+                                showLoadMoreButton = false
+                                }
+                            
+                            if (showLoadMoreButton) {
+                                if (expandableShowHowMany + 1 == expandableLoad.count) {
+                                    showLoadMoreButton = false
+                                }
+                            }
+                            
+                            
+                        }) {
+                            Text("Load more")
+                                .customButton()
+                        }.padding()
+                            
+                        }
                         
                     }
                     else {

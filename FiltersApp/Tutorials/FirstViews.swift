@@ -14,23 +14,31 @@ struct FirstViews: View {
     var body: some View {
         
         if (!showMain) {
-        ScrollView  {
-            VStack(alignment: .center) {
-                
-                Spacer()
-                
-                TitleView()
-                
-                VStack(alignment: .leading) {
-                    TutorialDetailView(title: "Explore", subTitle: "Explore more than 100 filters in a catalog.", imageName: "rectangle.stack")
-                    
-                    TutorialDetailView(title: "Compare", subTitle: "Compare between original photo and photo with filter on to see the difference.", imageName: "photo.on.rectangle")
-                    
-                    TutorialDetailView(title: "Download", subTitle: "Choose any filter you like and download 100% free.", imageName: "arrow.down.to.line")
+            GeometryReader { geometry in
+                ScrollView  {
+                VStack(alignment: .center) {
                     
                     
-                    TutorialDetailView(title: "Export", subTitle: "Export filters right to lightroom mobile on your device", imageName: "square.and.arrow.up")
+                    
+                    TitleView()
+                    
+                    VStack(alignment: .leading) {
+                        TutorialDetailView(title: "Explore", subTitle: "Explore more than 100 filters in a catalog.", imageName: "rectangle.stack")
+                        
+                        TutorialDetailView(title: "Compare", subTitle: "Compare between original photo and photo with filter on to see the difference.", imageName: "photo.on.rectangle")
+                        
+                        TutorialDetailView(title: "Download", subTitle: "Choose any filter you like and download 100% free.", imageName: "arrow.down.to.line")
+                        
+                        
+                        TutorialDetailView(title: "Export", subTitle: "Export filters right to lightroom mobile on your device", imageName: "square.and.arrow.up")
+                    }
+                    
+                    
+                    
+                    
+                    
                 }
+                .padding(.horizontal)
                 
                 Spacer(minLength: 30)
                 
@@ -41,10 +49,8 @@ struct FirstViews: View {
                         .customButton()
                 }
                 .padding(.horizontal)
-                
+                }.frame(height: geometry.size.height)
             }
-            .padding(.horizontal)
-        }
     }
     else { ContentView()}
     }
