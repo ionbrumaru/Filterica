@@ -32,9 +32,10 @@ struct FilterPreviewCard: View {
             }
             
             HStack{
-                Text(filterItem.name).bold().padding(.leading, 4).foregroundColor(Color.primary)
+                Text(filterItem.name.capitalizingFirstLetter()).bold().padding(.leading, 4).foregroundColor(Color.primary)
                 Spacer()
-                Text("#" + (filterItem.tags ?? "Filter")).font(.footnote).foregroundColor(Color.primary).opacity(0.8)
+                
+                //Text("#" + (filterItem.tags ?? "Filter")).font(.footnote).foregroundColor(Color.primary).opacity(0.8)
             }
         }
     }

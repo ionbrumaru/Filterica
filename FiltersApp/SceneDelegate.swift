@@ -106,7 +106,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         
         for element in packstosave {
-            print(" \(element.name)")
             var alreadyHasPack = false
             for el in packs?.toArray(ofType: pack.self) ?? [] {
                 if el.name == element.name { alreadyHasPack = true; break}
@@ -119,6 +118,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             }
         }
     }
+
     }
     
 

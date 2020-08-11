@@ -46,9 +46,9 @@ struct PackPreview: View {
                         }.frame(width: 330, height: 300) // height 240
                         
                         HStack{
-                            Text(filters![counter].name).bold().padding(.leading, 4).foregroundColor(Color.primary)
+                            Text(filters![counter].name.capitalizingFirstLetter()).bold().padding(.leading, 4).foregroundColor(Color.primary)
                             Spacer()
-                            Text("#" + (filters![counter].tags ?? "Filter")).font(.footnote).foregroundColor(Color.primary).opacity(0.8)
+                            //Text("#" + (filters![counter].tags ?? "Filter")).font(.footnote).foregroundColor(Color.primary).opacity(0.8)
                         }
                     }
             }

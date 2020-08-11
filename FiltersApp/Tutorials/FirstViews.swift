@@ -52,15 +52,11 @@ struct FirstViews: View {
                 }.frame(height: geometry.size.height)
             }
     }
-    else { ContentView()}
+        else { ContentView()}
     }
 }
 
-struct FirstViews_Previews: PreviewProvider {
-    static var previews: some View {
-        FirstViews()
-    }
-}
+
 struct ButtonModifier: ViewModifier {
     func body(content: Content) -> some View {
         content

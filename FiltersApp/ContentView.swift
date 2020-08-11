@@ -6,14 +6,25 @@
 //
 
 import SwiftUI
-
+import RealmSwift
 struct ContentView: View {
     
+    @State private var packs: [pack] = Array(try! Realm().objects(pack.self))
+    @State private var hasTimeElapsed = false
     
-
+    @State private var hasLoaded = false
+    private var timeout = 0.5
+    
     var body: some View {
-
+        
+        HStack{
+            if hasLoaded {
         FiltersList().accentColor(Color(mainColor))
+            }
+            else {
+                ActivityIndicator(isAnimating: .constant(true), style: .large) /////////////
+            }
+        }.onAppear(perform: delayCheck)
         
             /*
             .onAppear {
@@ -29,11 +40,21 @@ struct ContentView: View {
  
     }
     
+    private func delayCheck() {
+            // Delay of 7.5 seconds
+            DispatchQueue.main.asyncAfter(deadline: .now() + timeout) {
+                let newpacks: [pack] = Array(try! Realm(configuration: Realm.Configuration(schemaVersion: 1)).objects(pack.self))
+                if newpacks.count != 0 {
+                    hasLoaded = true
+                    hasTimeElapsed = true
+                }
+                else {
+                    delayCheck()
+                }
+                
+            }
+        }
+    
     
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}

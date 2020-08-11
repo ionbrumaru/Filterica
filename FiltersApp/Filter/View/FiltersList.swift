@@ -19,20 +19,17 @@ struct FiltersList: View {
     private var circleCategories: [String] = ["All", "travel", "color", "nature", "urban", "summer", "atmosphere"]
     
     @State private var circleCategoriesFilters: [filter] = []
-
+    
     @State private var categorySelection = 0
     
     //
-    private var expandableLoad: [String] = ["urban_filters", "nature_filters", "lights_filters" ,"Portraits_PACK", "DONTDELETE"]
+    private var expandableLoad: [String] = ["urban_filters", "asia_filters", "lights_filters" ,"Portraits_PACK", "neon_filters","nature_filters", "DONTDELETE"]
     @State private var expandableShowHowMany = 0
     @State private var showLoadMoreButton = true
     
     var body: some View {
         NavigationView{
             VStack(alignment: .leading) {
-                
-                
-                
                 
                 ScrollView(.vertical, showsIndicators: false) {
                     
@@ -52,11 +49,9 @@ struct FiltersList: View {
                                         
                                         if (counter != 0)
                                         {
-                                            
                                             circleCategoriesFilters = filters.filter{ $0.tags!.contains(circleCategories[counter]) }
                                         }
                                         categorySelection = counter
-                                        
                                     }
                             }
                         }.padding(.leading)
@@ -69,15 +64,8 @@ struct FiltersList: View {
                         
                         ShowStaticFilters(filters: $filters, tag: "color", label: "Way to colorize")
                         
-                        
-                        
-                        
-                        
-                        
-                        
                         if (packs.count != 0) {
                             ForEach(packs, id: \.self) { serverpack in
-                                
                                 
                                 CategoryTitle(name: serverpack.name, buttonName: "\(filters.filter{ $0.isInPack == serverpack.id  }.count) presets").padding(.top,8)
                                 
@@ -86,9 +74,7 @@ struct FiltersList: View {
                             .listItemTint(Color.primary)
                         }
                         
-
                         ShowStaticFilters(filters: $filters, tag: "atmosphere", label: "Atmosphere")
-                        
                         
                         ForEach(0 ..< expandableShowHowMany, id: \.self) { counter1 in
                             
@@ -96,29 +82,24 @@ struct FiltersList: View {
                                 
                                 let currentTag = expandableLoad[counter1].replacingOccurrences(of: "_filters", with: "")
                                 
-                                CategoryTitle(name: currentTag, buttonName: "").padding(.top,8)
-                                
-                                
-                                ScrollView(.horizontal, showsIndicators: false) {
-                                    HStack(spacing: 16) {
-                                        ForEach(0..<filters.filter{ $0.tags!.contains(currentTag) }.count, id: \.self) { counter in
-                                            NavigationLink(destination: FilterView(filterItem: filters.filter{ $0.tags!.contains(currentTag) }[counter], filters: $filters, related: filters.filter{ $0.tags!.contains(filters.filter{ $0.tags!.contains(currentTag) }[counter].tags ?? "nonTag") &&  $0.name != filters.filter{ $0.tags!.contains(currentTag) }[counter].name })) {
-                                                FilterPreviewCard(filterItem: filters.filter{ $0.tags!.contains(currentTag) }[counter])
-                                            }
-                                        }
-                                    }.padding()
-                                    
-                                }.frame(height: 270)
+                                if filters.filter{ $0.tags!.contains(currentTag) }.count != 0 {
+                                    ShowStaticFilters(filters: $filters, tag: currentTag, label: currentTag)
+                                }
                                 
                             }
-                            //else if (expandableLoad[counter1].contains("_PACK")) {
-                                //let pckname = expandableLoad[counter1].replacingOccurrences(of: "_filters", with: "")
-                                //let packid = packs.filter{ $0.name.contains(pckname) }[0]
+                            else if (expandableLoad[counter1].contains("_PACK")) {
+                                let pckname = expandableLoad[counter1].replacingOccurrences(of: "_PACK", with: "")
+                                let packfiltered = packs.filter{ $0.name.contains(pckname) }
                                 
-                                //Text("1")
-                            //}
+                                if packfiltered.count != 0 {
+                                    
+                                    let pack = packfiltered[0]
+                                    CategoryTitle(name: pckname, buttonName: "\(filters.filter{ $0.isInPack == pack.id  }.count) presets").padding(.top,8)
+                                    
+                                    PackPreview(packItem: pack, filters: filters.filter{ $0.isInPack == pack.id  }, filters_all: $filters).frame( height: 330)
+                                }
+                            }
                         }
-                        
                         
                         LoadMoreButton(showLoadMoreButton: $showLoadMoreButton, expandableShowHowMany: $expandableShowHowMany, expandableLoad: expandableLoad)
                     }
@@ -133,13 +114,12 @@ struct FiltersList: View {
     }
 }
 
-
 struct CategoryTitle: View {
     var name: String
     var buttonName: String
     var body: some View {
         HStack{
-            Text(name)
+            Text(name.capitalizingFirstLetter())
                 .font(.title)
                 .bold()
                 .padding(.leading)
@@ -179,8 +159,6 @@ struct LoadMoreButton: View {
                             showLoadMoreButton = false
                         }
                     }
-                    
-                    
                 }) {
                     Text("Load more")
                         .customButton()
@@ -229,7 +207,6 @@ struct OneColumnFiltersView: View {
                         NavigationLink(destination: FilterView(filterItem: circleCategoriesFilters[counter], filters: $filters)) {
                             FilterPreviewCard(filterItem: circleCategoriesFilters[counter]).fixedSize()
                         }
-                        
                     }
                 }.padding(.leading).padding(.trailing).navigationBarTitle(circleCategories[categorySelection], displayMode: .large)
             }
