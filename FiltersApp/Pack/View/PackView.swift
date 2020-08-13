@@ -22,6 +22,11 @@ struct PackView: View {
     @State private var isLoading : Bool = false
     @State private var showTutorialSheet : Bool = false
     @State private var showRelated: Bool = true
+    
+    let getfiltertext: LocalizedStringKey =  "  Get filter  "
+    let helptext: LocalizedStringKey =  "Help"
+    let holdphototext: LocalizedStringKey =  "Hold photo to see without filter"
+    let morelikethistext: LocalizedStringKey =  "More like this"
     var body: some View {
         GeometryReader { geometry in
             ScrollView(.vertical, showsIndicators: false ) {
@@ -111,7 +116,7 @@ struct PackView: View {
                     
                     HStack(){
                         Spacer()
-                        Text("Hold photo to see without filter") .font(.system(size: 12))
+                        Text(holdphototext) .font(.system(size: 12))
                         Spacer()
                     }.sheet(isPresented: $showTutorialSheet) {
                         ScrollView {
@@ -145,7 +150,7 @@ struct PackView: View {
                             }
                             
                         }) {
-                            Text("  Get filter  ")
+                            Text(getfiltertext)
                                 .font(.system(size: 20))
                                 .padding(2)
                                 .foregroundColor(Color.white)
@@ -158,11 +163,11 @@ struct PackView: View {
                     
                     Divider().padding(.bottom, 8).padding(.leading).padding(.trailing)
                     
-                    
+                    VStack(alignment: .leading){
                     if (showRelated) {
                         let relatedFilters = filters_all.filter{ HasAnyTag(filter1: $0, filter2: filters![0]) }
                         if relatedFilters.count > 2 {
-                        Text("More like this").font(.title).bold().padding(.leading)
+                        Text(morelikethistext).font(.title).bold().padding(.leading)
                         
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 16) {
@@ -176,6 +181,7 @@ struct PackView: View {
                         }.frame(height: 250).padding(.bottom, 30)
                     }
                     }
+                }
                     
 
                 }.navigationBarItems(trailing:
@@ -190,7 +196,7 @@ struct PackView: View {
                                                 
                                             }) {
                                                 //Image(systemName: "questionmark.circle")
-                                                Text("Help")
+                                                Text(helptext)
                                                 
                                             }
                                             .sheet(isPresented: $showImageInfo) {

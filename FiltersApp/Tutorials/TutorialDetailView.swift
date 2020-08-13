@@ -9,8 +9,8 @@ import SwiftUI
 
 struct TutorialDetailView: View {
     
-    var title: String = "title"
-        var subTitle: String = "subTitle"
+    var title: LocalizedStringKey = "title"
+        var subTitle: LocalizedStringKey = "subTitle"
         var imageName: String = "car"
     var body: some View {
         HStack(alignment: .center) {

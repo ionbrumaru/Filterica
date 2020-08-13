@@ -28,6 +28,8 @@ struct FiltersList: View {
     @State private var expandableShowHowMany = 0
     @State private var showLoadMoreButton = true
     
+    
+    let Navtext: LocalizedStringKey =  "Filters"
     var body: some View {
         NavigationView{
             VStack(alignment: .leading) {
@@ -35,7 +37,7 @@ struct FiltersList: View {
                 ScrollView(.vertical, showsIndicators: false) {
                     
                     HStack {
-                        Text("Filters")
+                        Text(Navtext)
                             .font(.largeTitle)
                             .bold()
                             .padding(.leading).padding(.top, 8)
@@ -143,6 +145,7 @@ struct CategoryTitle: View {
 struct LoadMoreButton: View {
     @Binding var showLoadMoreButton: Bool
     @Binding var expandableShowHowMany: Int
+    let loadmetext: LocalizedStringKey =  "Load more"
     var expandableLoad: [String]
     var body: some View {
         HStack{
@@ -168,7 +171,7 @@ struct LoadMoreButton: View {
                         }
                     }
                 }) {
-                    Text("Load more")
+                    Text(loadmetext)
                         .customButton()
                 }.padding()
                 

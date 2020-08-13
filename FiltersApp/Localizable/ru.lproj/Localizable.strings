@@ -1,0 +1,44 @@
+/* 
+  Localizable.strings
+  FiltersApp
+
+  Created by Никита Казанцев on 13.08.2020.
+  
+*/
+
+"Explore" = "Выбирайте";
+"Explore more than 100 filters in a catalog." = "В вашем распоряжении более чем 100 фильтров на любой вкус.";
+
+"Compare" = "Сравнивайте";
+"Compare between original photo and photo with filter on to see the difference." = "Смотрите на результат применения фильтра, сравнивая с оригиналом.";
+
+"Download" = "Скачивайте";
+"Choose any filter you like and download it 100% free." = "Выберите любой понравившийся фильтр и скачайте полностью бесплатно.";
+
+"Export" = "Сохраняйте";
+"Export filters right to lightroom mobile on your iPhone" = "Экспортируйте любой фильтр в lightroom mobile на вашем iPhone.";
+
+"Continue" = "Продолжить";
+
+"How To" = "Как это работает";
+"After installing app, download and install Adobe Lightroom app from App Store." = "После установки приложения, скачайте Adobe Lightroom из App Store.";
+
+"Tap 'get preset' button. Then find 'copy to Lightroom' button, and tap it." = "Нажмите на кнопку 'Получить' на странице фильтра. Потом, во всплывшем меню нажмите на кнопку 'скопировать в Lightroom', чтобы добавить фильтр в приложение 'Lightroom'.";
+
+"After clicking on the lightroom icon, you will be notified that the preset will apear on next app launch" =  "После данных действий вы будете оповещены, что фильтр отобразится в 'Lightroom' при следующем запуске.";
+
+"Open lightroom. Choose new preset image and open it. In the right upper corner tap 'more' icon and choose 'Copy settings'. Then click 'ok'" = "Откройте 'Lightroom'. Выберите появившуюся фотографию в списке и откройте ее. В правом верхнем углу нажмите на три точки и выберите 'скопировать настройки'. Потом нажмите 'ОК'.";
+
+"After you opened your photo, tap an icon in the right upper corner again and choose 'paste settings'" = "После данных действий откройте вашу фотографию, к которой вы хотите применить фильтр, опять нажмите на три точки в верхнем правом углу и выберите 'Вставить настройки'. Фильтр применен.";
+
+"  Get filter  " = "  Скачать  ";
+
+"Filters" = "Фильтры";
+
+"Hold photo to see without filter" = "Нажмите на фото, чтобы увидеть ее без фильтра";
+
+"More like this" = "Похожие фильтры";
+
+"Help" = "Помощь";
+
+"Load more" = "Загрузить еще";

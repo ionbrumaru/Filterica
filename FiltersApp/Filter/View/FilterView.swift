@@ -30,7 +30,10 @@ struct FilterView: View {
     @State private var isShareButtonDisabled: Bool = true
     @State private var showRelated: Bool = true
 
-    
+    let getfiltertext: LocalizedStringKey =  "  Get filter  "
+    let helptext: LocalizedStringKey =  "Help"
+    let holdphototext: LocalizedStringKey =  "Hold photo to see without filter"
+    let morelikethistext: LocalizedStringKey =  "More like this"
     var body: some View {
         
         GeometryReader { geometry in
@@ -73,7 +76,7 @@ struct FilterView: View {
                     
                     HStack(){
                         Spacer()
-                        Text("Hold photo to see without filter") .font(.system(size: 12))
+                        Text(holdphototext) .font(.system(size: 12))
                         Spacer()
                     }
                     
@@ -96,7 +99,7 @@ struct FilterView: View {
                         Button(action: {
                             self.showShareSheet.toggle()
                         }) {
-                            Text("  Get filter  ")
+                            Text(getfiltertext)
                                 .font(.system(size: 20))
                                 .padding(2)
                                 .foregroundColor(Color.white)
@@ -112,7 +115,7 @@ struct FilterView: View {
                     if (showRelated) {
                         let relatedFilters = filters.filter{ HasAnyTag(filter1: $0, filter2: filterItem) }
                         if relatedFilters.count > 2 {
-                        Text("More like this").font(.title).bold().padding(.leading)
+                        Text(morelikethistext).font(.title).bold().padding(.leading)
                         
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 16) {
@@ -146,7 +149,7 @@ struct FilterView: View {
                                             
                                         }) {
                                             //Image(systemName: "questionmark.circle")
-                                            Text("Help")
+                                            Text(helptext)
                                             
                                         }.sheet(isPresented: $showTutorialSheet) {
                                             ScrollView {

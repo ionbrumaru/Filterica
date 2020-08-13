@@ -10,6 +10,19 @@ import SwiftUI
 struct FirstViews: View {
     
     @State private var showMain = false
+    let title1: LocalizedStringKey = "Explore"
+    let desc1: LocalizedStringKey = "Explore more than 100 filters in a catalog."
+    
+    let title2: LocalizedStringKey = "Compare"
+    let desc2: LocalizedStringKey = "Compare between original photo and photo with filter on to see the difference."
+    
+    let title3: LocalizedStringKey = "Download"
+    let desc3: LocalizedStringKey = "Choose any filter you like and download it 100% free."
+    
+    let title4: LocalizedStringKey = "Export"
+    let desc4: LocalizedStringKey = "Export filters right to lightroom mobile on your iPhone"
+    
+    let continuelabel: LocalizedStringKey = "Continue"
     
     var body: some View {
         
@@ -23,14 +36,14 @@ struct FirstViews: View {
                     TitleView()
                     
                     VStack(alignment: .leading) {
-                        TutorialDetailView(title: "Explore", subTitle: "Explore more than 100 filters in a catalog.", imageName: "rectangle.stack")
+                        TutorialDetailView(title: title1, subTitle: "Explore more than 100 filters in a catalog.", imageName: "rectangle.stack")
                         
-                        TutorialDetailView(title: "Compare", subTitle: "Compare between original photo and photo with filter on to see the difference.", imageName: "photo.on.rectangle")
+                        TutorialDetailView(title: title2, subTitle: desc2, imageName: "photo.on.rectangle")
                         
-                        TutorialDetailView(title: "Download", subTitle: "Choose any filter you like and download 100% free.", imageName: "arrow.down.to.line")
+                        TutorialDetailView(title: title3, subTitle: desc3, imageName: "arrow.down.to.line")
                         
                         
-                        TutorialDetailView(title: "Export", subTitle: "Export filters right to lightroom mobile on your device", imageName: "square.and.arrow.up")
+                        TutorialDetailView(title: title4, subTitle: desc4, imageName: "square.and.arrow.up")
                     }
                     
                     
@@ -45,7 +58,7 @@ struct FirstViews: View {
                 Button(action: {
                     showMain = true
                 }) {
-                    Text("Continue")
+                    Text(continuelabel)
                         .customButton()
                 }
                 .padding(.horizontal)
