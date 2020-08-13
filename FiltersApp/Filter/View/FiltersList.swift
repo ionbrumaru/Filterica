@@ -9,6 +9,7 @@ import SwiftUI
 import RealmSwift
 struct FiltersList: View {
     
+    @State private var noInternet: Bool = false
     
     @State private var filters: [filter] = Array(try! Realm(configuration: Realm.Configuration(schemaVersion: 1)).objects(filter.self))
     
@@ -23,7 +24,7 @@ struct FiltersList: View {
     @State private var categorySelection = 0
     
     //
-    private var expandableLoad: [String] = ["urban_filters", "asia_filters", "lights_filters" ,"Portraits_PACK", "neon_filters","nature_filters", "DONTDELETE"]
+    private var expandableLoad: [String] = ["Influencers_PACK","France_PACK","Moody_PACK","urban_filters", "asia_filters", "lights_filters", "neon_filters","nature_filters", "DONTDELETE"]
     @State private var expandableShowHowMany = 0
     @State private var showLoadMoreButton = true
     
@@ -60,19 +61,23 @@ struct FiltersList: View {
                     
                     if (categorySelection == 0) {
                         
-                        ShowStaticFilters(filters: $filters, tag: "summer", label: "Summertime")
+                        ShowStaticFilters(filters: $filters, tag: "summer", label: "Summertime").onAppear(){
+                            if(packs.filter{$0.name == "Portraits"}.count == 0) {
+                                noInternet = true
+                                
+                            }
+                            else {noInternet = false }
+                        }
+                        
+                        ShowStaticPacks(packname: "Sun kissed", filters: $filters, packs: $packs)
+                        
+                        ShowStaticPacks(packname: "Portraits", filters: $filters, packs: $packs)
+                            
                         
                         ShowStaticFilters(filters: $filters, tag: "color", label: "Way to colorize")
                         
-                        if (packs.count != 0) {
-                            ForEach(packs, id: \.self) { serverpack in
-                                
-                                CategoryTitle(name: serverpack.name, buttonName: "\(filters.filter{ $0.isInPack == serverpack.id  }.count) presets").padding(.top,8)
-                                
-                                PackPreview(packItem: serverpack, filters: filters.filter{ $0.isInPack == serverpack.id  }, filters_all: $filters).frame( height: 330)
-                            }
-                            .listItemTint(Color.primary)
-                        }
+                        ShowStaticPacks(packname: "Night life", filters: $filters, packs: $packs)
+                        
                         
                         ShowStaticFilters(filters: $filters, tag: "atmosphere", label: "Atmosphere")
                         
@@ -82,7 +87,7 @@ struct FiltersList: View {
                                 
                                 let currentTag = expandableLoad[counter1].replacingOccurrences(of: "_filters", with: "")
                                 
-                                if filters.filter{ $0.tags!.contains(currentTag) }.count != 0 {
+                                if filters.filter{ $0.tags!.contains(currentTag) }.count >= 2 {
                                     ShowStaticFilters(filters: $filters, tag: currentTag, label: currentTag)
                                 }
                                 
@@ -109,6 +114,9 @@ struct FiltersList: View {
                     }
                     
                 }.navigationBarHidden(true)
+                .alert(isPresented: $noInternet ){
+                    Alert(title: Text("No internet connection"), message: Text("Make sure your device is connected to the internet."), dismissButton: .default(Text("Continue offline")))
+                }
             }
         }
     }
@@ -180,7 +188,9 @@ struct ShowStaticFilters: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 16) {
                     ForEach(0..<filters.filter{ $0.tags!.contains(tag) }.count) { counter in
-                        NavigationLink(destination: FilterView(filterItem: filters.filter{ $0.tags!.contains(tag) }[counter], filters: $filters, related: filters.filter{ $0.tags!.contains(filters.filter{ $0.tags!.contains(tag) }[counter].tags ?? "nonTag") &&  $0.name != filters.filter{ $0.tags!.contains(tag) }[counter].name })) {
+                        
+                        NavigationLink(destination: FilterView(filterItem: filters.filter{ $0.tags!.contains(tag) }[counter], filters: $filters))
+                        {
                             FilterPreviewCard(filterItem: filters.filter{ $0.tags!.contains(tag) }[counter])
                         }
                         
@@ -204,12 +214,50 @@ struct OneColumnFiltersView: View {
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 16) {
                     ForEach(0..<circleCategoriesFilters.count, id: \.self) { counter in
-                        NavigationLink(destination: FilterView(filterItem: circleCategoriesFilters[counter], filters: $filters)) {
-                            FilterPreviewCard(filterItem: circleCategoriesFilters[counter]).fixedSize()
+                        NavigationLink(destination: FilterView(filterItem: circleCategoriesFilters[counter], filters: $filters))
+                        {
+                            FilterPreviewCard(filterItem: circleCategoriesFilters[counter]).fixedSize().frame(height: 270)
                         }
                     }
                 }.padding(.leading).padding(.trailing).navigationBarTitle(circleCategories[categorySelection], displayMode: .large)
             }
         }
     }
+}
+
+struct ShowStaticPacks: View {
+    var packname: String
+    @Binding var filters: [filter]
+    @Binding var packs: [pack]
+    var body: some View {
+        VStack {
+            let pack = packs.filter{$0.name == packname}
+            
+            if(pack.count == 1){
+                
+                
+            CategoryTitle(name: pack[0].name, buttonName: "\(filters.filter{ $0.isInPack == pack[0].id  }.count) presets").padding(.top,8)
+            
+            PackPreview(packItem: pack[0], filters: filters.filter{ $0.isInPack == pack[0].id  }, filters_all: $filters).frame( height: 330)
+            }
+            
+        }
+    }
+}
+
+func HasAnyTag(filter1: filter, filter2:filter) -> Bool {
+    var bl = false
+    for tag1 in filter1.tags!.split(separator: ","){
+        
+        for tag2 in filter2.tags!.split(separator: ","){
+            if tag1 == tag2 && filter1.name != filter2.name  {
+                bl = true
+                break
+            }
+        }
+        
+        if bl == true {break}
+    }
+    
+    return bl
 }

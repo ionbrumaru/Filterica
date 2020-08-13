@@ -8,6 +8,9 @@
 import SwiftUI
 import URLImage
 struct FilterView: View {
+    
+    
+    
     var filterItem: filter
     @Binding var filters: [filter]
     @State private var isOriginalShowing = false
@@ -25,8 +28,8 @@ struct FilterView: View {
     @State private var showTutorialSheet: Bool =  false
     
     @State private var isShareButtonDisabled: Bool = true
-    @State private var showRelated: Bool = false
-    var related: [filter]?
+    @State private var showRelated: Bool = true
+
     
     var body: some View {
         
@@ -107,19 +110,21 @@ struct FilterView: View {
                     Divider().padding(.bottom, 4).padding(.leading).padding(.trailing)
                     
                     if (showRelated) {
-                        
+                        let relatedFilters = filters.filter{ HasAnyTag(filter1: $0, filter2: filterItem) }
+                        if relatedFilters.count > 2 {
                         Text("More like this").font(.title).bold().padding(.leading)
                         
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 16) {
-                                ForEach(0..<related!.count) { counter in
-                                    NavigationLink(destination: FilterView(filterItem: related![counter], filters: $filters, related: filters.filter{ ($0.tags!.split(separator: ",")).intersects(with: related![counter].tags!.split(separator: "," ) ) &&  $0.name != related![counter].name})) {
-                                        FilterPreviewCard(filterItem: related![counter]).frame(height: 280).cornerRadius(6).clipped()
+                                ForEach(0..<relatedFilters.count) { counter in
+                                    NavigationLink(destination: FilterView(filterItem: relatedFilters[counter], filters: $filters)) {
+                                        FilterPreviewCard(filterItem: relatedFilters[counter]).frame(height: 280).cornerRadius(6).clipped()
                                     }
                                 }
                             }.padding()
                             
                         }.frame(height: 250).padding(.bottom, 30)
+                    }
                     }
                     
                     if (showTutorial){
@@ -169,11 +174,7 @@ struct FilterView: View {
         }
         .onAppear() {
             
-            if (related?.count ?? 0 > 1)
-            {
-                showRelated = true
-            }
-            
+
             fileurl = getURLtoFile()
             DispatchQueue.main.async {
                 fetchNearbyPlaces(filterfileurl: filterItem.filterFileURL)
@@ -200,6 +201,7 @@ struct FilterView: View {
                 isShareButtonDisabled = false
                 isLoading = false
             }
+            
             
             // if we're still here it means the request failed somehow
         }.resume()

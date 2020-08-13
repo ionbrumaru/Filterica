@@ -13,16 +13,31 @@ struct ContentView: View {
     @State private var hasTimeElapsed = false
     
     @State private var hasLoaded = false
-    private var timeout = 0.5
+    private var timeout = 1.5
+    
+    @State private var recursion = 0
     
     var body: some View {
         
         HStack{
             if hasLoaded {
-        FiltersList().accentColor(Color(mainColor))
+                FiltersList().accentColor(Color(mainColor))
             }
             else {
-                ActivityIndicator(isAnimating: .constant(true), style: .large) /////////////
+                VStack {
+                    ZStack {
+                        
+                        Image(uiImage: UIImage(named: "mainicon")!)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 160, alignment: .center)
+                            .accessibility(hidden: true)
+                            .fixedSize()
+                        
+                        ActivityIndicator(isAnimating: .constant(true), style: .large)
+                    }
+                    Text("Loading...").opacity(0.8)
+                } /////////////
             }
         }.onAppear(perform: delayCheck)
         
@@ -41,15 +56,25 @@ struct ContentView: View {
     }
     
     private func delayCheck() {
+            recursion += 1
             // Delay of 7.5 seconds
             DispatchQueue.main.asyncAfter(deadline: .now() + timeout) {
                 let newpacks: [pack] = Array(try! Realm(configuration: Realm.Configuration(schemaVersion: 1)).objects(pack.self))
                 if newpacks.count != 0 {
                     hasLoaded = true
                     hasTimeElapsed = true
+                    
                 }
                 else {
+                    if recursion <= 3 {
                     delayCheck()
+                    }
+                    else {
+                        //continue without internet
+                        hasLoaded = true
+                        hasTimeElapsed = true
+                        
+                    }
                 }
                 
             }
