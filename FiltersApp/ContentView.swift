@@ -33,6 +33,7 @@ struct ContentView: View {
                             .frame(width: 160, alignment: .center)
                             .accessibility(hidden: true)
                             .fixedSize()
+                            .opacity(0.75)
                         
                         ActivityIndicator(isAnimating: .constant(true), style: .large)
                     }

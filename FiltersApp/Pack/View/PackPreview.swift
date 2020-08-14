@@ -34,7 +34,18 @@ struct PackPreview: View {
                         .cornerRadius(12)
                         }
                         else {
-                            URLImage(URL(string: filters![counter].imageAfter)!, delay: 0.25,placeholder: Image(systemName: "circle")) { proxy in
+                            URLImage(URL(string: filters![counter].imageAfter)!, delay: 0.25,placeholder: {
+                                ProgressView($0) { progress in
+                                    ZStack {
+                                        if progress >= 0.0 {
+                                            // The download has started. CircleProgressView displays the progress.
+                                            CircleProgressView(progress).stroke(lineWidth: 8.0)
+                                        }
+                                        
+                                    }
+                                }
+                                    .frame(width: 50.0, height: 50.0)
+                            }) { proxy in
                                         proxy.image
                                             .renderingMode(.original)
                                             .resizable()

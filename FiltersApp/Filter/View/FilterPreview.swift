@@ -17,16 +17,27 @@ struct FilterPreviewCard: View {
             .renderingMode(.original)
             .resizable()
             .aspectRatio(contentMode: .fill)
-            .frame(width: 330, height: 240)
+            .frame(width: 330, height: 300)
             .cornerRadius(12)
             }
             else {
-                URLImage(URL(string: filterItem.imageAfter)!, delay: 0.25,placeholder: Image(systemName: "circle")) { proxy in
+                URLImage(URL(string: filterItem.imageAfter)!, delay: 0.25,placeholder: {
+                    ProgressView($0) { progress in
+                        ZStack {
+                            if progress >= 0.0 {
+                                // The download has started. CircleProgressView displays the progress.
+                                CircleProgressView(progress).stroke(lineWidth: 8.0)
+                            }
+                            
+                        }
+                    }
+                        .frame(width: 50.0, height: 50.0)
+                }) { proxy in
                             proxy.image
                                 .renderingMode(.original)
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
-                                .frame(width: 330, height: 240)
+                                .frame(width: 330, height: 300)
                                 .cornerRadius(12)
                 }
             }
@@ -34,8 +45,6 @@ struct FilterPreviewCard: View {
             HStack{
                 Text(filterItem.name.capitalizingFirstLetter()).bold().padding(.leading, 4).foregroundColor(Color.primary)
                 Spacer()
-                
-                //Text("#" + (filterItem.tags ?? "Filter")).font(.footnote).foregroundColor(Color.primary).opacity(0.8)
             }
         }
     }

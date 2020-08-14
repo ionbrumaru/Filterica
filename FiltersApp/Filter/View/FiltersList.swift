@@ -69,7 +69,7 @@ struct FiltersList: View {
                                 
                             }
                             else {noInternet = false }
-                        }
+                        }.padding(.top,-15)
                         
                         ShowStaticPacks(packname: "Sun kissed", filters: $filters, packs: $packs)
                         
@@ -200,7 +200,7 @@ struct ShowStaticFilters: View {
                     }
                 }.padding().navigationBarTitle("Filters", displayMode: .large)
                 
-            }.frame(height: 270)
+            }.frame(height: 340)
         }
     }
 }
@@ -219,7 +219,7 @@ struct OneColumnFiltersView: View {
                     ForEach(0..<circleCategoriesFilters.count, id: \.self) { counter in
                         NavigationLink(destination: FilterView(filterItem: circleCategoriesFilters[counter], filters: $filters))
                         {
-                            FilterPreviewCard(filterItem: circleCategoriesFilters[counter]).fixedSize().frame(height: 270)
+                            FilterPreviewCard(filterItem: circleCategoriesFilters[counter]).fixedSize().frame(height: 340)
                         }
                     }
                 }.padding(.leading).padding(.trailing).navigationBarTitle(circleCategories[categorySelection], displayMode: .large)
