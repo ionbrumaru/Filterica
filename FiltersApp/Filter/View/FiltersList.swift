@@ -55,6 +55,18 @@ struct FiltersList: View {
                     
                     if (categorySelection == 0) {
                         
+                        if (!noInternet) {
+                        ShowStaticPacks(packname: "Autumn", filters: $filters, packs: $packs)
+                        }
+                        
+                        ShowStaticFilters(filters: $filters, tag: "atmosphere", label: "Atmosphere")
+                        
+                        ShowStaticPacks(packname: "Portraits", filters: $filters, packs: $packs)
+                        
+                        ShowStaticFilters(filters: $filters, tag: "color", label: "Way to colorize")
+                        
+                        ShowStaticPacks(packname: "Sun kissed", filters: $filters, packs: $packs)
+                        
                         ShowStaticFilters(filters: $filters, tag: "summer", label: "Summertime").onAppear(){
                             if(packs.filter{$0.name == "Portraits"}.count == 0) {
                                 noInternet = true
@@ -63,18 +75,9 @@ struct FiltersList: View {
                             else {noInternet = false }
                         }.padding(.top,-15)
                         
-                        ShowStaticPacks(packname: "Autumn_PACK", filters: $filters, packs: $packs)
-                        
-                        ShowStaticPacks(packname: "Portraits", filters: $filters, packs: $packs)
-                        
-                        ShowStaticFilters(filters: $filters, tag: "color", label: "Way to colorize")
-                        
-                        ShowStaticPacks(packname: "Sun kissed", filters: $filters, packs: $packs)
-                        
                         ShowStaticPacks(packname: "Night life", filters: $filters, packs: $packs)
                         
                         
-                        ShowStaticFilters(filters: $filters, tag: "atmosphere", label: "Atmosphere")
                         
                         if (!noInternet) {
                         ForEach(0 ..< expandableShowHowMany, id: \.self) { counter1 in
