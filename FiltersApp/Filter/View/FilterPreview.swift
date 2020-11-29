@@ -9,6 +9,7 @@ import SwiftUI
 import URLImage
 struct FilterPreviewCard: View {
     var filterItem: filter
+    
     var body: some View {
         VStack(alignment: .leading) {
             if (filterItem.imageAfter.contains("LOCAL_")) {
@@ -26,19 +27,22 @@ struct FilterPreviewCard: View {
                         ZStack {
                             if progress >= 0.0 {
                                 // The download has started. CircleProgressView displays the progress.
-                                CircleProgressView(progress).stroke(lineWidth: 8.0)
+                                CircleProgressView(progress)
+                                    .stroke(lineWidth: 8.0)
                             }
-                            
                         }
                     }
                         .frame(width: 50.0, height: 50.0)
                 }) { proxy in
-                            proxy.image
+                    proxy.image
                                 .renderingMode(.original)
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
                                 .frame(width: 330, height: 300)
                                 .cornerRadius(12)
+                        
+                        
+                    
                 }
             }
             
@@ -48,10 +52,20 @@ struct FilterPreviewCard: View {
             }
         }
     }
+    
+    
+    func redacted(when active: Bool) -> some View {
+            return active ? AnyView(redacted(reason: .placeholder)) : AnyView(unredacted())
+        }
 }
+
+
+
+
 
 struct FilterPreview_Previews: PreviewProvider {
     static var previews: some View {
+        
         FilterPreviewCard(filterItem: filter())
     }
 }

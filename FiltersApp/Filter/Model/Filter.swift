@@ -10,7 +10,7 @@ import SwiftUI
 import RealmSwift
 class filter: Object {
     @objc dynamic var name: String = "Filter-1"
-    @objc dynamic var filterDescription: String = "adds a fantastic blur to image. So gorgeus that you can use it with any type of image even if its black and white"
+    @objc dynamic var filterDescription: String = ""
     
     @objc dynamic var tags: String? = "filter"
     @objc dynamic var filterFileURL: String = ""
@@ -19,6 +19,7 @@ class filter: Object {
     
     @objc dynamic var filterSettings: imageSettings? = nil
     @objc dynamic var isInPack: Int = 0
+    @objc dynamic var liked: Bool = false
     
     convenience init (name: String, filterDescription: String, tags: String?, filterFileURL: String, imageBefore: String, imageAfter: String, filterSettings: imageSettings?, isInPack: Int) {
         self.init()
@@ -32,4 +33,5 @@ class filter: Object {
         self.isInPack = isInPack
     }
 }
+
 

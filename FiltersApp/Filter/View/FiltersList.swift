@@ -23,8 +23,7 @@ struct FiltersList: View {
     
     @State private var categorySelection = 0
     
-    //
-    private var expandableLoad: [String] = ["Influencers_PACK","France_PACK","Moody_PACK","urban_filters", "asia_filters", "lights_filters", "neon_filters","nature_filters", "DONTDELETE"]
+    private var expandableLoad: [String] = ["Stay_home_PACK","Influencers_PACK","France_PACK","Moody_PACK","urban_filters", "asia_filters", "lights_filters", "neon_filters","nature_filters","Autumn_PACK", "DONTDELETE"]
     @State private var expandableShowHowMany = 0
     @State private var showLoadMoreButton = true
     
@@ -74,7 +73,7 @@ struct FiltersList: View {
                         ShowStaticPacks(packname: "Sun kissed", filters: $filters, packs: $packs)
                         
                         ShowStaticPacks(packname: "Portraits", filters: $filters, packs: $packs)
-                            
+                        
                         
                         ShowStaticFilters(filters: $filters, tag: "color", label: "Way to colorize")
                         
@@ -83,6 +82,7 @@ struct FiltersList: View {
                         
                         ShowStaticFilters(filters: $filters, tag: "atmosphere", label: "Atmosphere")
                         
+                        if (!noInternet) {
                         ForEach(0 ..< expandableShowHowMany, id: \.self) { counter1 in
                             
                             if (expandableLoad[counter1].contains("_filters")) {
@@ -95,7 +95,7 @@ struct FiltersList: View {
                                 
                             }
                             else if (expandableLoad[counter1].contains("_PACK")) {
-                                let pckname = expandableLoad[counter1].replacingOccurrences(of: "_PACK", with: "")
+                                let pckname = (expandableLoad[counter1].replacingOccurrences(of: "_PACK", with: "")).replacingOccurrences(of: "_", with: " ")
                                 let packfiltered = packs.filter{ $0.name.contains(pckname) }
                                 
                                 if packfiltered.count != 0 {
@@ -109,6 +109,7 @@ struct FiltersList: View {
                         }
                         
                         LoadMoreButton(showLoadMoreButton: $showLoadMoreButton, expandableShowHowMany: $expandableShowHowMany, expandableLoad: expandableLoad)
+                        }
                     }
                     else {
                         
@@ -234,14 +235,16 @@ struct ShowStaticPacks: View {
     @Binding var packs: [pack]
     var body: some View {
         VStack {
+            
             let pack = packs.filter{$0.name == packname}
             
             if(pack.count == 1){
                 
                 
-            CategoryTitle(name: pack[0].name, buttonName: "\(filters.filter{ $0.isInPack == pack[0].id  }.count) presets").padding(.top,8)
-            
-            PackPreview(packItem: pack[0], filters: filters.filter{ $0.isInPack == pack[0].id  }, filters_all: $filters).frame( height: 330)
+                CategoryTitle(name: pack[0].name, buttonName: "\(filters.filter{ $0.isInPack == pack[0].id  }.count) presets").padding(.top,8)
+                
+                PackPreview(packItem: pack[0], filters: filters.filter{ $0.isInPack == pack[0].id  }, filters_all: $filters).frame( height: 330)
+                
             }
             
         }

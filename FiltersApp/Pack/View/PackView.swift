@@ -53,10 +53,9 @@ struct PackView: View {
                                                     // The download has started. CircleProgressView displays the progress.
                                                     CircleProgressView(progress).stroke(lineWidth: 8.0)
                                                 }
-                                                
                                             }
                                         }
-                                            .frame(width: 50.0, height: 50.0)
+                                        .frame(width: 50.0, height: 50.0)
                                     }) { proxy in
                                         proxy.image
                                             .renderingMode(.original)
@@ -76,8 +75,7 @@ struct PackView: View {
                                 
                             }
                             
-                            HStack {
-                                
+                            HStack {  
                                 HStack {
                                     Image(systemName: "arrow.left")
                                         .resizable()
@@ -135,66 +133,30 @@ struct PackView: View {
                         }
                     }
                     
-                    Divider().padding(.bottom, 8).padding(.leading).padding(.trailing)
+                    UnderImageLinedView(filterItem: filters![currentImage], showShareSheet: $showShareSheet, showImageInfo: $showImageInfo, isLoading: $isLoading)
                     
-                    HStack{
-                        Text(filters![currentImage].name).bold()
-                        
-                        Button(action: {
-                            showImageInfo.toggle()
-                            
-                        }) {
-                            Image(systemName: "info.circle.fill")
-                                .foregroundColor(Color.secondary)
-                        }.padding(.leading,4)
-                        Spacer()
-                        
-                        ActivityIndicator(isAnimating: $isLoading, style: .large) /////////////
-                        
-                        Button(action: {
-                            isLoading = true
-                            DispatchQueue.main.async {
-                                
-                                fileurl = getURLtoFile()
-                                fetchNearbyPlaces(filterfileurl: filters![currentImage].filterFileURL)
-                                
-                            }
-                            
-                        }) {
-                            Text(getfiltertext)
-                                .font(.system(size: 20))
-                                .padding(2)
-                                .foregroundColor(Color.white)
-                                .background(Color(mainColor))
-                                .cornerRadius(10)
-                        }
-                    }.padding(.leading,8).padding(.trailing,8).sheet(isPresented: $showShareSheet) {
-                        ShareSheet(activityItems: [NSURL(fileURLWithPath: getURLtoFile())])
-                    }
-                    
-                    Divider().padding(.bottom, 8).padding(.leading).padding(.trailing)
                     
                     VStack(alignment: .leading){
-                    if (showRelated) {
-                        let relatedFilters = filters_all.filter{ HasAnyTag(filter1: $0, filter2: filters![0]) }
-                        if relatedFilters.count > 2 {
-                        Text(morelikethistext).font(.title).bold().padding(.leading)
-                        
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 16) {
-                                ForEach(0..<relatedFilters.count) { counter in
-                                    NavigationLink(destination: FilterView(filterItem: relatedFilters[counter], filters: $filters_all)) {
-                                        FilterPreviewCard(filterItem: relatedFilters[counter]).frame(height: 280).cornerRadius(6).clipped()
-                                    }
-                                }
-                            }.padding()
-                            
-                        }.frame(height: 250).padding(.bottom, 30)
+                        if (showRelated) {
+                            let relatedFilters = filters_all.filter{ HasAnyTag(filter1: $0, filter2: filters![0]) }
+                            if relatedFilters.count > 2 {
+                                Text(morelikethistext).font(.title).bold().padding(.leading)
+                                
+                                ScrollView(.horizontal, showsIndicators: false) {
+                                    HStack(spacing: 16) {
+                                        ForEach(0..<relatedFilters.count) { counter in
+                                            NavigationLink(destination: FilterView(filterItem: relatedFilters[counter], filters: $filters_all)) {
+                                                FilterPreviewCard(filterItem: relatedFilters[counter]).frame(height: 280).cornerRadius(6).clipped()
+                                            }
+                                        }
+                                    }.padding()
+                                    
+                                }.frame(height: 250).padding(.bottom, 30)
+                            }
+                        }
                     }
-                    }
-                }
                     
-
+                    
                 }.navigationBarItems(trailing:
                                         
                                         HStack(spacing: 20) {

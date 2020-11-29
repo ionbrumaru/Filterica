@@ -7,9 +7,8 @@
 
 import SwiftUI
 import URLImage
+import RealmSwift
 struct FilterView: View {
-    
-    
     
     var filterItem: filter
     @Binding var filters: [filter]
@@ -30,10 +29,11 @@ struct FilterView: View {
     @State private var isShareButtonDisabled: Bool = true
     @State private var showRelated: Bool = true
 
-    let getfiltertext: LocalizedStringKey =  "  Get filter  "
+    
     let helptext: LocalizedStringKey =  "Help"
     let holdphototext: LocalizedStringKey =  "Hold photo to see without filter"
     let morelikethistext: LocalizedStringKey =  "More like this"
+    
     var body: some View {
         
         GeometryReader { geometry in
@@ -45,38 +45,40 @@ struct FilterView: View {
                     HStack{
                         
                         if (filterItem.imageBefore.contains("LOCAL_")) {
-                        Image(uiImage: isOriginalShowing ?
-                                UIImage(named: filterItem.imageBefore.replacingOccurrences(of: "LOCAL_", with: ""))! : UIImage(named: filterItem.imageAfter.replacingOccurrences(of: "LOCAL_", with: ""))!
-                        )
-                        .renderingMode(.original)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: geometry.size.width, height: 350)
-                        .clipped()
+                            Image(uiImage: isOriginalShowing ?
+                                    UIImage(named: filterItem.imageBefore.replacingOccurrences(of: "LOCAL_", with: ""))! : UIImage(named: filterItem.imageAfter.replacingOccurrences(of: "LOCAL_", with: ""))!
+                            )
+                            .renderingMode(.original)
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: geometry.size.width, height: 350)
+                            .clipped()
                         }
                         else {
-                        URLImage(URL(string: isOriginalShowing ? filterItem.imageBefore : filterItem.imageAfter)!, delay: 0.25,placeholder: {
-                            ProgressView($0) { progress in
-                                ZStack {
-                                    if progress >= 0.0 {
-                                        // The download has started. CircleProgressView displays the progress.
-                                        CircleProgressView(progress).stroke(lineWidth: 8.0)
+                            URLImage(URL(string: isOriginalShowing ? filterItem.imageBefore : filterItem.imageAfter)!, delay: 0.25,placeholder: {
+                                ProgressView($0) { progress in
+                                    ZStack {
+                                        if progress >= 0.0 {
+                                            // The download has started. CircleProgressView displays the progress.
+                                            CircleProgressView(progress).stroke(lineWidth: 8.0)
+                                        }
+                                        
                                     }
-                                    
                                 }
-                            }
                                 .frame(width: 50.0, height: 50.0)
-                        }) { proxy in
-                                    proxy.image
-                                        .renderingMode(.original)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(width: geometry.size.width, height: 350)
-                                        .clipped()
-                                    }
+                            }) { proxy in
+                                proxy.image
+                                    .renderingMode(.original)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: geometry.size.width, height: 350)
+                                    .clipped()
+                            }
                         }
                     }.navigationBarTitle(filterItem.name, displayMode: .large)
                     .frame(width: geometry.size.width, height: 350)
+                    
+                    
                     .onTouchDown({
                         isOriginalShowing = true
                         
@@ -91,54 +93,24 @@ struct FilterView: View {
                         Spacer()
                     }
                     
-                    Divider().padding(.bottom, 2).padding(.leading).padding(.trailing)
-                    
-                    HStack{
-                        Text("#" + (filterItem.tags ?? "Filter")).bold()
-                        
-                        Button(action: {
-                            showImageInfo.toggle()
-                            
-                        }) {
-                            Image(systemName: "info.circle.fill")
-                                .foregroundColor(Color.secondary)
-                        }.padding(.leading,4)
-                        Spacer()
-                        
-                        ActivityIndicator(isAnimating: $isLoading, style: .large) /////////////
-                        
-                        Button(action: {
-                            self.showShareSheet.toggle()
-                        }) {
-                            Text(getfiltertext)
-                                .font(.system(size: 20))
-                                .padding(2)
-                                .foregroundColor(Color.white)
-                                .background(Color(mainColor))
-                                .cornerRadius(10)
-                        }
-                    }.padding(.leading,8).padding(.trailing,8).sheet(isPresented: $showShareSheet) {
-                        ShareSheet(activityItems: [NSURL(fileURLWithPath: getURLtoFile())])
-                    }
-                    
-                    Divider().padding(.bottom, 4).padding(.leading).padding(.trailing)
+                    UnderImageLinedView(filterItem: filterItem, showShareSheet: $showShareSheet, showImageInfo: $showImageInfo, isLoading: $isLoading)
                     
                     if (showRelated) {
                         let relatedFilters = filters.filter{ HasAnyTag(filter1: $0, filter2: filterItem) }
                         if relatedFilters.count > 2 {
-                        Text(morelikethistext).font(.title).bold().padding(.leading)
-                        
-                        ScrollView(.horizontal, showsIndicators: false) {
-                            HStack(spacing: 16) {
-                                ForEach(0..<relatedFilters.count) { counter in
-                                    NavigationLink(destination: FilterView(filterItem: relatedFilters[counter], filters: $filters)) {
-                                        FilterPreviewCard(filterItem: relatedFilters[counter]).frame(height: 280).cornerRadius(6).clipped()
-                                    }
-                                }
-                            }.padding()
+                            Text(morelikethistext).font(.title).bold().padding(.leading)
                             
-                        }.frame(height: 250).padding(.bottom, 30)
-                    }
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack(spacing: 16) {
+                                    ForEach(0..<relatedFilters.count) { counter in
+                                        NavigationLink(destination: FilterView(filterItem: relatedFilters[counter], filters: $filters)) {
+                                            FilterPreviewCard(filterItem: relatedFilters[counter]).frame(height: 280).cornerRadius(6).clipped()
+                                        }
+                                    }
+                                }.padding()
+                                
+                            }.frame(height: 250).padding(.bottom, 30)
+                        }
                     }
                     
                     if (showTutorial){
@@ -153,47 +125,34 @@ struct FilterView: View {
                                     
                                     HStack(spacing: 20) {
                                         Button(action: {
-                                            
-                                            
                                             self.showTutorialSheet = true
-                                            print("presented")
-                                            
                                         }) {
-                                            //Image(systemName: "questionmark.circle")
                                             Text(helptext)
-                                            
                                         }.sheet(isPresented: $showTutorialSheet) {
                                             ScrollView {
                                                 TutorialView().padding()
                                             }
                                         }
-                                    
-                                    Button(action: {
                                         
-                                        
-                                        self.showShareSheet = true
-                                        print("presented")
-                                        
-                                    }) {
-                                        Image(systemName: "square.and.arrow.up")
-                                        
-                                    }.disabled(isShareButtonDisabled)
-                                    .sheet(isPresented: $showImageInfo) {
-                                        ImageInfoView(filterItem: filterItem)
-                                    }
+                                        Button(action: {
+                                            self.showShareSheet = true
+                                            print("presented")
+                                            
+                                        }) {
+                                            Image(systemName: "square.and.arrow.up")
+                                            
+                                        }.disabled(isShareButtonDisabled)
+                                        .sheet(isPresented: $showImageInfo) {
+                                            ImageInfoView(filterItem: filterItem)
+                                        }
                                     }
             )
-            
-            
         }
         .onAppear() {
-            
-
             fileurl = getURLtoFile()
             DispatchQueue.main.async {
                 fetchNearbyPlaces(filterfileurl: filterItem.filterFileURL)
             }
-            
         }
     }
     
@@ -210,7 +169,6 @@ struct FilterView: View {
                 // we got some data back!
                 print(data)
                 
-                
                 fileurl = (data.dataToFile(fileName: "filter.dng")?.absoluteString)!
                 isShareButtonDisabled = false
                 isLoading = false
@@ -221,14 +179,110 @@ struct FilterView: View {
         }.resume()
     }
     
-    private func getURLtoFile() -> String {
-        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-        let documentsDirectory = paths[0]
-        
-        let filePath = (documentsDirectory as NSString).appendingPathComponent("filter.dng")
-        return filePath
-    }
+    
     
     
 }
+
+private func getURLtoFile() -> String {
+    let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+    let documentsDirectory = paths[0]
+    
+    let filePath = (documentsDirectory as NSString).appendingPathComponent("filter.dng")
+    return filePath
+}
+
+
+struct UnderImageLinedView: View {
+    var filterItem: filter
+    
+    @Binding var showShareSheet: Bool
+    @Binding var showImageInfo: Bool
+    @Binding var isLoading: Bool
+    
+    @State var isLiked = false
+    let getfiltertext: LocalizedStringKey =  "  Get filter  "
+    
+    var body: some View {
+        Divider().padding(.bottom, 2).padding(.leading).padding(.trailing)
+        
+        HStack{
+            
+            
+            
+            Text("#" + (filterItem.tags ?? "Filter")).bold()
+            
+            
+            
+            
+            
+            Image(systemName: "suit.heart.fill")
+                .font(Font.system(size: 30, weight: .regular))
+                .foregroundColor(isLiked ? Color(UIColor(named: "MainColor")!) : Color.secondary)
+                //.padding(.trailing,4)
+                .onTapGesture {
+                    do {
+                        if (!isLiked) {
+                            print("LIKE")
+                            var realm = try Realm()
+                            let realmFilters = realm.objects(filter.self).filter("name = %@", filterItem.name)
+                            
+                            if let fltr = realmFilters.first {
+                                try! realm.write {
+                                    fltr.liked = true
+                                }
+                            }
+                            isLiked = true
+                        }
+                        else {
+                            print("dislike")
+                            var realm = try Realm()
+                            let realmFilters = realm.objects(filter.self).filter("name = %@", filterItem.name)
+                            
+                            if let fltr = realmFilters.first {
+                                try! realm.write {
+                                    fltr.liked = false
+                                }
+                            }
+                            isLiked = false
+                        }
+                    }
+                    catch let error as NSError {
+                        print(error.localizedDescription)
+                    }
+                    
+                }.onAppear() {
+                    isLiked = filterItem.liked
+                }
+            
+            Spacer()
+            
+            ActivityIndicator(isAnimating: $isLoading, style: .large) /////////////
+            
+            Button(action: {
+                showImageInfo.toggle()
+                
+            }) {
+                Image(systemName: "info.circle.fill")
+                    .foregroundColor(Color.secondary)
+            }.padding(.leading,4)
+            
+            Button(action: {
+                self.showShareSheet.toggle()
+            }) {
+                Text(getfiltertext)
+                    .font(.system(size: 20))
+                    .padding(2)
+                    .foregroundColor(Color.white)
+                    .background(Color(mainColor))
+                    .cornerRadius(10)
+            }
+        }.padding(.leading,8).padding(.trailing,8).sheet(isPresented: $showShareSheet) {
+            ShareSheet(activityItems: [NSURL(fileURLWithPath: getURLtoFile())])
+        }
+        
+        Divider().padding(.bottom, 4).padding(.leading).padding(.trailing)
+    }
+}
+
 

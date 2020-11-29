@@ -18,42 +18,26 @@ struct ContentView: View {
     @State private var recursion = 0
     
     var body: some View {
-        
-        HStack{
+        TabView {
             if hasLoaded {
-                FiltersList().accentColor(Color(mainColor))
+                FiltersList().accentColor(Color(mainColor)).tabItem {
+                    Image(systemName: "list.dash")
+                    Text("Filters")
+                  }
+                
+                LikedFiltersList()
+                     .tabItem {
+                        Image(systemName: "heart")
+                        Text("Favourite")
+                      }
             }
             else {
                 VStack {
-                    ZStack {
-                        
-                        Image(uiImage: UIImage(named: "mainicon")!)
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 160, alignment: .center)
-                            .accessibility(hidden: true)
-                            .fixedSize()
-                            .opacity(0.75)
-                        
                         ActivityIndicator(isAnimating: .constant(true), style: .large)
-                    }
-                    Text("Loading...").opacity(0.8)
-                } /////////////
+                }
             }
-        }.onAppear(perform: delayCheck)
-        
-            /*
-            .onAppear {
-            
-            let stringPath = Bundle.main.path(forResource: "filter", ofType: "dng")
-            
-            let a = filter(name: "MountainFX", filterDescription: "adds a fantastic blur to image. So gorgeus that you can use it with any type of image even if its black and white", tags: "nature,mountains,hiking", filterFileURL: "https://kazantsev-ef.ru/ios/Dragon_r_Paren_krd.dng", imageBefore: UIImage(named: "test")?.pngData(), imageAfter: UIImage(named: "test2")?.pngData())
-            
-            StorageManager.saveObject(a)
-           
-        }
- */
- 
+        }.accentColor(Color(UIColor(named: "MainColor")!.cgColor))
+        .onAppear(perform: delayCheck)
     }
     
     private func delayCheck() {
@@ -64,7 +48,6 @@ struct ContentView: View {
                 if newpacks.count != 0 {
                     hasLoaded = true
                     hasTimeElapsed = true
-                    
                 }
                 else {
                     if recursion <= 3 {
@@ -74,13 +57,9 @@ struct ContentView: View {
                         //continue without internet
                         hasLoaded = true
                         hasTimeElapsed = true
-                        
                     }
                 }
-                
             }
         }
-    
-    
 }
 
