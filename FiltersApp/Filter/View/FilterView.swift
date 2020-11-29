@@ -151,7 +151,7 @@ struct FilterView: View {
         .onAppear() {
             fileurl = getURLtoFile()
             DispatchQueue.main.async {
-                fetchNearbyPlaces(filterfileurl: filterItem.filterFileURL)
+                fetchNearbyPlaces(filterfileurl: filterItem.filterFileUrl)
             }
         }
     }

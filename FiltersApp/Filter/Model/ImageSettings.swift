@@ -7,7 +7,7 @@
 
 import Foundation
 import RealmSwift
-class imageSettings: Object {
+class imageSettings: Object, Codable {
     
     /// LIGHT
     

@@ -137,58 +137,23 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func loadFiltersFromServer() {
         
         fetchData { (dict, error) in
-            
-            
             print("completion")
             if dict != nil {
-                for fltr_obj in dict!["filters"]! {
+                //processing filters
+                for i in 0 ..< dict!["filters"]!.count {
+                        var filterObject = dict!["filters"]![i]
+                        filterObject["liked"] = false
                     
-                    
-                    
-                    
-                    if let settd = fltr_obj["settings"] as? [String: Any] {
-                        
-                        var fltr = filter(
-                            name: (fltr_obj["name"] as! String).replacingOccurrences(of: "_", with: " "),
-                            filterDescription: "",
-                            tags: fltr_obj["tags"] as? String ?? "" ,
-                            filterFileURL: fltr_obj["filterFileUrl"] as! String,
-                            imageBefore: fltr_obj["imageBefore"] as! String,
-                            imageAfter: fltr_obj["imageAfter"] as! String,
-                            
-                            filterSettings:
-                                imageSettings(
-                                    exposure:Float(settd["exposure"] as! String)!,
-                                    contrast: Int(settd["contrast"] as! String)!,
-                                    highlights: Int(settd["highlights"] as! String)!,
-                                    shadows: Int(settd["shadows"] as! String)!,
-                                    whites: Int(settd["whites"] as! String)!,
-                                    blacks: Int(settd["blacks"] as! String)!,
-                                    temperature: Int(settd["temperature"] as! String)!,
-                                    tint: Int(settd["tint"] as! String)!,
-                                    vibrance: Int(settd["vibrance"] as! String)!,
-                                    saturation: Int(settd["saturation"] as! String)!,
-                                    texture: Int(settd["texture"] as! String)!,
-                                    clarity: Int(settd["clarity"] as! String)!,
-                                    dehaze: Int(settd["dehaze"] as! String)!,
-                                    vignette: Int(settd["vignette"] as! String)!,
-                                    grain: Int(settd["grain"] as! String)!,
-                                    size: Int(settd["size"] as! String)!,
-                                    roughness: Int(settd["roughness"] as! String)!,
-                                    sharpening: Int(settd["sharpening"] as! String)!,
-                                    radius: Int(settd["radius"] as! String)!,
-                                    detail: Int(settd["detail"] as! String)!,
-                                    masking: Int(settd["masking"] as! String)!),
-                            isInPack: Int(fltr_obj["isInPack"] as! String)!)
+                        var dataFilter = try! JSONSerialization.data(withJSONObject: filterObject, options: .prettyPrinted)
+                        var fltr = try! JSONDecoder().decode(filter.self, from: dataFilter)
+                        fltr.name = fltr.name.replacingOccurrences(of: "_", with: " ")
                         
                         self.filterstosave.append(fltr)
                         print(fltr.name)
-                    }
                 }
-                
+                //processing packs
                 for fltr_obj in dict!["packs"]! {
                     var pck = pack(id: Int(fltr_obj["id"] as! String)!, name: (fltr_obj["name"] as! String).replacingOccurrences(of: "_", with: " "), isFree: fltr_obj["isFree"] as! Int)
-                    
                     self.packstosave.append(pck)
                     print(pck.name)
                 }

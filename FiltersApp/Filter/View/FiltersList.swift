@@ -23,7 +23,7 @@ struct FiltersList: View {
     
     @State private var categorySelection = 0
     
-    private var expandableLoad: [String] = ["Stay_home_PACK","Influencers_PACK","France_PACK","Moody_PACK","urban_filters", "asia_filters", "lights_filters", "neon_filters","nature_filters","Autumn_PACK", "DONTDELETE"]
+    private var expandableLoad: [String] = ["Stay_home_PACK","Influencers_PACK","France_PACK","Moody_PACK","urban_filters", "asia_filters", "lights_filters", "neon_filters","nature_filters", "DONTDELETE"]
     @State private var expandableShowHowMany = 0
     @State private var showLoadMoreButton = true
     
@@ -34,14 +34,7 @@ struct FiltersList: View {
             VStack(alignment: .leading) {
                 
                 ScrollView(.vertical, showsIndicators: false) {
-                    
-                    HStack {
-                        Text(Navtext)
-                            .font(.largeTitle)
-                            .bold()
-                            .padding(.leading).padding(.top, 8)
-                        Spacer()
-                    }
+
                     
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 14) {
@@ -70,12 +63,13 @@ struct FiltersList: View {
                             else {noInternet = false }
                         }.padding(.top,-15)
                         
-                        ShowStaticPacks(packname: "Sun kissed", filters: $filters, packs: $packs)
+                        ShowStaticPacks(packname: "Autumn_PACK", filters: $filters, packs: $packs)
                         
                         ShowStaticPacks(packname: "Portraits", filters: $filters, packs: $packs)
                         
-                        
                         ShowStaticFilters(filters: $filters, tag: "color", label: "Way to colorize")
+                        
+                        ShowStaticPacks(packname: "Sun kissed", filters: $filters, packs: $packs)
                         
                         ShowStaticPacks(packname: "Night life", filters: $filters, packs: $packs)
                         
@@ -101,9 +95,9 @@ struct FiltersList: View {
                                 if packfiltered.count != 0 {
                                     
                                     let pack = packfiltered[0]
-                                    CategoryTitle(name: pckname, buttonName: "\(filters.filter{ $0.isInPack == pack.id  }.count) presets").padding(.top,8)
+                                    CategoryTitle(name: pckname, buttonName: "\(filters.filter{ Int($0.isInPack) == pack.id  }.count) presets").padding(.top,8)
                                     
-                                    PackPreview(packItem: pack, filters: filters.filter{ $0.isInPack == pack.id  }, filters_all: $filters).frame( height: 330)
+                                    PackPreview(packItem: pack, filters: filters.filter{ Int($0.isInPack) == pack.id  }, filters_all: $filters).frame( height: 330)
                                 }
                             }
                         }
@@ -116,7 +110,7 @@ struct FiltersList: View {
                         OneColumnFiltersView(circleCategories: circleCategories, categorySelection: $categorySelection, circleCategoriesFilters: $circleCategoriesFilters, filters: $filters)
                     }
                     
-                }.navigationBarHidden(true)
+                }//.navigationBarHidden(true)
                 .alert(isPresented: $noInternet ){
                     Alert(title: Text("No internet connection"), message: Text("Make sure your device is connected to the internet."), dismissButton: .default(Text("Continue offline")))
                 }
@@ -241,9 +235,9 @@ struct ShowStaticPacks: View {
             if(pack.count == 1){
                 
                 
-                CategoryTitle(name: pack[0].name, buttonName: "\(filters.filter{ $0.isInPack == pack[0].id  }.count) presets").padding(.top,8)
+                CategoryTitle(name: pack[0].name, buttonName: "\(filters.filter{ Int($0.isInPack) == pack[0].id  }.count) presets").padding(.top,8)
                 
-                PackPreview(packItem: pack[0], filters: filters.filter{ $0.isInPack == pack[0].id  }, filters_all: $filters).frame( height: 330)
+                PackPreview(packItem: pack[0], filters: filters.filter{ Int($0.isInPack) == pack[0].id  }, filters_all: $filters).frame( height: 330)
                 
             }
             
