@@ -21,13 +21,13 @@ struct ContentView: View {
         TabView {
             if hasLoaded {
                 FiltersList().accentColor(Color(mainColor)).tabItem {
-                    Image(systemName: "list.dash")
+                    Image(systemName: "rectangle.on.rectangle.angled.fill")
                     Text("Filters")
                   }
                 
                 LikedFiltersList()
                      .tabItem {
-                        Image(systemName: "heart")
+                        Image(systemName: "star.fill")
                         Text("Favourite")
                       }
             }
@@ -38,6 +38,7 @@ struct ContentView: View {
             }
         }.accentColor(Color(UIColor(named: "MainColor")!.cgColor))
         .onAppear(perform: delayCheck)
+        
     }
     
     private func delayCheck() {

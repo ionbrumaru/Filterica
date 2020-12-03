@@ -33,9 +33,9 @@
 
 "  Get filter  " = "  Скачать  ";
 
-"Filters" = "Фильтры";
+"Filters" = "Обзор";
 
-"Favourite" = "Понравившиеся";
+"Favourite" = "Избранное";
 
 "Reload" = "Обновить";
 
@@ -50,3 +50,13 @@
 "Help" = "Помощь";
 
 "Load more" = "Загрузить еще";
+
+"About" = "О приложении";
+
+"Privacy Policy" = "Политика Конфиденциальности";
+
+"Terms and Conditions" = "Условия и Положения";
+
+"Select document to open in browser" = "Выберите документ который хотели бы открыть в браузере";
+
+"Welcome to" = "Добро пожаловать в";

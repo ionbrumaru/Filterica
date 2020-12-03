@@ -25,8 +25,11 @@ struct FiltersList: View {
     
     private var expandableLoad: [String] = ["Stay_home_PACK","Influencers_PACK","France_PACK","Moody_PACK","urban_filters", "asia_filters", "lights_filters", "neon_filters","nature_filters", "DONTDELETE"]
     @State private var expandableShowHowMany = 0
-    @State private var showLoadMoreButton = true
     
+    @State private var showLoadMoreButton = true
+    @State private var showActionSheet = false
+    
+    @Environment(\.openURL) var openURL
     
     let Navtext: LocalizedStringKey =  "Filters"
     var body: some View {
@@ -113,10 +116,18 @@ struct FiltersList: View {
                         OneColumnFiltersView(circleCategories: circleCategories, categorySelection: $categorySelection, circleCategoriesFilters: $circleCategoriesFilters, filters: $filters)
                     }
                     
-                }//.navigationBarHidden(true)
+                }.navigationBarItems(trailing: Button(action:{showActionSheet = true}) {
+                    Text("About")
+                })
                 .alert(isPresented: $noInternet ){
                     Alert(title: Text("No internet connection"), message: Text("Make sure your device is connected to the internet."), dismissButton: .default(Text("Continue offline")))
                 }
+            }.actionSheet(isPresented: $showActionSheet) {
+                ActionSheet(title: Text("About"), message: Text("Select document to open in browser"), buttons: [
+                    .default(Text("Privacy Policy")) {  openURL(URL(string: "https://kazantsev-ef.ru/ios/Privacy_Policy.pdf")!) },
+                    .default(Text("Terms and Conditions")) { openURL(URL(string: "https://kazantsev-ef.ru/ios/Terms_and_Conditions.pdf")!)  },
+                    .cancel() {showActionSheet = false}
+                ])
             }
         }
     }

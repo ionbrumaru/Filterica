@@ -23,7 +23,7 @@ struct TitleView: View {
                 .font(.system(size: 36))
                 .padding(.top, -8)
 
-            Text("Fitrerly app")
+            Text("Filterica")
                 .font(.system(size: 36))
                 .bold()
                 .foregroundColor(Color(mainColor))
