@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-
 struct TitleView: View {
+    
     var body: some View {
         VStack(spacing: 0) {
             Image(uiImage: UIImage(named: "mainicon")!)
@@ -17,18 +17,16 @@ struct TitleView: View {
                 .frame(width: 160, alignment: .center)
                 .accessibility(hidden: true)
                 .fixedSize()
-
+            
             Text("Welcome to")
                 .bold()
                 .font(.system(size: 36))
                 .padding(.top, -8)
-
+            
             Text("Filterica")
                 .font(.system(size: 36))
                 .bold()
                 .foregroundColor(Color(mainColor))
-            
-            
         }
     }
 }

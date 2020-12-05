@@ -86,7 +86,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             var realm2 = try Realm()
             filters = realm2.objects(filter.self)
             packs = realm2.objects(pack.self)
-            let array = packs!.toArray(ofType: pack.self)
+
             //localFiters
             
             if filters!.count == 0 {
@@ -110,7 +110,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 }
             }
             
-            
             for element in packstosave {
                 var alreadyHasPack = false
                 for el in packs?.toArray(ofType: pack.self) ?? [] {
@@ -132,8 +131,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     
-    
-    
     func loadFiltersFromServer() {
         
         fetchData { (dict, error) in
@@ -141,19 +138,23 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             if dict != nil {
                 //processing filters
                 for i in 0 ..< dict!["filters"]!.count {
-                        var filterObject = dict!["filters"]![i]
-                        filterObject["liked"] = false
+                    var filterObject = dict!["filters"]![i]
+                    filterObject["liked"] = false
                     
-                        var dataFilter = try! JSONSerialization.data(withJSONObject: filterObject, options: .prettyPrinted)
-                        var fltr = try! JSONDecoder().decode(filter.self, from: dataFilter)
-                        fltr.name = fltr.name.replacingOccurrences(of: "_", with: " ")
-                        
-                        self.filterstosave.append(fltr)
-                        print(fltr.name)
+                    let dataFilter = try! JSONSerialization.data(withJSONObject: filterObject, options: .prettyPrinted)
+                    print(filterObject)
+                    if localNames.contains(filterObject["name"] as? String ?? "None") {
+                        continue
+                    }
+                    var fltr = try! JSONDecoder().decode(filter.self, from: dataFilter)
+                    fltr.name = fltr.name.replacingOccurrences(of: "_", with: " ")
+                    
+                    self.filterstosave.append(fltr)
+                    print(fltr.name)
                 }
                 //processing packs
                 for fltr_obj in dict!["packs"]! {
-                    var pck = pack(id: Int(fltr_obj["id"] as! String)!, name: (fltr_obj["name"] as! String).replacingOccurrences(of: "_", with: " "), isFree: fltr_obj["isFree"] as! Int)
+                    let pck = pack(id: Int(fltr_obj["id"] as! String)!, name: (fltr_obj["name"] as! String).replacingOccurrences(of: "_", with: " "), isFree: fltr_obj["isFree"] as! Int)
                     self.packstosave.append(pck)
                     print(pck.name)
                 }
@@ -192,7 +193,5 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
     }
-    
-    
 }
 

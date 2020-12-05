@@ -12,27 +12,21 @@ struct FilterView: View {
     
     var filterItem: filter
     @Binding var filters: [filter]
+    var showTutorial: Bool =  false
+    
     @State private var isOriginalShowing = false
     @State private var showShareSheet = false
-    
-    
-    @State private var celsius: Double = 0
     
     @State private var showImageInfo: Bool = false
     
     @State private var fileurl : String?
     @State private var isLoading : Bool = true
-    var showTutorial: Bool =  false
     
     @State private var showTutorialSheet: Bool =  false
     
     @State private var isShareButtonDisabled: Bool = true
     @State private var showRelated: Bool = true
 
-    
-    let helptext: LocalizedStringKey =  "Help"
-    let holdphototext: LocalizedStringKey =  "Hold photo to see without filter"
-    let morelikethistext: LocalizedStringKey =  "More like this"
     
     var body: some View {
         
@@ -89,7 +83,7 @@ struct FilterView: View {
                     
                     HStack(){
                         Spacer()
-                        Text(holdphototext) .font(.system(size: 12))
+                        Text("Hold photo to see without filter") .font(.system(size: 12))
                         Spacer()
                     }
                     
@@ -98,7 +92,7 @@ struct FilterView: View {
                     if (showRelated) {
                         let relatedFilters = filters.filter{ HasAnyTag(filter1: $0, filter2: filterItem) }
                         if relatedFilters.count > 2 {
-                            Text(morelikethistext).font(.title).bold().padding(.leading)
+                            Text("More like this").font(.title).bold().padding(.leading)
                             
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack(spacing: 16) {
@@ -118,8 +112,13 @@ struct FilterView: View {
                         TutorialView().padding(.leading,8).padding(.trailing, 8)
                     }
                     
+                }.onAppear() {
+                    fileurl = getURLtoFile()
+                    print(fileurl)
+                    DispatchQueue.main.async {
+                        loadFilter(filterfileurl: filterItem.filterFileUrl)
+                    }
                 }
-                
             }
             .navigationBarItems(trailing:
                                     
@@ -127,7 +126,7 @@ struct FilterView: View {
                                         Button(action: {
                                             self.showTutorialSheet = true
                                         }) {
-                                            Text(helptext)
+                                            Text("Help")
                                         }.sheet(isPresented: $showTutorialSheet) {
                                             ScrollView {
                                                 TutorialView().padding()
@@ -148,15 +147,11 @@ struct FilterView: View {
                                     }
             )
         }
-        .onAppear() {
-            fileurl = getURLtoFile()
-            DispatchQueue.main.async {
-                fetchNearbyPlaces(filterfileurl: filterItem.filterFileUrl)
-            }
-        }
+        
     }
     
-    private func fetchNearbyPlaces(filterfileurl: String) {
+    private func loadFilter(filterfileurl: String) {
+        print("LOAD FILTER FUNC")
         let urlString = filterfileurl
         
         guard let url = URL(string: urlString) else {
@@ -167,9 +162,7 @@ struct FilterView: View {
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let data = data {
                 // we got some data back!
-                print(data)
-                
-                fileurl = (data.dataToFile(fileName: "filter.dng")?.absoluteString)!
+                fileurl = (data.dataToFile(fileName: "filter.dng")!.absoluteString)!
                 isShareButtonDisabled = false
                 isLoading = false
             }
@@ -207,15 +200,8 @@ struct UnderImageLinedView: View {
         Divider().padding(.bottom, 2).padding(.leading).padding(.trailing)
         
         HStack{
-            
-            
-            
             Text("#" + (filterItem.tags ?? "Filter")).bold()
-            
-            
-            
-            
-            
+
             Image(systemName: "suit.heart.fill")
                 .font(Font.system(size: 30, weight: .regular))
                 .foregroundColor(isLiked ? Color(UIColor(named: "MainColor")!) : Color.secondary)

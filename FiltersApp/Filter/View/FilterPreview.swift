@@ -7,19 +7,20 @@
 
 import SwiftUI
 import URLImage
+
 struct FilterPreviewCard: View {
     var filterItem: filter
     
     var body: some View {
         VStack(alignment: .leading) {
             if (filterItem.imageAfter.contains("LOCAL_")) {
-            Image(uiImage: UIImage(named: filterItem.imageAfter.replacingOccurrences(of: "LOCAL_", with: ""))!
-            )
-            .renderingMode(.original)
-            .resizable()
-            .aspectRatio(contentMode: .fill)
-            .frame(width: 330, height: 300)
-            .cornerRadius(12)
+                Image(uiImage: UIImage(named: filterItem.imageAfter.replacingOccurrences(of: "LOCAL_", with: ""))!
+                )
+                .renderingMode(.original)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 330, height: 300)
+                .cornerRadius(12)
             }
             else {
                 URLImage(URL(string: filterItem.imageAfter)!, delay: 0.25,placeholder: {
@@ -32,17 +33,14 @@ struct FilterPreviewCard: View {
                             }
                         }
                     }
-                        .frame(width: 50.0, height: 50.0)
+                    .frame(width: 50.0, height: 50.0)
                 }) { proxy in
                     proxy.image
-                                .renderingMode(.original)
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 330, height: 300)
-                                .cornerRadius(12)
-                        
-                        
-                    
+                        .renderingMode(.original)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 330, height: 300)
+                        .cornerRadius(12)
                 }
             }
             
@@ -55,12 +53,9 @@ struct FilterPreviewCard: View {
     
     
     func redacted(when active: Bool) -> some View {
-            return active ? AnyView(redacted(reason: .placeholder)) : AnyView(unredacted())
-        }
+        return active ? AnyView(redacted(reason: .placeholder)) : AnyView(unredacted())
+    }
 }
-
-
-
 
 
 struct FilterPreview_Previews: PreviewProvider {

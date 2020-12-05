@@ -23,17 +23,17 @@ struct ContentView: View {
                 FiltersList().accentColor(Color(mainColor)).tabItem {
                     Image(systemName: "rectangle.on.rectangle.angled.fill")
                     Text("Filters")
-                  }
+                }
                 
                 LikedFiltersList()
-                     .tabItem {
+                    .tabItem {
                         Image(systemName: "star.fill")
                         Text("Favourite")
-                      }
+                    }
             }
             else {
                 VStack {
-                        ActivityIndicator(isAnimating: .constant(true), style: .large)
+                    ActivityIndicator(isAnimating: .constant(true), style: .large)
                 }
             }
         }.accentColor(Color(UIColor(named: "MainColor")!.cgColor))
@@ -41,26 +41,27 @@ struct ContentView: View {
         
     }
     
+    //made a delay so that we can wait request to server and answer back
     private func delayCheck() {
-            recursion += 1
-            // Delay of 7.5 seconds
-            DispatchQueue.main.asyncAfter(deadline: .now() + timeout) {
-                let newpacks: [pack] = Array(try! Realm(configuration: Realm.Configuration(schemaVersion: 1)).objects(pack.self))
-                if newpacks.count != 0 {
+        recursion += 1
+        // Delay of 7.5 seconds
+        DispatchQueue.main.asyncAfter(deadline: .now() + timeout) {
+            let newpacks: [pack] = Array(try! Realm(configuration: Realm.Configuration(schemaVersion: 1)).objects(pack.self))
+            if newpacks.count != 0 {
+                hasLoaded = true
+                hasTimeElapsed = true
+            }
+            else {
+                if recursion <= 3 {
+                    delayCheck()
+                }
+                else {
+                    //continue without internet
                     hasLoaded = true
                     hasTimeElapsed = true
                 }
-                else {
-                    if recursion <= 3 {
-                    delayCheck()
-                    }
-                    else {
-                        //continue without internet
-                        hasLoaded = true
-                        hasTimeElapsed = true
-                    }
-                }
             }
         }
+    }
 }
 

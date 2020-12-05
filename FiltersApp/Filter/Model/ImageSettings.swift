@@ -7,45 +7,46 @@
 
 import Foundation
 import RealmSwift
+
 class imageSettings: Object, Codable {
     
     /// LIGHT
     
-    @objc dynamic var exposure: Float = 0
-    @objc dynamic var contrast: Int = 0
-    @objc dynamic var highlights: Int = 0
-    @objc dynamic var shadows: Int = 0
-    @objc dynamic var whites: Int = 0
-    @objc dynamic var blacks: Int = 0
+    @objc dynamic var exposure: String!
+    @objc dynamic var contrast: String!
+    @objc dynamic var highlights: String!
+    @objc dynamic var shadows: String!
+    @objc dynamic var whites: String!
+    @objc dynamic var blacks: String!
     
     /// COLOR
     
-    @objc dynamic var temperature: Int = 0
-    @objc dynamic var tint: Int = 0
-    @objc dynamic var vibrance: Int = 0
-    @objc dynamic var saturation: Int = 0
+    @objc dynamic var temperature: String!
+    @objc dynamic var tint: String!
+    @objc dynamic var vibrance: String!
+    @objc dynamic var saturation: String!
     
     /// EFFECTS
     
-    @objc dynamic var texture: Int = 0
-    @objc dynamic var clarity: Int = 0
-    @objc dynamic var dehaze: Int = 0
-    @objc dynamic var vignette: Int = 0
-    @objc dynamic var grain: Int = 0
-    @objc dynamic var size: Int = 0
-    @objc dynamic var roughness: Int = 0
+    @objc dynamic var texture: String!
+    @objc dynamic var clarity: String!
+    @objc dynamic var dehaze: String!
+    @objc dynamic var vignette: String!
+    @objc dynamic var grain: String!
+    @objc dynamic var size: String!
+    @objc dynamic var roughness: String!
     
     /// DETAIL
     
-    @objc dynamic var sharpening: Int = 0
-    @objc dynamic var radius: Int = 0
-    @objc dynamic var detail: Int = 0
-    @objc dynamic var masking: Int = 0
+    @objc dynamic var sharpening: String!
+    @objc dynamic var radius: String!
+    @objc dynamic var detail: String!
+    @objc dynamic var masking: String!
     
     
-    convenience init (exposure: Float, contrast: Int, highlights: Int, shadows: Int, whites: Int, blacks: Int, temperature: Int, tint: Int,
-                      vibrance: Int, saturation: Int, texture: Int, clarity: Int, dehaze: Int, vignette: Int, grain: Int, size: Int,
-                      roughness: Int, sharpening: Int, radius: Int, detail: Int, masking: Int)
+    convenience init (exposure: String, contrast: String, highlights: String, shadows: String, whites: String, blacks: String, temperature: String, tint: String,
+                      vibrance: String, saturation: String, texture: String, clarity: String, dehaze: String, vignette: String, grain: String, size: String,
+                      roughness: String, sharpening: String, radius: String, detail: String, masking: String)
     {
         self.init()
         

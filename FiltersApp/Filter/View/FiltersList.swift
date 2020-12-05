@@ -37,7 +37,7 @@ struct FiltersList: View {
             VStack(alignment: .leading) {
                 
                 ScrollView(.vertical, showsIndicators: false) {
-
+                    
                     
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 14) {
@@ -59,7 +59,8 @@ struct FiltersList: View {
                     if (categorySelection == 0) {
                         
                         if (!noInternet) {
-                        ShowStaticPacks(packname: "Autumn", filters: $filters, packs: $packs)
+                            ShowStaticPacks(packname: "Winter", filters: $filters, packs: $packs)
+                            ShowStaticPacks(packname: "Autumn", filters: $filters, packs: $packs)
                         }
                         
                         ShowStaticFilters(filters: $filters, tag: "atmosphere", label: "Atmosphere")
@@ -83,32 +84,32 @@ struct FiltersList: View {
                         
                         
                         if (!noInternet) {
-                        ForEach(0 ..< expandableShowHowMany, id: \.self) { counter1 in
+                            ForEach(0 ..< expandableShowHowMany, id: \.self) { counter1 in
+                                
+                                if (expandableLoad[counter1].contains("_filters")) {
+                                    
+                                    let currentTag = expandableLoad[counter1].replacingOccurrences(of: "_filters", with: "")
+                                    
+                                    if filters.filter{ $0.tags!.contains(currentTag) }.count >= 2 {
+                                        ShowStaticFilters(filters: $filters, tag: currentTag, label: currentTag)
+                                    }
+                                    
+                                }
+                                else if (expandableLoad[counter1].contains("_PACK")) {
+                                    let pckname = (expandableLoad[counter1].replacingOccurrences(of: "_PACK", with: "")).replacingOccurrences(of: "_", with: " ")
+                                    let packfiltered = packs.filter{ $0.name.contains(pckname) }
+                                    
+                                    if packfiltered.count != 0 {
+                                        
+                                        let pack = packfiltered[0]
+                                        CategoryTitle(name: pckname, buttonName: "\(filters.filter{ Int($0.isInPack) == pack.id  }.count) presets").padding(.top,8)
+                                        
+                                        PackPreview(packItem: pack, filters: filters.filter{ Int($0.isInPack) == pack.id  }, filters_all: $filters).frame( height: 330)
+                                    }
+                                }
+                            }
                             
-                            if (expandableLoad[counter1].contains("_filters")) {
-                                
-                                let currentTag = expandableLoad[counter1].replacingOccurrences(of: "_filters", with: "")
-                                
-                                if filters.filter{ $0.tags!.contains(currentTag) }.count >= 2 {
-                                    ShowStaticFilters(filters: $filters, tag: currentTag, label: currentTag)
-                                }
-                                
-                            }
-                            else if (expandableLoad[counter1].contains("_PACK")) {
-                                let pckname = (expandableLoad[counter1].replacingOccurrences(of: "_PACK", with: "")).replacingOccurrences(of: "_", with: " ")
-                                let packfiltered = packs.filter{ $0.name.contains(pckname) }
-                                
-                                if packfiltered.count != 0 {
-                                    
-                                    let pack = packfiltered[0]
-                                    CategoryTitle(name: pckname, buttonName: "\(filters.filter{ Int($0.isInPack) == pack.id  }.count) presets").padding(.top,8)
-                                    
-                                    PackPreview(packItem: pack, filters: filters.filter{ Int($0.isInPack) == pack.id  }, filters_all: $filters).frame( height: 330)
-                                }
-                            }
-                        }
-                        
-                        LoadMoreButton(showLoadMoreButton: $showLoadMoreButton, expandableShowHowMany: $expandableShowHowMany, expandableLoad: expandableLoad)
+                            LoadMoreButton(showLoadMoreButton: $showLoadMoreButton, expandableShowHowMany: $expandableShowHowMany, expandableLoad: expandableLoad)
                         }
                     }
                     else {

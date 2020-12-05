@@ -29,42 +29,35 @@ struct FirstViews: View {
         if (!showMain) {
             GeometryReader { geometry in
                 ScrollView  {
-                VStack(alignment: .center) {
-                    
-                    
-                    
-                    TitleView()
-                    
-                    VStack(alignment: .leading) {
-                        TutorialDetailView(title: title1, subTitle: "Explore more than 100 filters in a catalog.", imageName: "rectangle.stack")
+                    VStack(alignment: .center) {
+
+                        TitleView()
                         
-                        TutorialDetailView(title: title2, subTitle: desc2, imageName: "photo.on.rectangle")
-                        
-                        TutorialDetailView(title: title3, subTitle: desc3, imageName: "arrow.down.to.line")
-                        
-                        
-                        TutorialDetailView(title: title4, subTitle: desc4, imageName: "square.and.arrow.up")
+                        VStack(alignment: .leading) {
+                            TutorialDetailView(title: title1, subTitle: "Explore more than 100 filters in a catalog.", imageName: "rectangle.stack")
+                            
+                            TutorialDetailView(title: title2, subTitle: desc2, imageName: "photo.on.rectangle")
+                            
+                            TutorialDetailView(title: title3, subTitle: desc3, imageName: "arrow.down.to.line")
+                            
+                            
+                            TutorialDetailView(title: title4, subTitle: desc4, imageName: "square.and.arrow.up")
+                        }
                     }
+                    .padding(.horizontal)
                     
+                    Spacer(minLength: 30)
                     
-                    
-                    
-                    
-                }
-                .padding(.horizontal)
-                
-                Spacer(minLength: 30)
-                
-                Button(action: {
-                    showMain = true
-                }) {
-                    Text(continuelabel)
-                        .customButton()
-                }
-                .padding(.horizontal)
+                    Button(action: {
+                        showMain = true
+                    }) {
+                        Text(continuelabel)
+                            .customButton()
+                    }
+                    .padding(.horizontal)
                 }.frame(height: geometry.size.height)
             }
-    }
+        }
         else { ContentView()}
     }
 }

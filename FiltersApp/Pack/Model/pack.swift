@@ -14,7 +14,6 @@ import RealmSwift
 class pack: Object {
     @objc dynamic var id: Int = 0
     @objc dynamic var name: String = ""
-    
     @objc dynamic var isFree: Int = 1
     
     convenience init (id: Int, name: String, isFree: Int) {
