@@ -23,15 +23,15 @@ struct FiltersList: View {
     
     @State private var categorySelection = 0
     
-    private var expandableLoad: [String] = ["Stay_home_PACK","Influencers_PACK","France_PACK","Moody_PACK","urban_filters", "asia_filters", "lights_filters", "neon_filters","nature_filters", "DONTDELETE"]
+    private var expandableLoad: [String] = ["Night_life_PACK","Stay_home_PACK","Influencers_PACK","France_PACK","Moody_PACK","urban_filters", "asia_filters", "lights_filters", "neon_filters","nature_filters", "DONTDELETE"]
     @State private var expandableShowHowMany = 0
     
     @State private var showLoadMoreButton = true
     @State private var showActionSheet = false
+    @State private var showCameraSheet = false
     
     @Environment(\.openURL) var openURL
-    
-    let Navtext: LocalizedStringKey =  "Filters"
+
     var body: some View {
         NavigationView{
             VStack(alignment: .leading) {
@@ -79,7 +79,7 @@ struct FiltersList: View {
                             else {noInternet = false }
                         }.padding(.top,-15)
                         
-                        ShowStaticPacks(packname: "Night life", filters: $filters, packs: $packs)
+                       // ShowStaticPacks(packname: "Night life", filters: $filters, packs: $packs)
                         
                         
                         
@@ -117,9 +117,20 @@ struct FiltersList: View {
                         OneColumnFiltersView(circleCategories: circleCategories, categorySelection: $categorySelection, circleCategoriesFilters: $circleCategoriesFilters, filters: $filters)
                     }
                     
-                }.navigationBarItems(trailing: Button(action:{showActionSheet = true}) {
+                }
+                .navigationBarItems(leading: Button(action:{showCameraSheet = true}) {
+                    NavigationLink(destination: CameraFilterView())
+                    {
+                        Image(systemName: "camera")
+                    }
+                    
+                    
+                },
+                trailing: Button(action:{showActionSheet = true}) {
                     Text("About")
                 })
+                
+                
                 .alert(isPresented: $noInternet ){
                     Alert(title: Text("No internet connection"), message: Text("Make sure your device is connected to the internet."), dismissButton: .default(Text("Continue offline")))
                 }

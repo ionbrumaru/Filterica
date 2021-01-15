@@ -25,6 +25,11 @@ struct ContentView: View {
                     Text("Filters")
                 }
                 
+                AdvicesListView().tabItem {
+                    Image(systemName: "lightbulb.fill")
+                    Text("Tips")
+                }
+                
                 LikedFiltersList()
                     .tabItem {
                         Image(systemName: "star.fill")

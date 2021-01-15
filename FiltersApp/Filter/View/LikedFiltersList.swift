@@ -31,12 +31,13 @@ struct LikedFiltersList: View {
                                     FilterPreviewCard(filterItem: item).fixedSize().frame(height: 340)
                                 }
                             }
-                        }.padding(.leading).padding(.trailing).navigationBarTitle(navtext, displayMode: .large)
+                        }.padding(.leading).padding(.trailing)
                     }
                 }
             }.onAppear() {
                 likedFilters = filters.filter{ $0.liked == true }
             }
+            .navigationBarTitle("Favourite filters", displayMode: .large)
         }
     }
 }

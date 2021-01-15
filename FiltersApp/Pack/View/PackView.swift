@@ -1,13 +1,14 @@
 import Foundation
 import SwiftUI
 import URLImage
+import RealmSwift
 
 struct PackView: View {
     
     var packItem: pack
     var filters: [filter]?
     @Binding var filters_all: [filter]
-    
+    @State var isLiked: Bool = false
     @State var currentImage = 0
     @State private var isOriginalShowing = false
     @State private var showImageInfo: Bool = false
@@ -68,7 +69,7 @@ struct PackView: View {
                             }
                             
                             // arrows to swipe fitlers in pack in different directions
-                            PackNavigationItems(currentImage: $currentImage, filters: filters)
+                            PackNavigationItems(isLiked: $isLiked, currentImage: $currentImage, filters: filters)
                                 .frame(width: geometry.size.width)
                         }
                         HStack(alignment: .center) {
@@ -97,16 +98,23 @@ struct PackView: View {
                     HStack{
                         Text(filters![currentImage].name).bold()
                         
+                        LikeButton(isLiked: $isLiked, currentImage: $currentImage, filters: filters)
+                        
+                        
+                        
+                        
+                        Spacer()
+                        
+                        //displays progress of download
+                        ActivityIndicator(isAnimating: $isLoading, style: .large)
+                        
                         Button(action: {
                             showImageInfo.toggle()
                         }) {
                             Image(systemName: "info.circle.fill")
                                 .foregroundColor(Color.secondary)
                         }.padding(.leading,4)
-                        Spacer()
                         
-                        //displays progress of download
-                        ActivityIndicator(isAnimating: $isLoading, style: .large)
                         
                         // by tap .dng file (filter) download starts
                         Button(action: {
@@ -203,6 +211,7 @@ struct TapShape : Shape {
 }
 
 struct PackNavigationItems: View {
+    @Binding var isLiked: Bool
     @Binding var currentImage: Int
     var filters: [filter]?
     
@@ -219,6 +228,7 @@ struct PackNavigationItems: View {
             .contentShape(Rectangle())
             .onTapGesture(count: /*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/, perform: {
                 if (currentImage != 0) { currentImage -= 1}
+                isLiked = filters![currentImage].liked
             })
             
             Spacer()
@@ -234,7 +244,59 @@ struct PackNavigationItems: View {
             .contentShape(Rectangle())
             .onTapGesture(count: /*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/, perform: {
                 if (currentImage != filters!.count - 1) { currentImage += 1}
+                isLiked = filters![currentImage].liked
             })
         }
+    }
+}
+
+struct LikeButton: View {
+    @Binding var isLiked: Bool
+    @Binding var currentImage: Int
+    var filters: [filter]?
+    
+    var body: some View {
+        Image(systemName: "suit.heart.fill")
+            .font(Font.system(size: 30, weight: .regular))
+            .foregroundColor(isLiked ? Color(UIColor(named: "MainColor")!) : Color.secondary)
+            //.padding(.trailing,4)
+            .onTapGesture {
+                do {
+                    var realm = try Realm()
+                    
+                    if (!isLiked) {
+                        print("LIKE")
+                        
+                        let realmFilters = realm.objects(filter.self).filter("name = %@", filters![currentImage].name)
+                        
+                        if let fltr = realmFilters.first {
+                            try! realm.write {
+                                fltr.liked = true
+                            }
+                        }
+                        isLiked = true
+                        
+                    }
+                    else {
+                        print("dislike")
+                        
+                        let realmFilters = realm.objects(filter.self).filter("name = %@", filters![currentImage].name)
+                        
+                        if let fltr = realmFilters.first {
+                            try! realm.write {
+                                fltr.liked = false
+                            }
+                        }
+                        isLiked = false
+                        
+                    }
+                }
+                catch let error as NSError {
+                    print(error.localizedDescription)
+                }
+                
+            }.onAppear() {
+                isLiked = filters![currentImage].liked
+            }
     }
 }

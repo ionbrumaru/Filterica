@@ -114,7 +114,6 @@ struct FilterView: View {
                     
                 }.onAppear() {
                     fileurl = getURLtoFile()
-                    print(fileurl)
                     DispatchQueue.main.async {
                         loadFilter(filterfileurl: filterItem.filterFileUrl)
                     }
@@ -208,9 +207,11 @@ struct UnderImageLinedView: View {
                 //.padding(.trailing,4)
                 .onTapGesture {
                     do {
+                        var realm = try Realm()
+                        
                         if (!isLiked) {
                             print("LIKE")
-                            var realm = try Realm()
+                            
                             let realmFilters = realm.objects(filter.self).filter("name = %@", filterItem.name)
                             
                             if let fltr = realmFilters.first {
@@ -222,7 +223,7 @@ struct UnderImageLinedView: View {
                         }
                         else {
                             print("dislike")
-                            var realm = try Realm()
+                            
                             let realmFilters = realm.objects(filter.self).filter("name = %@", filterItem.name)
                             
                             if let fltr = realmFilters.first {

@@ -44,7 +44,28 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             } else {
                 //uploadLocalToRealm()
                 print("before loading")
-                //filters = realm.objects(filter.self)
+                
+                do {
+                    var realm2 = try Realm()
+                    filters = realm2.objects(filter.self)
+                    packs = realm2.objects(pack.self)
+
+                    //localFiters
+                    
+                    if filters!.count == 0 {
+                        for element in localFiters {
+                            print("SAVING LOCAL FILTERS")
+                            try! realm2.write() {
+                                realm2.add(element)
+                            }
+                        }
+                    }
+                }
+                catch let error as NSError {
+                    print(error.localizedDescription)
+                }
+                
+                
                 loadFiltersFromServer()
                 
                 window.rootViewController = UIHostingController(rootView: tutorial)

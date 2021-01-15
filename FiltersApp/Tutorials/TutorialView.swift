@@ -25,7 +25,7 @@ struct TutorialView: View {
     
     var body: some View {
         VStack(alignment: .leading){
-            Text(desc1).font(.title).bold().padding(.leading).padding(.bottom, 6)
+            Text(desc1).font(.system(size: 35)).bold().padding(.leading).padding(.bottom, 6)
             
             HStack(alignment: .top) {
                 Text("1.").bold().font(.system(size: 16))
