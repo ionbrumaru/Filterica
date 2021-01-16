@@ -23,7 +23,7 @@ struct FiltersList: View {
     
     @State private var categorySelection = 0
     
-    private var expandableLoad: [String] = ["Portraits_PACK","Night_life_PACK","Moody_PACK","Stay_home_PACK","Influencers_PACK","France_PACK","urban_filters", "asia_filters", "lights_filters", "neon_filters","nature_filters", "DONTDELETE"]
+    private var expandableLoad: [String] = ["Portraits_PACK","Night_life_PACK","Moody_PACK","Stay_home_PACK","Influencers_PACK","Sun_kissed_PACK","France_PACK","urban_filters", "asia_filters", "lights_filters", "neon_filters","nature_filters", "DONTDELETE"]
     @State private var expandableShowHowMany = 0
     
     @State private var showLoadMoreButton = true
@@ -72,7 +72,7 @@ struct FiltersList: View {
                         
                         ShowStaticFilters(filters: $filters, tag: "color", label: "Way to colorize")
                         
-                        ShowStaticPacks(packname: "Sun kissed", filters: $filters, packs: $packs)
+                        //ShowStaticPacks(packname: "Sun kissed", filters: $filters, packs: $packs)
                         
                         ShowStaticFilters(filters: $filters, tag: "summer", label: "Summertime").onAppear(){
                             if(packs.filter{$0.name == "Portraits"}.count == 0) {
