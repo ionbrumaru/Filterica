@@ -15,22 +15,21 @@ class HomeViewModel : ObservableObject {
     // Slider For Intensity And Radius...etc...
     // Since WE didnt set while reading image
     // so all will be full value....
-    @Published var value : CGFloat = 1.0
+    @Published var value : CGFloat = 1
     
     // Loading FilterOption WhenEver Image is Selected....
     
     // Use Your Own Filters...
     
     let filters : [CIFilter] = [
-    
+        CIFilter.bloom(),
+        //CIFilter.colorInvert(),
+        CIFilter.photoEffectFade(),
+        CIFilter.colorMonochrome(),
         CIFilter.sepiaTone(),
         CIFilter.comicEffect(),
         CIFilter.photoEffectChrome(),
-        CIFilter.gaussianBlur(),
-        CIFilter.bloom(),
-        CIFilter.colorInvert(),
-        CIFilter.photoEffectFade(),
-        CIFilter.colorMonochrome()
+        CIFilter.gaussianBlur()
     ]
     
     
@@ -53,7 +52,7 @@ class HomeViewModel : ObservableObject {
                 let cgimage = context.createCGImage(newImage, from: newImage.extent)
                 
                 let isEditable = filter.inputKeys.count > 1
-                let filteredData = FilteredImage(image: UIImage(cgImage: cgimage!), filter: filter, isEditable: isEditable)
+                let filteredData = FilteredImage(name: filter.name, image: UIImage(cgImage: cgimage!), filter: filter, isEditable: isEditable)
                 
                 DispatchQueue.main.async {
                     self.allImages.append(filteredData)
@@ -113,6 +112,7 @@ import CoreImage
 struct FilteredImage: Identifiable {
     
     var id = UUID().uuidString
+    var name: String
     var image: UIImage
     var filter: CIFilter
     var isEditable: Bool

@@ -23,7 +23,7 @@ struct FiltersList: View {
     
     @State private var categorySelection = 0
     
-    private var expandableLoad: [String] = ["Night_life_PACK","Stay_home_PACK","Influencers_PACK","France_PACK","Moody_PACK","urban_filters", "asia_filters", "lights_filters", "neon_filters","nature_filters", "DONTDELETE"]
+    private var expandableLoad: [String] = ["Portraits_PACK","Night_life_PACK","Moody_PACK","Stay_home_PACK","Influencers_PACK","France_PACK","urban_filters", "asia_filters", "lights_filters", "neon_filters","nature_filters", "DONTDELETE"]
     @State private var expandableShowHowMany = 0
     
     @State private var showLoadMoreButton = true
@@ -58,14 +58,17 @@ struct FiltersList: View {
                     
                     if (categorySelection == 0) {
                         
+                        
+                        ShowStaticFilters(filters: $filters, tag: "winter", label: "Snowfall")
+                        
                         if (!noInternet) {
-                            ShowStaticPacks(packname: "Winter", filters: $filters, packs: $packs)
+                            //ShowStaticPacks(packname: "Winter", filters: $filters, packs: $packs)
                             ShowStaticPacks(packname: "Autumn", filters: $filters, packs: $packs)
                         }
                         
                         ShowStaticFilters(filters: $filters, tag: "atmosphere", label: "Atmosphere")
                         
-                        ShowStaticPacks(packname: "Portraits", filters: $filters, packs: $packs)
+                        //ShowStaticPacks(packname: "Portraits", filters: $filters, packs: $packs)
                         
                         ShowStaticFilters(filters: $filters, tag: "color", label: "Way to colorize")
                         

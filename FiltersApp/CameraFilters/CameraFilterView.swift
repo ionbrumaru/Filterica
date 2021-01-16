@@ -2,6 +2,7 @@ import SwiftUI
 
 struct CameraFilterView: View {
     @StateObject var homeData = HomeViewModel()
+    @State private var showingAlert = false
     var body: some View {
         
         VStack{
@@ -28,6 +29,7 @@ struct CameraFilterView: View {
                         
                         ForEach(homeData.allImages){filtered in
                             
+                            VStack {
                             Image(uiImage: filtered.image)
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
@@ -39,6 +41,9 @@ struct CameraFilterView: View {
                                     homeData.value = 1.0
                                     homeData.mainView = filtered
                                 }
+                                
+                                Text(filtered.name.replacingOccurrences(of: "CI", with: ""))
+                            }
                         }
                     }
                     .padding()
@@ -78,6 +83,7 @@ struct CameraFilterView: View {
                 
                 Button(action: {
                     UIImageWriteToSavedPhotosAlbum(homeData.mainView.image, nil, nil, nil)
+                    showingAlert = true
                 }) {
                     
                     Text("Save")
@@ -91,6 +97,9 @@ struct CameraFilterView: View {
             
             ImagePicker(picker: $homeData.imagePicker, imageData: $homeData.imageData)
         }
+        .alert(isPresented: $showingAlert) {
+                    Alert(title: Text("Success"), message: Text("Photo was saved to your library"), dismissButton: .default(Text("Got it!")))
+                }
     }
 }
 

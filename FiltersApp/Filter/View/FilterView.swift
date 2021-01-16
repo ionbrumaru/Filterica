@@ -20,7 +20,7 @@ struct FilterView: View {
     @State private var showImageInfo: Bool = false
     
     @State private var fileurl : String?
-    @State private var isLoading : Bool = true
+    @State private var isLoading : Bool = false
     
     @State private var showTutorialSheet: Bool =  false
     
@@ -112,12 +112,13 @@ struct FilterView: View {
                         TutorialView().padding(.leading,8).padding(.trailing, 8)
                     }
                     
-                }.onAppear() {
-                    fileurl = getURLtoFile()
-                    DispatchQueue.main.async {
-                        loadFilter(filterfileurl: filterItem.filterFileUrl)
-                    }
                 }
+//                .onAppear() {
+//                    fileurl = getURLtoFile()
+//                    DispatchQueue.main.async {
+//                        loadFilter(filterfileurl: filterItem.filterFileUrl)
+//                    }
+//                }
             }
             .navigationBarItems(trailing:
                                     
@@ -191,7 +192,7 @@ struct UnderImageLinedView: View {
     @Binding var showShareSheet: Bool
     @Binding var showImageInfo: Bool
     @Binding var isLoading: Bool
-    
+    @State private var fileurl : String?
     @State var isLiked = false
     let getfiltertext: LocalizedStringKey =  "  Get filter  "
     
@@ -255,7 +256,12 @@ struct UnderImageLinedView: View {
             }.padding(.leading,4)
             
             Button(action: {
-                self.showShareSheet.toggle()
+                //self.showShareSheet.toggle()
+                isLoading = true
+                DispatchQueue.main.async {
+                    fileurl = getURLtoFile()
+                    downloadFilter(filterfileurl: filterItem.filterFileUrl)
+                }
             }) {
                 Text(getfiltertext)
                     .font(.system(size: 20))
@@ -269,6 +275,33 @@ struct UnderImageLinedView: View {
         }
         
         Divider().padding(.bottom, 4).padding(.leading).padding(.trailing)
+    }
+    
+    private func downloadFilter(filterfileurl: String) {
+        print("started fetching url")
+        let urlString = filterfileurl
+        
+        guard let url = URL(string: urlString) else {
+            print("Bad URL: \(urlString)")
+            return
+        }
+        
+        print("before loading data")
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            if let data = data {
+                fileurl = (data.dataToFile(fileName: "filter.dng")?.absoluteString)!
+                showShareSheet.toggle()
+                isLoading = false
+            }
+        }.resume()
+    }
+    
+    private func getURLtoFile() -> String {
+        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+        let documentsDirectory = paths[0]
+        
+        let filePath = (documentsDirectory as NSString).appendingPathComponent("filter.dng")
+        return filePath
     }
 }
 
