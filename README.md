@@ -1,4 +1,4 @@
-# Filterica - Lightroom filters
+# Filterica - Lightroom filters <img align="right" width="200" height="200" src="https://sun9-18.userapi.com/impg/hsAea2WZftWjVxeVcet1lTqAE5zgM-xuFYJWrA/I4IGgi-yI5Y.jpg?size=1024x1024&quality=96&proxy=1&sign=a5e40032b539c0e34a4ee36a76f8afa6&type=album">
 
 - Swift 5.0
 - Backend PHP
