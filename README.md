@@ -12,6 +12,8 @@ Filterica gives you free access to 100+ professional Lightroom presets, filters,
 
 With these filters and ready-made presets from Filterica, your photos will shine and your social media will look great. 
 
+<img align="right" width="350" src="https://sun9-42.userapi.com/impg/xrI7f_uMd4jmAK1idbsjECxFbv4Swy1_R8IN_A/nHj57sGohjk.jpg?size=1308x1958&quality=96&proxy=1&sign=c15bb1375741bf438bb6a3078d32d2bd&type=album">
+
 Filterica has a wide range of choices: 
 - 100+ presets
 - 10+ packs
