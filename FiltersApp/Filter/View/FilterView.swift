@@ -8,6 +8,8 @@
 import SwiftUI
 import URLImage
 import RealmSwift
+import StoreKit
+
 struct FilterView: View {
     
     var filterItem: filter
@@ -26,7 +28,7 @@ struct FilterView: View {
     
     @State private var isShareButtonDisabled: Bool = true
     @State private var showRelated: Bool = true
-
+    
     
     var body: some View {
         
@@ -49,29 +51,46 @@ struct FilterView: View {
                             .clipped()
                         }
                         else {
-                            URLImage(URL(string: isOriginalShowing ? filterItem.imageBefore : filterItem.imageAfter)!, delay: 0.25,placeholder: {
-                                ProgressView($0) { progress in
-                                    ZStack {
-                                        if progress >= 0.0 {
-                                            // The download has started. CircleProgressView displays the progress.
-                                            CircleProgressView(progress).stroke(lineWidth: 8.0)
-                                        }
+                            
+                            URLImage(url: URL(string: isOriginalShowing ? filterItem.imageBefore : filterItem.imageAfter)!,
+                                     options: URLImageOptions(
+                                        cachePolicy: .returnCacheElseLoad(cacheDelay: nil, downloadDelay: 0.25) // Return cached image or download after delay
+                                     ),
+                                     empty: {
+                                        Text("nothing")            // This view is displayed before download starts
+                                     },
+                                     inProgress: { progress in
+                                        VStack(alignment: .center) {
+                                            if #available(iOS 14.0, *) {
+                                                
+                                                ProgressView()
+                                                
+                                            } else {
+                                                // Fallback on earlier versions
+                                                ActivityIndicator(isAnimating: .constant(true), style: .large)
+                                                
+                                            }
+                                        }.frame(width: 330, height: 300)
                                         
-                                    }
-                                }
-                                .frame(width: 50.0, height: 50.0)
-                            }) { proxy in
-                                proxy.image
-                                    .renderingMode(.original)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: geometry.size.width, height: 350)
-                                    .clipped()
-                            }
+                                     },
+                                     failure: { error, retry in         // Display error and retry button
+                                        VStack {
+                                            Text(error.localizedDescription)
+                                            Button("Retry", action: retry)
+                                        }
+                                     },
+                                     content: { image in                // Content view
+                                        image
+                                            .renderingMode(.original)
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                            .frame(width: geometry.size.width, height: 350)
+                                            .clipped()
+                                     })
+                            
                         }
-                    }.navigationBarTitle(filterItem.name, displayMode: .large)
+                    }.navigationBarTitle(filterItem.name)
                     .frame(width: geometry.size.width, height: 350)
-                    
                     
                     .onTouchDown({
                         isOriginalShowing = true
@@ -113,12 +132,9 @@ struct FilterView: View {
                     }
                     
                 }
-//                .onAppear() {
-//                    fileurl = getURLtoFile()
-//                    DispatchQueue.main.async {
-//                        loadFilter(filterfileurl: filterItem.filterFileUrl)
-//                    }
-//                }
+                .onAppear() {
+                    self.adviceReview()
+                }
             }
             .navigationBarItems(trailing:
                                     
@@ -150,6 +166,31 @@ struct FilterView: View {
         
     }
     
+    private func adviceReview() {
+        // If the count has not yet been stored, this will return 0
+        var count = UserDefaults.standard.integer(forKey: "reviewCounter")
+        count += 1
+        UserDefaults.standard.set(count, forKey: "reviewCounter")
+        
+        print("Process completed \(count) time(s)")
+        
+        // Get the current bundle version for the app
+        let infoDictionaryKey = kCFBundleVersionKey as String
+        guard let currentVersion = Bundle.main.object(forInfoDictionaryKey: infoDictionaryKey) as? String
+        else { fatalError("Expected to find a bundle version in the info dictionary") }
+        
+        
+        // Has the process been completed several times and the user has not already been prompted for this version?
+        if count == 4 {
+            let twoSecondsFromNow = DispatchTime.now() + 4.0
+            DispatchQueue.main.asyncAfter(deadline: twoSecondsFromNow) {
+                
+                SKStoreReviewController.requestReview()
+                
+            }
+        }
+    }
+    
     private func loadFilter(filterfileurl: String) {
         print("LOAD FILTER FUNC")
         let urlString = filterfileurl
@@ -166,15 +207,9 @@ struct FilterView: View {
                 isShareButtonDisabled = false
                 isLoading = false
             }
-            
-            
             // if we're still here it means the request failed somehow
         }.resume()
     }
-    
-    
-    
-    
 }
 
 private func getURLtoFile() -> String {
@@ -192,52 +227,45 @@ struct UnderImageLinedView: View {
     @Binding var showShareSheet: Bool
     @Binding var showImageInfo: Bool
     @Binding var isLoading: Bool
+    
     @State private var fileurl : String?
     @State var isLiked = false
+    
     let getfiltertext: LocalizedStringKey =  "  Get filter  "
+    
+    var realm = try! Realm()
     
     var body: some View {
         Divider().padding(.bottom, 2).padding(.leading).padding(.trailing)
         
         HStack{
             Text("#" + (filterItem.tags ?? "Filter")).bold()
-
+            
             Image(systemName: "suit.heart.fill")
                 .font(Font.system(size: 30, weight: .regular))
                 .foregroundColor(isLiked ? Color(UIColor(named: "MainColor")!) : Color.secondary)
-                //.padding(.trailing,4)
                 .onTapGesture {
-                    do {
-                        var realm = try Realm()
+                    if (!isLiked) {
+                        let realmFilters = realm.objects(filter.self).filter("name = %@", filterItem.name)
                         
-                        if (!isLiked) {
-                            print("LIKE")
-                            
-                            let realmFilters = realm.objects(filter.self).filter("name = %@", filterItem.name)
-                            
-                            if let fltr = realmFilters.first {
-                                try! realm.write {
-                                    fltr.liked = true
-                                }
+                        if let fltr = realmFilters.first {
+                            try! realm.write {
+                                fltr.liked = true
                             }
-                            isLiked = true
                         }
-                        else {
-                            print("dislike")
-                            
-                            let realmFilters = realm.objects(filter.self).filter("name = %@", filterItem.name)
-                            
-                            if let fltr = realmFilters.first {
-                                try! realm.write {
-                                    fltr.liked = false
-                                }
+                        isLiked = true
+                    }
+                    else {
+                        let realmFilters = realm.objects(filter.self).filter("name = %@", filterItem.name)
+                        
+                        if let fltr = realmFilters.first {
+                            try! realm.write {
+                                fltr.liked = false
                             }
-                            isLiked = false
                         }
+                        isLiked = false
                     }
-                    catch let error as NSError {
-                        print(error.localizedDescription)
-                    }
+                    
                     
                 }.onAppear() {
                     isLiked = filterItem.liked
@@ -277,6 +305,7 @@ struct UnderImageLinedView: View {
         Divider().padding(.bottom, 4).padding(.leading).padding(.trailing)
     }
     
+    // filter download from backend
     private func downloadFilter(filterfileurl: String) {
         print("started fetching url")
         let urlString = filterfileurl

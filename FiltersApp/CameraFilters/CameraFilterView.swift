@@ -1,5 +1,6 @@
 import SwiftUI
 
+@available(iOS 14.0, *)
 struct CameraFilterView: View {
     @StateObject var homeData = HomeViewModel()
     @State private var showingAlert = false

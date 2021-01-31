@@ -1,0 +1,77 @@
+/* 
+  Localizable.strings
+  FiltersApp
+
+  Created by Никита Казанцев on 13.08.2020.
+  
+*/
+
+
+"Explore" = "你选吧。";
+"Explore more than 100 filters in a catalog." = "有100多种适合各种口味的滤镜可供你选择。";
+
+"Compare" = "比较";
+"Compare between original photo and photo with filter on to see the difference." = "通过与原件进行比较，查看应用过滤器的结果.";
+
+"Download" = "下载";
+"Choose any filter you like and download it 100% free." = "选择任何你喜欢的过滤器，完全免费下载";
+
+"Export" = "保存";
+"Export filters right to lightroom mobile on your iPhone" = "将任何滤镜导出到iPhone上的lightroom mobile";
+
+"Continue" = "继续";
+
+"How To" = "如何运作";
+"After installing app, download and install Adobe Lightroom app from App Store." = "安装应用后，从应用商店下载Adobe Lightroom";
+
+"Tap 'get preset' button. Then find 'copy to Lightroom' button, and tap it." = "点击过滤器页面上的'获取'按钮。然后，在弹出的菜单中，点击'复制到Lightroom'按钮，将滤镜添加到'Lightroom'应用中";
+
+"After clicking on the lightroom icon, you will be notified that the preset will apear on next app launch" =  "经过这些步骤后，你会收到通知，下次运行时，滤镜会出现在'Lightroom'中。";
+
+"Open lightroom. Choose new preset image and open it. In the right upper corner tap 'more' icon and choose 'Copy settings'. Then click 'ok'" = "打开'Lightroom'。选择出现在列表中的照片并打开它。在右上角，点击三个小点，选择 '复制设置'。然后点击'确定'。";
+
+"After you opened your photo, tap an icon in the right upper corner again and choose 'paste settings'" = "完成这些步骤后，打开你要应用滤镜的照片，再点击右上角的三个点，选择 '粘贴设置'。滤波器的应用。";
+
+"  Get filter  " = "   下载   ";
+
+"Filters" = "浏览";
+
+"Favourite" = "收藏夹";
+
+"Reload" = "更新";
+
+"Favourite filters" = "喜欢的过滤器";
+
+"0 liked filters" = "你喜欢的过滤器都没有。\n 试着喜欢一些东西";
+
+"Hold photo to see without filter" = "点击照片就能看到没有滤镜的照片";
+
+"More like this" = "类似过滤器";
+
+"Help" = "帮助";
+
+"Load more" = "下载更多";
+
+"About" = "关于应用程序";
+
+"Privacy Policy" = "隐私政策";
+
+"Terms and Conditions" = "条款和条件";
+
+"Select document to open in browser" = "选择你想在浏览器中打开的文档";
+
+"Welcome to" = "欢迎";
+
+"Tips" = "提示";
+
+"Success" = "成功";
+
+"Photo was saved to your library" = "照片已经保存到画廊了";
+
+"Got it!" = "好！";
+
+"Pick An Image To Process" = "从图库中选择一张照片";
+
+"How to use Filterica" = "如何使用 Filterica";
+
+"0 liked filters" = "0个过滤器喜欢";

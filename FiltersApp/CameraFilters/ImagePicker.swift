@@ -1,6 +1,7 @@
 import SwiftUI
 import PhotosUI
 
+@available(iOS 14, *)
 struct ImagePicker : UIViewControllerRepresentable {
     
     func makeCoordinator() -> Coordinator {

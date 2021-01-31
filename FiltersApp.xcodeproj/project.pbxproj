@@ -3,11 +3,10 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1CCF4CAF30ABAC7343F89640 /* Pods_FiltersApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BFEF8BA1A68A1A931431915 /* Pods_FiltersApp.framework */; };
 		803B7A2C24D4C8AE00F23EA3 /* ShareScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803B7A2B24D4C8AE00F23EA3 /* ShareScreen.swift */; };
 		805EBC0224D5ACC80058BCBF /* ImageSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805EBC0124D5ACC80058BCBF /* ImageSettings.swift */; };
 		805EBC0524D605760058BCBF /* imageInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805EBC0424D605760058BCBF /* imageInfoView.swift */; };
@@ -38,13 +37,15 @@
 		80EA47E825AE445000F2C526 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EA47E725AE445000F2C526 /* HomeViewModel.swift */; };
 		80EA47EB25AE449400F2C526 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EA47EA25AE449400F2C526 /* ImagePicker.swift */; };
 		80EA47EE25AE44B600F2C526 /* CameraFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80EA47ED25AE44B600F2C526 /* CameraFilterView.swift */; };
+		80EBB66625B6093000A30F92 /* URLImage in Frameworks */ = {isa = PBXBuildFile; productRef = 80EBB66525B6093000A30F92 /* URLImage */; };
+		80EBB66B25B609EA00A30F92 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 80EBB66A25B609EA00A30F92 /* RealmSwift */; };
+		80EBB66D25B609EA00A30F92 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 80EBB66C25B609EA00A30F92 /* Realm */; };
+		80EBB67125B60A5100A30F92 /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = 80EBB67025B60A5100A30F92 /* SwiftyJSON */; };
 		80FE992425990A2400B75488 /* AdvicesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80FE992325990A2400B75488 /* AdvicesListView.swift */; };
 		80FE992A25990A6C00B75488 /* advice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80FE992925990A6C00B75488 /* advice.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		18F9DF6A279244011EA2B03D /* Pods-FiltersApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FiltersApp.release.xcconfig"; path = "Target Support Files/Pods-FiltersApp/Pods-FiltersApp.release.xcconfig"; sourceTree = "<group>"; };
-		1B52F2BE4B56E9D2E5799791 /* Pods-FiltersApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FiltersApp.debug.xcconfig"; path = "Target Support Files/Pods-FiltersApp/Pods-FiltersApp.debug.xcconfig"; sourceTree = "<group>"; };
 		803B7A2B24D4C8AE00F23EA3 /* ShareScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareScreen.swift; sourceTree = "<group>"; };
 		805EBC0124D5ACC80058BCBF /* ImageSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSettings.swift; sourceTree = "<group>"; };
 		805EBC0424D605760058BCBF /* imageInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = imageInfoView.swift; sourceTree = "<group>"; };
@@ -79,9 +80,12 @@
 		80EA47E725AE445000F2C526 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		80EA47EA25AE449400F2C526 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		80EA47ED25AE44B600F2C526 /* CameraFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraFilterView.swift; sourceTree = "<group>"; };
+		80EBB67325B61AF200A30F92 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		80EBB67425B61D7700A30F92 /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		80EBB67525B61F3D00A30F92 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		80EBB67625B620BC00A30F92 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		80FE992325990A2400B75488 /* AdvicesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvicesListView.swift; sourceTree = "<group>"; };
 		80FE992925990A6C00B75488 /* advice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = advice.swift; sourceTree = "<group>"; };
-		8BFEF8BA1A68A1A931431915 /* Pods_FiltersApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FiltersApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,22 +93,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1CCF4CAF30ABAC7343F89640 /* Pods_FiltersApp.framework in Frameworks */,
+				80EBB66D25B609EA00A30F92 /* Realm in Frameworks */,
+				80EBB66B25B609EA00A30F92 /* RealmSwift in Frameworks */,
+				80EBB67125B60A5100A30F92 /* SwiftyJSON in Frameworks */,
+				80EBB66625B6093000A30F92 /* URLImage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		7BC5C0D710F108DF5A0A7470 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				1B52F2BE4B56E9D2E5799791 /* Pods-FiltersApp.debug.xcconfig */,
-				18F9DF6A279244011EA2B03D /* Pods-FiltersApp.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		805EBC0324D605570058BCBF /* DetailedFilterInfo */ = {
 			isa = PBXGroup;
 			children = (
@@ -203,8 +201,6 @@
 			children = (
 				80B4543524D2DB5200B4EE74 /* FiltersApp */,
 				80B4543424D2DB5200B4EE74 /* Products */,
-				7BC5C0D710F108DF5A0A7470 /* Pods */,
-				F39F73B798401BC01437BAD1 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -283,14 +279,6 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		F39F73B798401BC01437BAD1 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				8BFEF8BA1A68A1A931431915 /* Pods_FiltersApp.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -298,17 +286,21 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 80B4544724D2DB5300B4EE74 /* Build configuration list for PBXNativeTarget "FiltersApp" */;
 			buildPhases = (
-				009E1C7EEE31F3EE575FEE13 /* [CP] Check Pods Manifest.lock */,
 				80B4542F24D2DB5200B4EE74 /* Sources */,
 				80B4543024D2DB5200B4EE74 /* Frameworks */,
 				80B4543124D2DB5200B4EE74 /* Resources */,
-				70A30C965ACCEBDAE5C24DE0 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = FiltersApp;
+			packageProductDependencies = (
+				80EBB66525B6093000A30F92 /* URLImage */,
+				80EBB66A25B609EA00A30F92 /* RealmSwift */,
+				80EBB66C25B609EA00A30F92 /* Realm */,
+				80EBB67025B60A5100A30F92 /* SwiftyJSON */,
+			);
 			productName = FiltersApp;
 			productReference = 80B4543324D2DB5200B4EE74 /* FiltersApp.app */;
 			productType = "com.apple.product-type.application";
@@ -335,8 +327,17 @@
 				en,
 				Base,
 				ru,
+				ja,
+				fr,
+				"zh-Hans",
+				de,
 			);
 			mainGroup = 80B4542A24D2DB5200B4EE74;
+			packageReferences = (
+				80EBB66425B6093000A30F92 /* XCRemoteSwiftPackageReference "url-image" */,
+				80EBB66925B609EA00A30F92 /* XCRemoteSwiftPackageReference "realm-cocoa" */,
+				80EBB66F25B60A5100A30F92 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
+			);
 			productRefGroup = 80B4543424D2DB5200B4EE74 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -359,48 +360,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		009E1C7EEE31F3EE575FEE13 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-FiltersApp-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		70A30C965ACCEBDAE5C24DE0 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-FiltersApp/Pods-FiltersApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-FiltersApp/Pods-FiltersApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FiltersApp/Pods-FiltersApp-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		80B4542F24D2DB5200B4EE74 /* Sources */ = {
@@ -446,6 +405,10 @@
 			children = (
 				809FDE5224E59AAF00EFC1E8 /* ru */,
 				809FDE5524E59BD600EFC1E8 /* en */,
+				80EBB67325B61AF200A30F92 /* ja */,
+				80EBB67425B61D7700A30F92 /* fr */,
+				80EBB67525B61F3D00A30F92 /* zh-Hans */,
+				80EBB67625B620BC00A30F92 /* de */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -582,7 +545,6 @@
 		};
 		80B4544824D2DB5300B4EE74 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1B52F2BE4B56E9D2E5799791 /* Pods-FiltersApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -592,11 +554,12 @@
 				DEVELOPMENT_TEAM = Z6TZXH8MS8;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = FiltersApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.6;
+				MARKETING_VERSION = 2.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nickyapp.FiltersApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -606,7 +569,6 @@
 		};
 		80B4544924D2DB5300B4EE74 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 18F9DF6A279244011EA2B03D /* Pods-FiltersApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -616,11 +578,12 @@
 				DEVELOPMENT_TEAM = Z6TZXH8MS8;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = FiltersApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.6;
+				MARKETING_VERSION = 2.8;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nickyapp.FiltersApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -650,6 +613,56 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		80EBB66425B6093000A30F92 /* XCRemoteSwiftPackageReference "url-image" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/dmytro-anokhin/url-image";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.2.1;
+			};
+		};
+		80EBB66925B609EA00A30F92 /* XCRemoteSwiftPackageReference "realm-cocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-cocoa";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.5.1;
+			};
+		};
+		80EBB66F25B60A5100A30F92 /* XCRemoteSwiftPackageReference "SwiftyJSON" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftyJSON/SwiftyJSON";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		80EBB66525B6093000A30F92 /* URLImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 80EBB66425B6093000A30F92 /* XCRemoteSwiftPackageReference "url-image" */;
+			productName = URLImage;
+		};
+		80EBB66A25B609EA00A30F92 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 80EBB66925B609EA00A30F92 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
+			productName = RealmSwift;
+		};
+		80EBB66C25B609EA00A30F92 /* Realm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 80EBB66925B609EA00A30F92 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
+			productName = Realm;
+		};
+		80EBB67025B60A5100A30F92 /* SwiftyJSON */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 80EBB66F25B60A5100A30F92 /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
+			productName = SwiftyJSON;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 80B4542B24D2DB5200B4EE74 /* Project object */;
 }

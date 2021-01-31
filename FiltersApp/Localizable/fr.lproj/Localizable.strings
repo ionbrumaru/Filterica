@@ -1,0 +1,76 @@
+/* 
+  Localizable.strings
+  FiltersApp
+
+  Created by Никита Казанцев on 13.08.2020.
+  
+*/
+
+"Explore" = "Faites votre choix";
+"Explore more than 100 filters in a catalog." = "Plus de 100 filtres pour tous les goûts sont à votre disposition";
+
+"Compare" = "Comparez";
+"Compare between original photo and photo with filter on to see the difference." = "Voir le résultat de l'application d'un filtre en le comparant à l'original";
+
+"Download" = "Télécharger";
+"Choose any filter you like and download it 100% free." = "Choisissez le filtre que vous souhaitez et téléchargez-le gratuitement";
+
+"Export" = "Sauvegarder";
+"Export filters right to lightroom mobile on your iPhone" = "Exportez n'importe quel filtre vers lightroom mobile sur votre iPhone";
+
+"Continue" = "Continuer";
+
+"How To" = "Comment ça marche";
+"After installing app, download and install Adobe Lightroom app from App Store." = "Après avoir installé l'application, téléchargez Adobe Lightroom sur l'App Store";
+
+"Tap 'get preset' button. Then find 'copy to Lightroom' button, and tap it." = "Cliquez sur le bouton 'Obtenir' de la page de filtrage. Ensuite, dans le menu contextuel, cliquez sur le bouton 'Copier vers Lightroom' pour ajouter le filtre à l'application 'Lightroom'";
+
+"After clicking on the lightroom icon, you will be notified that the preset will apear on next app launch" =  "Après ces étapes, vous serez informé que le filtre apparaîtra dans 'Lightroom' la prochaine fois que vous l'exécuterez";
+
+"Open lightroom. Choose new preset image and open it. In the right upper corner tap 'more' icon and choose 'Copy settings'. Then click 'ok'" = "Ouvrez le 'Lightroom'. Sélectionnez la photo qui apparaît dans la liste et ouvrez-la. Dans le coin supérieur droit, cliquez sur les trois points et sélectionnez 'Copier les paramètres'. Cliquez ensuite sur 'OK'";
+
+"After you opened your photo, tap an icon in the right upper corner again and choose 'paste settings'" = "Après ces étapes, ouvrez la photo sur laquelle vous voulez appliquer le filtre, cliquez à nouveau sur les trois points dans le coin supérieur droit et sélectionnez 'Coller les paramètres'. Le filtre est appliqué";
+
+"  Get filter  " = "  Télécharger  ";
+
+"Filters" = "Naviguer";
+
+"Favourite" = "Favoris";
+
+"Reload" = "Mise à jour";
+
+"Favourite filters" = "Liked Filters";
+
+"0 liked filters" = "Aucun des filtres que vous avez aimés.\n Essayez d'aimer quelque chose";
+
+"Hold photo to see without filter" = "Cliquez sur une photo pour la voir sans filtre";
+
+"More like this" = "Filtres similaires";
+
+"Help" = "Aide";
+
+"Load more" = "Télécharger plus";
+
+"About" = "A propos de l'application";
+
+"Privacy Policy" = "Politique de confidentialité";
+
+"Terms and Conditions" = "Termes et conditions";
+
+"Select document to open in browser" = "Sélectionnez le document que vous souhaitez ouvrir dans votre navigateur";
+
+"Welcome to" = "Bienvenue";
+
+"Tips" = "Conseils";
+
+"Success" = "Réussir";
+
+"Photo was saved to your library" = "La photo a été enregistrée dans la galerie";
+
+"Got it!" = "Bien !";
+
+"Pick An Image To Process" = "Choisissez une photo dans la galerie";
+
+"How to use Filterica" = "Comment utiliser Filterica";
+
+"0 liked filters" = "0 filtres que vous aimez";

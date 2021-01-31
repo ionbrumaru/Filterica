@@ -1,0 +1,76 @@
+/* 
+  Localizable.strings
+  FiltersApp
+
+  Created by Никита Казанцев on 13.08.2020.
+  
+*/
+
+"Explore" = "探検";
+"Explore more than 100 filters in a catalog." = "自由に使えるフィルターは100種類以上";
+
+"Compare" = "比較";
+"Compare between original photo and photo with filter on to see the difference." = "フィルタを適用した結果を元のものと比較して見る";
+
+"Download" = "ダウンロード";
+"Choose any filter you like and download it 100% free." = "好きなフィルターを選んで、完全に無料でダウンロードしてください。";
+
+"Export" = "保存";
+"Export filters right to lightroom mobile on your iPhone" = "iPhoneで任意のフィルターをLightroom mobileに書き出す";
+
+"Continue" = "続ける";
+
+"How To" = "それがどのように機能するか";
+"After installing app, download and install Adobe Lightroom app from App Store." = "アプリをインストールしたら、App StoreからAdobe Lightroomをダウンロードしてください。";
+
+"Tap 'get preset' button. Then find 'copy to Lightroom' button, and tap it." = "フィルターページの「取得」ボタンをクリックします。その後、ポップアップメニューで、'Lightroom'アプリにフィルターを追加するには、'Lightroomへのコピー'ボタンをタップします。";
+
+"After clicking on the lightroom icon, you will be notified that the preset will apear on next app launch" =  "これらの手順の後、次に実行したときにフィルターが「Lightroom」に表示されることが通知されます。";
+
+"Open lightroom. Choose new preset image and open it. In the right upper corner tap 'more' icon and choose 'Copy settings'. Then click 'ok'" = "Lightroom を開きます。リストに表示される写真を選択して開きます。右上の3つの点をクリックして「設定をコピー」を選択します。その後、「OK」をクリックします。";
+
+"After you opened your photo, tap an icon in the right upper corner again and choose 'paste settings'" = "この手順が終わったら、フィルターを適用したい写真を開いて、もう一度右上の3つのドットをクリックして「設定の貼り付け」を選択します。フィルターが適用されている」とのこと。";
+
+"  Get filter  " = "  ダウンロード  ";
+
+"Filters" = "ブラウズ";
+
+"Favourite" = "お気に入り";
+
+"Reload" = "アップデート";
+
+"Favourite filters" = "好きなフィルター";
+
+"0 liked filters" = "あなたが気に入ったフィルターはどれもありませんでした。\n 何かを好きになってみてください」。";
+
+"Hold photo to see without filter" = "写真をクリックするとフィルターなしで見ることができます。";
+
+"More like this" = "類似フィルター";
+
+"Help" = "ヘルプ";
+
+"Load more" = "もっとダウンロード";
+
+"About" = "アプリについて";
+
+"Privacy Policy" = "プライバシーポリシー";
+
+"Terms and Conditions" = "利用規約";
+
+"Select document to open in browser" = "ブラウザで開きたい文書を選択してください";
+
+"Welcome to" = "ようこそ";
+
+"Tips" = "ヒント";
+
+"Success" = "成功";
+
+"Photo was saved to your library" = "写真はギャラリーに保存されました";
+
+"Got it!" = "よし！";
+
+"Pick An Image To Process" = "ギャラリーから写真を選ぶ";
+
+"How to use Filterica" = "フィルタリカの使い方";
+
+"0 liked filters" = "0個のフィルターが気に入った";

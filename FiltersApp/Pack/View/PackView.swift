@@ -2,6 +2,7 @@ import Foundation
 import SwiftUI
 import URLImage
 import RealmSwift
+import StoreKit
 
 struct PackView: View {
     
@@ -38,26 +39,44 @@ struct PackView: View {
                                         .contentShape(TapShape())
                                 }
                                 else { // we need to load 'after' image from server
-                                    URLImage(URL(string: isOriginalShowing ? filters![currentImage].imageBefore: filters![currentImage].imageAfter)!,placeholder: {
-                                        ProgressView($0) { progress in
-                                            ZStack {
-                                                if progress >= 0.0 {
-                                                    // The download has started. CircleProgressView displays the progress.
-                                                    CircleProgressView(progress).stroke(lineWidth: 8.0)
-                                                }
+    
+                                    URLImage(url: URL(string: isOriginalShowing ? filters![currentImage].imageBefore: filters![currentImage].imageAfter)!,
+                                             options: URLImageOptions(
+                                                cachePolicy: .returnCacheElseLoad(cacheDelay: nil, downloadDelay: 0.25) // Return cached image or download after delay
+                                             ),
+                                             empty: {
+                                                Text("nothing")            // This view is displayed before download starts
+                                             },
+                                             inProgress: { progress in
+                                                VStack(alignment: .center) {
+                                                    if #available(iOS 14.0, *) {
+                                                        
+                                                        ProgressView()
+                                                        
+                                                    } else {
+                                                        // Fallback on earlier versions
+                                                        
+                                                        ActivityIndicator(isAnimating: .constant(true), style: .large)
+                                                        
+                                                    }
+                                                }.frame(width: 330, height: 300)
                                                 
-                                            }
-                                        }
-                                        .frame(width: 50.0, height: 50.0)
-                                    }) { proxy in
-                                        proxy.image
-                                            .renderingMode(.original)
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fill)
-                                            .frame(width: geometry.size.width, height: 400)
-                                            .clipped()
-                                            .contentShape(TapShape())
-                                    }
+                                             },
+                                             failure: { error, retry in         // Display error and retry button
+                                                VStack {
+                                                    Text(error.localizedDescription)
+                                                    Button("Retry", action: retry)
+                                                }
+                                             },
+                                             content: { image in                // Content view
+                                                image
+                                                    .renderingMode(.original)
+                                                    .resizable()
+                                                    .aspectRatio(contentMode: .fill)
+                                                    .frame(width: geometry.size.width, height: 400)
+                                                    .clipped()
+                                                    .contentShape(TapShape())
+                                             })
                                 }
                                 
                             }
@@ -157,7 +176,10 @@ struct PackView: View {
                             }
                         }
                     }
-                }.navigationBarItems(trailing:
+                }.onAppear() {
+                    self.adviceReview()
+                }
+                .navigationBarItems(trailing:
                                         HStack(spacing: 20) {
                                             Button(action: {
                                                 self.showTutorialSheet = true
@@ -168,12 +190,36 @@ struct PackView: View {
                                                 ImageInfoView(filterItem: filters![currentImage])
                                             }
                                         })
-                .navigationBarTitle(packItem.name, displayMode: .large)
+                .navigationBarTitle(packItem.name)
             }
         }
         
     }
     
+    private func adviceReview() {
+        // If the count has not yet been stored, this will return 0
+        var count = UserDefaults.standard.integer(forKey: "reviewCounter")
+        count += 1
+        UserDefaults.standard.set(count, forKey: "reviewCounter")
+        
+        print("Process completed \(count) time(s)")
+        
+        // Get the current bundle version for the app
+        let infoDictionaryKey = kCFBundleVersionKey as String
+        guard let currentVersion = Bundle.main.object(forInfoDictionaryKey: infoDictionaryKey) as? String
+        else { fatalError("Expected to find a bundle version in the info dictionary") }
+        
+        
+        // Has the process been completed several times and the user has not already been prompted for this version?
+        if count == 4 {
+            let twoSecondsFromNow = DispatchTime.now() + 4.0
+            DispatchQueue.main.asyncAfter(deadline: twoSecondsFromNow) {
+                
+                SKStoreReviewController.requestReview()
+                
+            }
+        }
+    }
     
     private func downloadFilter(filterfileurl: String) {
         print("started fetching url")

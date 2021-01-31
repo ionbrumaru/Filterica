@@ -21,7 +21,9 @@ struct FiltersCategory: View {
                 .cornerRadius(360)
             
             HStack(alignment: .center){
-                Text(categoryName).padding(.leading, 4).foregroundColor(Color.primary)
+                Text(categoryName)
+                    //.padding(.leading, 4)
+                    .foregroundColor(Color.primary)
             }
         }
     }

@@ -9,70 +9,60 @@ import SwiftUI
 import RealmSwift
 struct FiltersList: View {
     
-    @State private var noInternet: Bool = false
-    
     @State private var filters: [filter] = Array(try! Realm(configuration: Realm.Configuration(schemaVersion: 1)).objects(filter.self))
     
     @State private var packs: [pack] = Array(try! Realm(configuration: Realm.Configuration(schemaVersion: 1)).objects(pack.self))
     
     @State private var selectedFilter: filter?
     
-    private var circleCategories: [String] = ["All", "travel", "color", "nature", "urban", "summer", "atmosphere"]
-    
     @State private var circleCategoriesFilters: [filter] = []
     
     @State private var categorySelection = 0
     
-    private var expandableLoad: [String] = ["Portraits_PACK","Night_life_PACK","Moody_PACK","Stay_home_PACK","Influencers_PACK","Sun_kissed_PACK","France_PACK","urban_filters", "asia_filters", "lights_filters", "neon_filters","nature_filters", "DONTDELETE"]
+    private var circleCategories: [String] = ["travel", "color", "nature", "urban", "summer", "atmosphere"]
+    
+    private var expandableLoad: [String] = ["Portraits_PACK","Night_life_PACK","Moody_PACK","Stay_home_PACK","France_PACK", "neon_filters", "Influencers_PACK","Sun_kissed_PACK","urban_filters","nature_filters", "lights_filters","asia_filters", "DONTDELETE"]
+    
     @State private var expandableShowHowMany = 0
     
     @State private var showLoadMoreButton = true
     @State private var showActionSheet = false
     @State private var showCameraSheet = false
     
-    @Environment(\.openURL) var openURL
+    @State private var noInternet: Bool = false
 
     var body: some View {
         NavigationView{
             VStack(alignment: .leading) {
-                
                 ScrollView(.vertical, showsIndicators: false) {
-                    
-                    
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 14) {
-                            ForEach(0..<6) { counter in
-                                FiltersCategory(categoryName: circleCategories[counter], categoryImage: Image(uiImage: UIImage(named: "\(circleCategories[counter])_small")!))
-                                    .onTapGesture {
+                            ForEach(0..<5) { counter in
+                                NavigationLink(destination: OneColumnFiltersView(circleCategories: circleCategories, categorySelection: $categorySelection, circleCategoriesFilters: $circleCategoriesFilters, filters: $filters).onAppear() { // <<-- here
+                                    circleCategoriesFilters = filters.filter{ $0.tags!.contains(circleCategories[counter]) }
+                                    
+                                    categorySelection = counter
+                                 })
+                                {
+                                    FiltersCategory(categoryName: circleCategories[counter], categoryImage: Image(uiImage: UIImage(named: "\(circleCategories[counter])_small")!))
                                         
-                                        if (counter != 0)
-                                        {
-                                            circleCategoriesFilters = filters.filter{ $0.tags!.contains(circleCategories[counter]) }
-                                        }
-                                        categorySelection = counter
-                                    }
+                                }
+                                
+                                
                             }
                         }.padding(.leading)
                     }
                     Divider()
                     
-                    if (categorySelection == 0) {
-                        
-                        
                         ShowStaticFilters(filters: $filters, tag: "winter", label: "Snowfall")
                         
                         if (!noInternet) {
-                            //ShowStaticPacks(packname: "Winter", filters: $filters, packs: $packs)
                             ShowStaticPacks(packname: "Autumn", filters: $filters, packs: $packs)
                         }
                         
                         ShowStaticFilters(filters: $filters, tag: "atmosphere", label: "Atmosphere")
                         
-                        //ShowStaticPacks(packname: "Portraits", filters: $filters, packs: $packs)
-                        
                         ShowStaticFilters(filters: $filters, tag: "color", label: "Way to colorize")
-                        
-                        //ShowStaticPacks(packname: "Sun kissed", filters: $filters, packs: $packs)
                         
                         ShowStaticFilters(filters: $filters, tag: "summer", label: "Summertime").onAppear(){
                             if(packs.filter{$0.name == "Portraits"}.count == 0) {
@@ -81,10 +71,6 @@ struct FiltersList: View {
                             }
                             else {noInternet = false }
                         }.padding(.top,-15)
-                        
-                       // ShowStaticPacks(packname: "Night life", filters: $filters, packs: $packs)
-                        
-                        
                         
                         if (!noInternet) {
                             ForEach(0 ..< expandableShowHowMany, id: \.self) { counter1 in
@@ -114,21 +100,22 @@ struct FiltersList: View {
                             
                             LoadMoreButton(showLoadMoreButton: $showLoadMoreButton, expandableShowHowMany: $expandableShowHowMany, expandableLoad: expandableLoad)
                         }
-                    }
-                    else {
-                        
-                        OneColumnFiltersView(circleCategories: circleCategories, categorySelection: $categorySelection, circleCategoriesFilters: $circleCategoriesFilters, filters: $filters)
-                    }
+                    
+                    
                     
                 }
-                .navigationBarItems(leading: Button(action:{showCameraSheet = true}) {
-                    NavigationLink(destination: CameraFilterView())
-                    {
-                        Image(systemName: "camera")
-                    }
+                .navigationBarItems(
+                    //leading: Button(action:{showCameraSheet = true}) {
+                    
+//                    if #available(iOS 14.0, *) {
+//                    NavigationLink(destination: CameraFilterView())
+//                    {
+//                        Image(systemName: "camera")
+//                    }
+//                    }
                     
                     
-                },
+                //},
                 trailing: Button(action:{showActionSheet = true}) {
                     Text("About")
                 })
@@ -139,8 +126,14 @@ struct FiltersList: View {
                 }
             }.actionSheet(isPresented: $showActionSheet) {
                 ActionSheet(title: Text("About"), message: Text("Select document to open in browser"), buttons: [
-                    .default(Text("Privacy Policy")) {  openURL(URL(string: "https://kazantsev-ef.ru/ios/Privacy_Policy.pdf")!) },
-                    .default(Text("Terms and Conditions")) { openURL(URL(string: "https://kazantsev-ef.ru/ios/Terms_and_Conditions.pdf")!)  },
+                    .default(Text("Privacy Policy")) {
+                        guard let url = URL(string: "https://kazantsev-ef.ru/ios/Privacy_Policy.pdf") else { return }
+                        UIApplication.shared.open(url)
+                    },
+                    .default(Text("Terms and Conditions")) {
+                        guard let url = URL(string: "https://kazantsev-ef.ru/ios/Terms_and_Conditions.pdf") else { return }
+                        UIApplication.shared.open(url)
+                    },
                     .cancel() {showActionSheet = false}
                 ])
             }
@@ -219,10 +212,11 @@ struct ShowStaticFilters: View {
                         NavigationLink(destination: FilterView(filterItem: filters.filter{ $0.tags!.contains(tag) }[counter], filters: $filters))
                         {
                             FilterPreviewCard(filterItem: filters.filter{ $0.tags!.contains(tag) }[counter])
+                                .frame(height: 340)
                         }
                         
                     }
-                }.padding().navigationBarTitle("Filters", displayMode: .large)
+                }.padding().navigationBarTitle("Filters")
                 
             }.frame(height: 340)
         }
@@ -236,8 +230,6 @@ struct OneColumnFiltersView: View {
     @Binding var filters: [filter]
     var body: some View {
         VStack {
-            CategoryTitle(name: circleCategories[categorySelection], buttonName: "").padding(.top, 16)
-            
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 16) {
                     ForEach(0..<circleCategoriesFilters.count, id: \.self) { counter in
@@ -246,7 +238,9 @@ struct OneColumnFiltersView: View {
                             FilterPreviewCard(filterItem: circleCategoriesFilters[counter]).fixedSize().frame(height: 340)
                         }
                     }
-                }.padding(.leading).padding(.trailing).navigationBarTitle(circleCategories[categorySelection], displayMode: .large)
+                }.padding(.leading)
+                .padding(.trailing)
+                .navigationBarTitle(circleCategories[categorySelection])
             }
         }
     }
@@ -258,12 +252,9 @@ struct ShowStaticPacks: View {
     @Binding var packs: [pack]
     var body: some View {
         VStack {
-            
             let pack = packs.filter{$0.name == packname}
             
             if(pack.count == 1){
-                
-                
                 CategoryTitle(name: pack[0].name, buttonName: "\(filters.filter{ Int($0.isInPack) == pack[0].id  }.count) presets").padding(.top,8)
                 
                 PackPreview(packItem: pack[0], filters: filters.filter{ Int($0.isInPack) == pack[0].id  }, filters_all: $filters).frame( height: 330)

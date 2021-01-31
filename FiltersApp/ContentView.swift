@@ -7,6 +7,7 @@
 
 import SwiftUI
 import RealmSwift
+
 struct ContentView: View {
     
     @State private var packs: [pack] = Array(try! Realm().objects(pack.self))
@@ -41,7 +42,7 @@ struct ContentView: View {
                     ActivityIndicator(isAnimating: .constant(true), style: .large)
                 }
             }
-        }.accentColor(Color(UIColor(named: "MainColor")!.cgColor))
+        }.accentColor(Color("MainColor"))
         .onAppear(perform: delayCheck)
         
     }

@@ -22,25 +22,19 @@ struct AdviceView: View {
                                 .renderingMode(.original)
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
-                                .ignoresSafeArea( edges: .top)
+                                .edgesIgnoringSafeArea(.top)
                                 .frame(width: abs(geometry.size.width), height: abs(geometry.size.height / 3.2))
                                 .mask(Rectangle().edgesIgnoringSafeArea(.top))
                         }
                     }
                 }
-                    
                         Text(item.text)
                             .font(.system(size: 14))
                             .padding(.leading)
                             .padding(.trailing)
                             .padding(.top)
-                        
-                       
-                           
                     }
-                
-                       
-            }.navigationBarTitle(item.name, displayMode: .large)
+            }.navigationBarTitle(item.name)
                 
                 Spacer()
             }

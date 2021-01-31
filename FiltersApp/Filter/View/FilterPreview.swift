@@ -23,25 +23,42 @@ struct FilterPreviewCard: View {
                 .cornerRadius(12)
             }
             else {
-                URLImage(URL(string: filterItem.imageAfter)!, delay: 0.25,placeholder: {
-                    ProgressView($0) { progress in
-                        ZStack {
-                            if progress >= 0.0 {
-                                // The download has started. CircleProgressView displays the progress.
-                                CircleProgressView(progress)
-                                    .stroke(lineWidth: 8.0)
+                
+                URLImage(url: URL(string: filterItem.imageAfter)!,
+                         options: URLImageOptions(
+                            cachePolicy: .returnCacheElseLoad(cacheDelay: nil, downloadDelay: 0.25) // Return cached image or download after delay
+                         ),
+                         empty: {
+                            Text("nothing")            // This view is displayed before download starts
+                         },
+                         inProgress: { progress in
+                            VStack(alignment: .center) {
+                                if #available(iOS 14.0, *) {
+                                    
+                                    ProgressView()
+                                    
+                                } else {
+                                    // Fallback on earlier versions
+                                    
+                                    ActivityIndicator(isAnimating: .constant(true), style: .large)
+                                    
+                                }
+                            }.frame(width: 330, height: 300)
+                         },
+                         failure: { error, retry in         // Display error and retry button
+                            VStack {
+                                Text(error.localizedDescription)
+                                Button("Retry", action: retry)
                             }
-                        }
-                    }
-                    .frame(width: 50.0, height: 50.0)
-                }) { proxy in
-                    proxy.image
-                        .renderingMode(.original)
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 330, height: 300)
-                        .cornerRadius(12)
-                }
+                         },
+                         content: { image in                // Content view
+                            image
+                                .renderingMode(.original)
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 330, height: 300)
+                                .cornerRadius(12)
+                         })
             }
             
             HStack{
@@ -52,9 +69,7 @@ struct FilterPreviewCard: View {
     }
     
     
-    func redacted(when active: Bool) -> some View {
-        return active ? AnyView(redacted(reason: .placeholder)) : AnyView(unredacted())
-    }
+    
 }
 
 
