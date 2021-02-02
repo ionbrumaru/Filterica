@@ -17,6 +17,10 @@
 		8081C84E24D439C8005447F3 /* FiltersCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8081C84D24D439C8005447F3 /* FiltersCategory.swift */; };
 		80844F75255FF98900666243 /* LikedFiltersList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80844F74255FF98900666243 /* LikedFiltersList.swift */; };
 		809FDE5124E59AAF00EFC1E8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 809FDE5324E59AAF00EFC1E8 /* Localizable.strings */; };
+		80A190DC25C9BD1300775058 /* LikeButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A190DB25C9BD1300775058 /* LikeButtonView.swift */; };
+		80A190E025C9BD6300775058 /* PackNavigationItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A190DF25C9BD6300775058 /* PackNavigationItemsView.swift */; };
+		80A190E325C9BDB800775058 /* LoadMoreButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A190E225C9BDB800775058 /* LoadMoreButtonView.swift */; };
+		80A190E725C9BDFD00775058 /* UnderImageLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A190E625C9BDFD00775058 /* UnderImageLineView.swift */; };
 		80B4543724D2DB5200B4EE74 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B4543624D2DB5200B4EE74 /* AppDelegate.swift */; };
 		80B4543924D2DB5200B4EE74 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B4543824D2DB5200B4EE74 /* SceneDelegate.swift */; };
 		80B4543B24D2DB5200B4EE74 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80B4543A24D2DB5200B4EE74 /* ContentView.swift */; };
@@ -58,6 +62,10 @@
 		809FDE4B24E5999F00EFC1E8 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		809FDE5224E59AAF00EFC1E8 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		809FDE5524E59BD600EFC1E8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		80A190DB25C9BD1300775058 /* LikeButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeButtonView.swift; sourceTree = "<group>"; };
+		80A190DF25C9BD6300775058 /* PackNavigationItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackNavigationItemsView.swift; sourceTree = "<group>"; };
+		80A190E225C9BDB800775058 /* LoadMoreButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadMoreButtonView.swift; sourceTree = "<group>"; };
+		80A190E625C9BDFD00775058 /* UnderImageLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderImageLineView.swift; sourceTree = "<group>"; };
 		80B4543324D2DB5200B4EE74 /* FiltersApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FiltersApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		80B4543624D2DB5200B4EE74 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		80B4543824D2DB5200B4EE74 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -196,6 +204,17 @@
 			path = Localizable;
 			sourceTree = "<group>";
 		};
+		80A190DA25C9BCF100775058 /* Reusable */ = {
+			isa = PBXGroup;
+			children = (
+				80A190DB25C9BD1300775058 /* LikeButtonView.swift */,
+				80A190DF25C9BD6300775058 /* PackNavigationItemsView.swift */,
+				80A190E225C9BDB800775058 /* LoadMoreButtonView.swift */,
+				80A190E625C9BDFD00775058 /* UnderImageLineView.swift */,
+			);
+			path = Reusable;
+			sourceTree = "<group>";
+		};
 		80B4542A24D2DB5200B4EE74 = {
 			isa = PBXGroup;
 			children = (
@@ -215,10 +234,11 @@
 		80B4543524D2DB5200B4EE74 /* FiltersApp */ = {
 			isa = PBXGroup;
 			children = (
+				805EBC0C24D606300058BCBF /* Data */,
+				80A190DA25C9BCF100775058 /* Reusable */,
 				80EA47E425AE441200F2C526 /* CameraFilters */,
 				809FDE4E24E59A7A00EFC1E8 /* Localizable */,
 				805EBC1124D700F70058BCBF /* Pack */,
-				805EBC0C24D606300058BCBF /* Data */,
 				805EBC0924D605D80058BCBF /* Filter */,
 				805EBC0624D605AC0058BCBF /* Tutorials */,
 				80B4543624D2DB5200B4EE74 /* AppDelegate.swift */,
@@ -366,6 +386,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				80A190DC25C9BD1300775058 /* LikeButtonView.swift in Sources */,
 				805EBC1724D7037E0058BCBF /* PackPreview.swift in Sources */,
 				80E7C04D24D2E81D00E2ED55 /* GlobalData.swift in Sources */,
 				80B4543724D2DB5200B4EE74 /* AppDelegate.swift in Sources */,
@@ -376,16 +397,19 @@
 				8081C84E24D439C8005447F3 /* FiltersCategory.swift in Sources */,
 				80B4544B24D2DB7600B4EE74 /* Filter.swift in Sources */,
 				80E7C05324D2F86600E2ED55 /* Extensions.swift in Sources */,
+				80A190E325C9BDB800775058 /* LoadMoreButtonView.swift in Sources */,
 				80CEAE6424DA12B400A7C590 /* TutorialDetailView.swift in Sources */,
 				80CEAE5E24D7759E00A7C590 /* FirstViews.swift in Sources */,
 				80B4543924D2DB5200B4EE74 /* SceneDelegate.swift in Sources */,
 				805EBC0524D605760058BCBF /* imageInfoView.swift in Sources */,
 				805EBC0824D605BA0058BCBF /* TutorialView.swift in Sources */,
+				80A190E025C9BD6300775058 /* PackNavigationItemsView.swift in Sources */,
 				80E7C05124D2EB1100E2ED55 /* FiltersList.swift in Sources */,
 				80844F75255FF98900666243 /* LikedFiltersList.swift in Sources */,
 				80CEAE6624DA15ED00A7C590 /* TitleView.swift in Sources */,
 				80B4544D24D2E26500B4EE74 /* FilterView.swift in Sources */,
 				80CBB176259DF4710072BE39 /* AdviceView.swift in Sources */,
+				80A190E725C9BDFD00775058 /* UnderImageLineView.swift in Sources */,
 				80E7C05B24D312B000E2ED55 /* FilterPreview.swift in Sources */,
 				805EBC1024D6F7A00058BCBF /* pack.swift in Sources */,
 				80EA47E825AE445000F2C526 /* HomeViewModel.swift in Sources */,

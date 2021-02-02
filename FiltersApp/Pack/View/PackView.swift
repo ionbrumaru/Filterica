@@ -119,9 +119,6 @@ struct PackView: View {
                         
                         LikeButton(isLiked: $isLiked, currentImage: $currentImage, filters: filters)
                         
-                        
-                        
-                        
                         Spacer()
                         
                         //displays progress of download
@@ -253,96 +250,5 @@ struct PackView: View {
 struct TapShape : Shape {
     func path(in rect: CGRect) -> Path {
         return Path(CGRect(x: 0, y: 0, width: rect.width, height: 350))
-    }
-}
-
-struct PackNavigationItems: View {
-    @Binding var isLiked: Bool
-    @Binding var currentImage: Int
-    var filters: [filter]?
-    
-    var body: some View {
-        HStack {
-            HStack {
-                Image(systemName: "arrow.left")
-                    .resizable()
-                    .font(.largeTitle)
-                    .frame(width: 22, height: 22)
-                    .foregroundColor(.white)
-            }
-            .frame(width: 64, height: 400)
-            .contentShape(Rectangle())
-            .onTapGesture(count: /*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/, perform: {
-                if (currentImage != 0) { currentImage -= 1}
-                isLiked = filters![currentImage].liked
-            })
-            
-            Spacer()
-            
-            HStack {
-                Image(systemName: "arrow.right")
-                    .resizable()
-                    .font(.largeTitle)
-                    .frame(width: 22, height: 22)
-                    .foregroundColor(.white)
-            }
-            .frame(width: 64, height: 400)
-            .contentShape(Rectangle())
-            .onTapGesture(count: /*@START_MENU_TOKEN@*/1/*@END_MENU_TOKEN@*/, perform: {
-                if (currentImage != filters!.count - 1) { currentImage += 1}
-                isLiked = filters![currentImage].liked
-            })
-        }
-    }
-}
-
-struct LikeButton: View {
-    @Binding var isLiked: Bool
-    @Binding var currentImage: Int
-    var filters: [filter]?
-    
-    var body: some View {
-        Image(systemName: "suit.heart.fill")
-            .font(Font.system(size: 30, weight: .regular))
-            .foregroundColor(isLiked ? Color(UIColor(named: "MainColor")!) : Color.secondary)
-            //.padding(.trailing,4)
-            .onTapGesture {
-                do {
-                    var realm = try Realm()
-                    
-                    if (!isLiked) {
-                        print("LIKE")
-                        
-                        let realmFilters = realm.objects(filter.self).filter("name = %@", filters![currentImage].name)
-                        
-                        if let fltr = realmFilters.first {
-                            try! realm.write {
-                                fltr.liked = true
-                            }
-                        }
-                        isLiked = true
-                        
-                    }
-                    else {
-                        print("dislike")
-                        
-                        let realmFilters = realm.objects(filter.self).filter("name = %@", filters![currentImage].name)
-                        
-                        if let fltr = realmFilters.first {
-                            try! realm.write {
-                                fltr.liked = false
-                            }
-                        }
-                        isLiked = false
-                        
-                    }
-                }
-                catch let error as NSError {
-                    print(error.localizedDescription)
-                }
-                
-            }.onAppear() {
-                isLiked = filters![currentImage].liked
-            }
     }
 }

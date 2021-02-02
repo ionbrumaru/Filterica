@@ -67,9 +67,6 @@ struct FilterPreviewCard: View {
             }
         }
     }
-    
-    
-    
 }
 
 
