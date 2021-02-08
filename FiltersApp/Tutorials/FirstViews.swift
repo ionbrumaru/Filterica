@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct FirstViews: View {
-    
+    @EnvironmentObject var fs: FilterStorage
     @State private var showMain = false
     let title1: LocalizedStringKey = "Explore"
     let desc1: LocalizedStringKey = "Explore more than 100 filters in a catalog."

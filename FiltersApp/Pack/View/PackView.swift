@@ -8,7 +8,7 @@ struct PackView: View {
     
     var packItem: pack
     var filters: [filter]?
-    @Binding var filters_all: [filter]
+    @EnvironmentObject var fs: FilterStorage
     @State var isLiked: Bool = false
     @State var currentImage = 0
     @State private var isOriginalShowing = false
@@ -156,14 +156,14 @@ struct PackView: View {
                     
                     VStack(alignment: .leading){
                         if (showRelated) {
-                            let relatedFilters = filters_all.filter{ HasAnyTag(filter1: $0, filter2: filters![0]) }
+                            let relatedFilters = fs.filters.filter{ HasAnyTag(filter1: $0, filter2: filters![0]) }
                             if relatedFilters.count > 2 {
                                 Text("More like this").font(.title).bold().padding(.leading)
                                 
                                 ScrollView(.horizontal, showsIndicators: false) {
                                     HStack(spacing: 16) {
                                         ForEach(0..<relatedFilters.count) { counter in
-                                            NavigationLink(destination: FilterView(filterItem: relatedFilters[counter], filters: $filters_all)) {
+                                            NavigationLink(destination: FilterView(filterItem: relatedFilters[counter])) {
                                                 FilterPreviewCard(filterItem: relatedFilters[counter]).frame(height: 280).cornerRadius(6).clipped()
                                             }
                                         }

@@ -12,7 +12,7 @@ struct LikedFiltersList: View {
     
     let navtext: LocalizedStringKey =  "Favourite filters"
     
-    @State private var filters: [filter] = Array(try! Realm(configuration: Realm.Configuration(schemaVersion: 1)).objects(filter.self))
+    @EnvironmentObject var fs: FilterStorage
     
     @State private var likedFilters: [filter] = []
     
@@ -26,16 +26,17 @@ struct LikedFiltersList: View {
                     ScrollView(.vertical, showsIndicators: false) {
                         VStack(alignment: .leading, spacing: 16) {
                             ForEach(likedFilters, id:\.self) { item in
-                                NavigationLink(destination: FilterView(filterItem: item, filters: $filters))
+                                NavigationLink(destination: FilterView(filterItem: item))
                                 {
-                                    FilterPreviewCard(filterItem: item).fixedSize().frame(height: 340)
+                                    FilterPreviewCard(filterItem: item)
+                                        .fixedSize().frame(height: 340)
                                 }
                             }
                         }.padding(.leading).padding(.trailing)
                     }
                 }
             }.onAppear() {
-                likedFilters = filters.filter{ $0.liked == true }
+                likedFilters = fs.filters.filter{ $0.liked == true }
             }
             .navigationBarTitle("Favourite filters", displayMode: .large)
         }

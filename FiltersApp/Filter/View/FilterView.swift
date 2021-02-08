@@ -13,7 +13,7 @@ import StoreKit
 struct FilterView: View {
     
     var filterItem: filter
-    @Binding var filters: [filter]
+    @EnvironmentObject var fs: FilterStorage
     var showTutorial: Bool =  false
     
     @State private var isOriginalShowing = false
@@ -109,14 +109,14 @@ struct FilterView: View {
                     UnderImageLinedView(filterItem: filterItem, showShareSheet: $showShareSheet, showImageInfo: $showImageInfo, isLoading: $isLoading)
                     
                     if (showRelated) {
-                        let relatedFilters = filters.filter{ HasAnyTag(filter1: $0, filter2: filterItem) }
+                        let relatedFilters = fs.filters.filter{ HasAnyTag(filter1: $0, filter2: filterItem) }
                         if relatedFilters.count > 2 {
                             Text("More like this").font(.title).bold().padding(.leading)
                             
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack(spacing: 16) {
                                     ForEach(0..<relatedFilters.count) { counter in
-                                        NavigationLink(destination: FilterView(filterItem: relatedFilters[counter], filters: $filters)) {
+                                        NavigationLink(destination: FilterView(filterItem: relatedFilters[counter])) {
                                             FilterPreviewCard(filterItem: relatedFilters[counter]).frame(height: 280).cornerRadius(6).clipped()
                                         }
                                     }

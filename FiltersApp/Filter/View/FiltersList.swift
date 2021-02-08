@@ -9,21 +9,15 @@ import SwiftUI
 import RealmSwift
 struct FiltersList: View {
     
-    @State private var filters: [filter] = Array(try! Realm(configuration: Realm.Configuration(schemaVersion: 1)).objects(filter.self))
-    
-    @State private var packs: [pack] = Array(try! Realm(configuration: Realm.Configuration(schemaVersion: 1)).objects(pack.self))
-    
+    @EnvironmentObject var fs: FilterStorage
+
     @State private var selectedFilter: filter?
     
     @State private var circleCategoriesFilters: [filter] = []
     
     @State private var categorySelection = 0
     
-    private var circleCategories: [String] = ["travel", "color", "nature", "urban", "summer", "atmosphere"]
-    
-    private var expandableLoad: [String] = ["Portraits_PACK","Night_life_PACK","Moody_PACK","Stay_home_PACK","France_PACK", "neon_filters", "Influencers_PACK","Sun_kissed_PACK","urban_filters","nature_filters", "lights_filters","asia_filters", "DONTDELETE"]
-    
-    @State private var expandableShowHowMany = 0
+    @State private var expandableShowHowMany = 3
     
     @State private var showLoadMoreButton = true
     @State private var showActionSheet = false
@@ -38,67 +32,54 @@ struct FiltersList: View {
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 14) {
                             ForEach(0..<5) { counter in
-                                NavigationLink(destination: OneColumnFiltersView(circleCategories: circleCategories, categorySelection: $categorySelection, circleCategoriesFilters: $circleCategoriesFilters, filters: $filters).onAppear() { // <<-- here
-                                    circleCategoriesFilters = filters.filter{ $0.tags!.contains(circleCategories[counter]) }
+                                NavigationLink(destination: OneColumnFiltersView(categorySelection: $categorySelection, circleCategoriesFilters: $circleCategoriesFilters).onAppear() { // <<-- here
+                                    circleCategoriesFilters = fs.filters.filter{ $0.tags!.contains(fs.circleCategories[counter]) }
                                     
                                     categorySelection = counter
                                  })
                                 {
-                                    FiltersCategory(categoryName: circleCategories[counter], categoryImage: Image(uiImage: UIImage(named: "\(circleCategories[counter])_small")!))
+                                    FiltersCategory(categoryName: fs.circleCategories[counter], categoryImage: Image(uiImage: UIImage(named: "\(fs.circleCategories[counter])_small")!))
                                         
-                                }
-                                
-                                
+                                } 
                             }
                         }.padding(.leading)
                     }
-                    Divider()
-                    
-                        ShowStaticFilters(filters: $filters, tag: "winter", label: "Snowfall")
-                        
-                        if (!noInternet) {
-                            ShowStaticPacks(packname: "Autumn", filters: $filters, packs: $packs)
-                        }
-                        
-                        ShowStaticFilters(filters: $filters, tag: "atmosphere", label: "Atmosphere")
-                        
-                        ShowStaticFilters(filters: $filters, tag: "color", label: "Way to colorize")
-                        
-                        ShowStaticFilters(filters: $filters, tag: "summer", label: "Summertime").onAppear(){
-                            if(packs.filter{$0.name == "Portraits"}.count == 0) {
+                    Divider().onAppear(){
+                        if(fs.packs.filter{$0.name == "Portraits"}.count == 0) {
                                 noInternet = true
-                                
+
                             }
                             else {noInternet = false }
-                        }.padding(.top,-15)
+                        }
                         
                         if (!noInternet) {
                             ForEach(0 ..< expandableShowHowMany, id: \.self) { counter1 in
                                 
-                                if (expandableLoad[counter1].contains("_filters")) {
+                                if (fs.expandableLoad[counter1].contains("_filters")) {
                                     
-                                    let currentTag = expandableLoad[counter1].replacingOccurrences(of: "_filters", with: "")
+                                    let currentTag = fs.expandableLoad[counter1].replacingOccurrences(of: "_filters", with: "")
                                     
-                                    if filters.filter{ $0.tags!.contains(currentTag) }.count >= 2 {
-                                        ShowStaticFilters(filters: $filters, tag: currentTag, label: currentTag)
+                                    if fs.filters.filter{ $0.tags!.contains(currentTag) }.count >= 2 {
+                                        ShowStaticFilters(tag: currentTag, label: currentTag)
                                     }
                                     
                                 }
-                                else if (expandableLoad[counter1].contains("_PACK")) {
-                                    let pckname = (expandableLoad[counter1].replacingOccurrences(of: "_PACK", with: "")).replacingOccurrences(of: "_", with: " ")
-                                    let packfiltered = packs.filter{ $0.name.contains(pckname) }
+                                else if (fs.expandableLoad[counter1].contains("_PACK")) {
+                                    let pckname = (fs.expandableLoad[counter1].replacingOccurrences(of: "_PACK", with: "")).replacingOccurrences(of: "_", with: " ")
+                                    let packfiltered = fs.packs.filter{ $0.name.contains(pckname) }
                                     
                                     if packfiltered.count != 0 {
                                         
                                         let pack = packfiltered[0]
-                                        CategoryTitle(name: pckname, buttonName: "\(filters.filter{ Int($0.isInPack) == pack.id  }.count) presets").padding(.top,8)
+                                        CategoryTitle(name: pckname, buttonName: "\(fs.filters.filter{ Int($0.isInPack) == pack.id  }.count) presets").padding(.top,8)
                                         
-                                        PackPreview(packItem: pack, filters: filters.filter{ Int($0.isInPack) == pack.id  }, filters_all: $filters).frame( height: 330)
+                                        PackPreview(packItem: pack, filters: fs.filters.filter{ Int($0.isInPack) == pack.id  })
+                                            .frame( height: 330)
                                     }
                                 }
                             }
                             
-                            LoadMoreButton(showLoadMoreButton: $showLoadMoreButton, expandableShowHowMany: $expandableShowHowMany, expandableLoad: expandableLoad)
+                            LoadMoreButton(showLoadMoreButton: $showLoadMoreButton, expandableShowHowMany: $expandableShowHowMany, expandableLoad: fs.expandableLoad)
                         }
                     
                     
@@ -113,8 +94,7 @@ struct FiltersList: View {
 //                        Image(systemName: "camera")
 //                    }
 //                    }
-                    
-                    
+
                 //},
                 trailing: Button(action:{showActionSheet = true}) {
                     Text("About")
@@ -137,6 +117,7 @@ struct FiltersList: View {
                     .cancel() {showActionSheet = false}
                 ])
             }
+            .navigationBarTitle("Presets", displayMode: .large)
         }
     }
 }
@@ -160,7 +141,7 @@ struct CategoryTitle: View {
 }
 
 struct ShowStaticFilters: View {
-    @Binding var filters: [filter]
+    @EnvironmentObject var fs: FilterStorage
     var tag: String
     var label: String
     var body: some View {
@@ -169,11 +150,11 @@ struct ShowStaticFilters: View {
             
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 16) {
-                    ForEach(0..<filters.filter{ $0.tags!.contains(tag) }.count) { counter in
+                    ForEach(0..<fs.filters.filter{ $0.tags!.contains(tag) }.count) { counter in
                         
-                        NavigationLink(destination: FilterView(filterItem: filters.filter{ $0.tags!.contains(tag) }[counter], filters: $filters))
+                        NavigationLink(destination: FilterView(filterItem: fs.filters.filter{ $0.tags!.contains(tag) }[counter]))
                         {
-                            FilterPreviewCard(filterItem: filters.filter{ $0.tags!.contains(tag) }[counter])
+                            FilterPreviewCard(filterItem: fs.filters.filter{ $0.tags!.contains(tag) }[counter])
                                 .frame(height: 340)
                         }
                         
@@ -186,23 +167,23 @@ struct ShowStaticFilters: View {
 }
 
 struct OneColumnFiltersView: View {
-    var circleCategories: [String]
     @Binding var categorySelection: Int
     @Binding var circleCategoriesFilters: [filter]
-    @Binding var filters: [filter]
+    @EnvironmentObject var fs: FilterStorage
+    
     var body: some View {
         VStack {
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(alignment: .leading, spacing: 16) {
                     ForEach(0..<circleCategoriesFilters.count, id: \.self) { counter in
-                        NavigationLink(destination: FilterView(filterItem: circleCategoriesFilters[counter], filters: $filters))
+                        NavigationLink(destination: FilterView(filterItem: circleCategoriesFilters[counter]))
                         {
                             FilterPreviewCard(filterItem: circleCategoriesFilters[counter]).fixedSize().frame(height: 340)
                         }
                     }
                 }.padding(.leading)
                 .padding(.trailing)
-                .navigationBarTitle(circleCategories[categorySelection])
+                .navigationBarTitle(fs.circleCategories[categorySelection])
             }
         }
     }
@@ -210,16 +191,16 @@ struct OneColumnFiltersView: View {
 
 struct ShowStaticPacks: View {
     var packname: String
-    @Binding var filters: [filter]
-    @Binding var packs: [pack]
+    @EnvironmentObject var fs: FilterStorage
+    
     var body: some View {
         VStack {
-            let pack = packs.filter{$0.name == packname}
+            let pack = fs.packs.filter{$0.name == packname}
             
             if(pack.count == 1){
-                CategoryTitle(name: pack[0].name, buttonName: "\(filters.filter{ Int($0.isInPack) == pack[0].id  }.count) presets").padding(.top,8)
+                CategoryTitle(name: pack[0].name, buttonName: "\(fs.filters.filter{ Int($0.isInPack) == pack[0].id  }.count) presets").padding(.top,8)
                 
-                PackPreview(packItem: pack[0], filters: filters.filter{ Int($0.isInPack) == pack[0].id  }, filters_all: $filters).frame( height: 330)
+                PackPreview(packItem: pack[0], filters: fs.filters.filter{ Int($0.isInPack) == pack[0].id  }).frame( height: 330)
                 
             }
             

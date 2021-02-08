@@ -30,17 +30,23 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let tutorial = FirstViews()
         
         
-        
         let hasLaunchedBefore = UserDefaults.standard.bool(forKey: "hasLaunchedBefore")
         
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
             
+            let realm = try! Realm()
+            try! realm.write {
+              realm.deleteAll()
+            }
+            
             if hasLaunchedBefore {
                 //filters = realm.objects(filter.self)
                 loadFiltersFromServer()
-                window.rootViewController = UIHostingController(rootView: contentView)
+                
+                let filterStorage = FilterStorage()
+                window.rootViewController = UIHostingController(rootView: contentView.environmentObject(filterStorage))
             } else {
                 //uploadLocalToRealm()
                 print("before loading")
@@ -67,8 +73,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 
                 
                 loadFiltersFromServer()
-                
-                window.rootViewController = UIHostingController(rootView: tutorial)
+                let filterStorage = FilterStorage()
+                window.rootViewController = UIHostingController(rootView: tutorial.environmentObject(filterStorage))
                 UserDefaults.standard.set(true, forKey: "hasLaunchedBefore")
             }
             

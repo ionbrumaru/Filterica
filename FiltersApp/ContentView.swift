@@ -10,7 +10,7 @@ import RealmSwift
 
 struct ContentView: View {
     
-    @State private var packs: [pack] = Array(try! Realm().objects(pack.self))
+    @EnvironmentObject var fs: FilterStorage
     @State private var hasTimeElapsed = false
     
     @State private var hasLoaded = false
@@ -21,17 +21,19 @@ struct ContentView: View {
     var body: some View {
         TabView {
             if hasLoaded {
-                FiltersList().accentColor(Color(mainColor)).tabItem {
+                FiltersList().environmentObject(fs)
+                    .accentColor(Color(mainColor)).tabItem {
                     Image(systemName: "rectangle.on.rectangle.angled.fill")
                     Text("Filters")
                 }
                 
-                AdvicesListView().tabItem {
+                AdvicesListView().environmentObject(fs)
+                    .tabItem {
                     Image(systemName: "lightbulb.fill")
                     Text("Tips")
                 }
                 
-                LikedFiltersList()
+                LikedFiltersList().environmentObject(fs)
                     .tabItem {
                         Image(systemName: "star.fill")
                         Text("Favourite")
@@ -52,8 +54,9 @@ struct ContentView: View {
         recursion += 1
         // Delay of 7.5 seconds
         DispatchQueue.main.asyncAfter(deadline: .now() + timeout) {
-            let newpacks: [pack] = Array(try! Realm(configuration: Realm.Configuration(schemaVersion: 1)).objects(pack.self))
-            if newpacks.count != 0 {
+            fs.packs = Array(try! Realm(configuration: Realm.Configuration(schemaVersion: 1)).objects(pack.self))
+            fs.filters = Array(try! Realm(configuration: Realm.Configuration(schemaVersion: 1)).objects(filter.self))
+            if fs.packs.count >= 3 {
                 hasLoaded = true
                 hasTimeElapsed = true
             }

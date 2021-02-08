@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		800F752625CFEBE400CB2AF8 /* FilterStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800F752525CFEBE400CB2AF8 /* FilterStorage.swift */; };
 		803B7A2C24D4C8AE00F23EA3 /* ShareScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803B7A2B24D4C8AE00F23EA3 /* ShareScreen.swift */; };
 		805EBC0224D5ACC80058BCBF /* ImageSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805EBC0124D5ACC80058BCBF /* ImageSettings.swift */; };
 		805EBC0524D605760058BCBF /* imageInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805EBC0424D605760058BCBF /* imageInfoView.swift */; };
@@ -50,6 +51,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		800F752525CFEBE400CB2AF8 /* FilterStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterStorage.swift; sourceTree = "<group>"; };
 		803B7A2B24D4C8AE00F23EA3 /* ShareScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareScreen.swift; sourceTree = "<group>"; };
 		805EBC0124D5ACC80058BCBF /* ImageSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageSettings.swift; sourceTree = "<group>"; };
 		805EBC0424D605760058BCBF /* imageInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = imageInfoView.swift; sourceTree = "<group>"; };
@@ -234,6 +236,7 @@
 		80B4543524D2DB5200B4EE74 /* FiltersApp */ = {
 			isa = PBXGroup;
 			children = (
+				800F752525CFEBE400CB2AF8 /* FilterStorage.swift */,
 				805EBC0C24D606300058BCBF /* Data */,
 				80A190DA25C9BCF100775058 /* Reusable */,
 				80EA47E425AE441200F2C526 /* CameraFilters */,
@@ -398,6 +401,7 @@
 				80B4544B24D2DB7600B4EE74 /* Filter.swift in Sources */,
 				80E7C05324D2F86600E2ED55 /* Extensions.swift in Sources */,
 				80A190E325C9BDB800775058 /* LoadMoreButtonView.swift in Sources */,
+				800F752625CFEBE400CB2AF8 /* FilterStorage.swift in Sources */,
 				80CEAE6424DA12B400A7C590 /* TutorialDetailView.swift in Sources */,
 				80CEAE5E24D7759E00A7C590 /* FirstViews.swift in Sources */,
 				80B4543924D2DB5200B4EE74 /* SceneDelegate.swift in Sources */,
@@ -583,7 +587,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.8;
+				MARKETING_VERSION = 2.91;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nickyapp.FiltersApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -607,7 +611,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.8;
+				MARKETING_VERSION = 2.91;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nickyapp.FiltersApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
