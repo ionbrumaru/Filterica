@@ -4,7 +4,7 @@
 - Backend PHP
 
 #### Localized
-- English, Chinese (Simplified), French, German, Japanese, Russian)
+- English, Chinese (Simplified), French, German, Japanese, Russian
 
 # APPSTORE 
 https://apps.apple.com/RU/app/id1540353726?l=ru
