@@ -44,9 +44,7 @@ struct ImagePicker : UIViewControllerRepresentable {
                     results.first!.itemProvider.loadObject(ofClass: UIImage.self) { (image, err) in
                         
                         DispatchQueue.main.async {
-                            
-                            
-                            self.parent.imageData = (image as! UIImage).pngData()!
+                            self.parent.imageData = (image as! UIImage).jpegData(compressionQuality: 1)!
                             self.parent.picker.toggle()
                         }
                     }

@@ -17,6 +17,9 @@
 		805EBC1724D7037E0058BCBF /* PackPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805EBC1624D7037E0058BCBF /* PackPreview.swift */; };
 		8081C84E24D439C8005447F3 /* FiltersCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8081C84D24D439C8005447F3 /* FiltersCategory.swift */; };
 		80844F75255FF98900666243 /* LikedFiltersList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80844F74255FF98900666243 /* LikedFiltersList.swift */; };
+		80904BF9272A0D9D0053A2F4 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80904BF8272A0D9D0053A2F4 /* StoreKit.framework */; };
+		80904BFB272A10770053A2F4 /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80904BFA272A10770053A2F4 /* StoreManager.swift */; };
+		80904BFD272A13C10053A2F4 /* SubscriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80904BFC272A13C10053A2F4 /* SubscriptionView.swift */; };
 		809FDE5124E59AAF00EFC1E8 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 809FDE5324E59AAF00EFC1E8 /* Localizable.strings */; };
 		80A190DC25C9BD1300775058 /* LikeButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A190DB25C9BD1300775058 /* LikeButtonView.swift */; };
 		80A190E025C9BD6300775058 /* PackNavigationItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A190DF25C9BD6300775058 /* PackNavigationItemsView.swift */; };
@@ -61,6 +64,9 @@
 		805EBC1624D7037E0058BCBF /* PackPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackPreview.swift; sourceTree = "<group>"; };
 		8081C84D24D439C8005447F3 /* FiltersCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersCategory.swift; sourceTree = "<group>"; };
 		80844F74255FF98900666243 /* LikedFiltersList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedFiltersList.swift; sourceTree = "<group>"; };
+		80904BF8272A0D9D0053A2F4 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		80904BFA272A10770053A2F4 /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
+		80904BFC272A13C10053A2F4 /* SubscriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionView.swift; sourceTree = "<group>"; };
 		809FDE4B24E5999F00EFC1E8 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		809FDE5224E59AAF00EFC1E8 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		809FDE5524E59BD600EFC1E8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -105,6 +111,7 @@
 			files = (
 				80EBB66D25B609EA00A30F92 /* Realm in Frameworks */,
 				80EBB66B25B609EA00A30F92 /* RealmSwift in Frameworks */,
+				80904BF9272A0D9D0053A2F4 /* StoreKit.framework in Frameworks */,
 				80EBB67125B60A5100A30F92 /* SwiftyJSON in Frameworks */,
 				80EBB66625B6093000A30F92 /* URLImage in Frameworks */,
 			);
@@ -138,6 +145,7 @@
 			children = (
 				805EBC0A24D605E20058BCBF /* Model */,
 				805EBC0B24D605ED0058BCBF /* View */,
+				80904BFC272A13C10053A2F4 /* SubscriptionView.swift */,
 			);
 			path = Filter;
 			sourceTree = "<group>";
@@ -198,6 +206,14 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		80904BF7272A0D9D0053A2F4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				80904BF8272A0D9D0053A2F4 /* StoreKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		809FDE4E24E59A7A00EFC1E8 /* Localizable */ = {
 			isa = PBXGroup;
 			children = (
@@ -222,6 +238,7 @@
 			children = (
 				80B4543524D2DB5200B4EE74 /* FiltersApp */,
 				80B4543424D2DB5200B4EE74 /* Products */,
+				80904BF7272A0D9D0053A2F4 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -236,6 +253,7 @@
 		80B4543524D2DB5200B4EE74 /* FiltersApp */ = {
 			isa = PBXGroup;
 			children = (
+				80904BFA272A10770053A2F4 /* StoreManager.swift */,
 				800F752525CFEBE400CB2AF8 /* FilterStorage.swift */,
 				805EBC0C24D606300058BCBF /* Data */,
 				80A190DA25C9BCF100775058 /* Reusable */,
@@ -416,11 +434,13 @@
 				80A190E725C9BDFD00775058 /* UnderImageLineView.swift in Sources */,
 				80E7C05B24D312B000E2ED55 /* FilterPreview.swift in Sources */,
 				805EBC1024D6F7A00058BCBF /* pack.swift in Sources */,
+				80904BFB272A10770053A2F4 /* StoreManager.swift in Sources */,
 				80EA47E825AE445000F2C526 /* HomeViewModel.swift in Sources */,
 				80FE992425990A2400B75488 /* AdvicesListView.swift in Sources */,
 				80B4543B24D2DB5200B4EE74 /* ContentView.swift in Sources */,
 				805EBC0224D5ACC80058BCBF /* ImageSettings.swift in Sources */,
 				803B7A2C24D4C8AE00F23EA3 /* ShareScreen.swift in Sources */,
+				80904BFD272A13C10053A2F4 /* SubscriptionView.swift in Sources */,
 				80EA47EE25AE44B600F2C526 /* CameraFilterView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -505,7 +525,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -561,7 +581,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -587,7 +607,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.91;
+				MARKETING_VERSION = 2.92;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nickyapp.FiltersApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -611,7 +631,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.91;
+				MARKETING_VERSION = 2.92;
 				PRODUCT_BUNDLE_IDENTIFIER = com.nickyapp.FiltersApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;

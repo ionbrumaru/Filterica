@@ -3,11 +3,10 @@ import CoreImage
 import CoreImage.CIFilterBuiltins
 
 class HomeViewModel : ObservableObject {
-    
     @Published var imagePicker = false
     @Published var imageData = Data(count: 0)
     
-    @Published var allImages: [FilteredImage] = []
+    @Published var filteredImage: FilteredImage?
     
     // Main Editing Image....
     @Published var mainView : FilteredImage!
@@ -21,89 +20,63 @@ class HomeViewModel : ObservableObject {
     
     // Use Your Own Filters...
     
-    let filters : [CIFilter] = [
-        CIFilter.bloom(),
-        //CIFilter.colorInvert(),
-        CIFilter.photoEffectFade(),
-        CIFilter.colorMonochrome(),
-        CIFilter.sepiaTone(),
-        CIFilter.comicEffect(),
-        CIFilter.photoEffectChrome(),
-        CIFilter.gaussianBlur()
-    ]
+    //    let filters : [CIFilter] = [
+    //        CIFilter.bloom(),
+    //        //CIFilter.colorInvert(),
+    //        CIFilter.photoEffectFade(),
+    //        CIFilter.colorMonochrome(),
+    //        CIFilter.sepiaTone(),
+    //        CIFilter.comicEffect(),
+    //        CIFilter.photoEffectChrome(),
+    //        CIFilter.gaussianBlur()
+    //    ]
     
     
-    func loadFilter(){
+    func loadFilter(settings: imageSettings){
         
         let context = CIContext()
-        
-        filters.forEach { (filter) in
-            
-            // To Avoid Lag Do it in bacground...
-            
-            DispatchQueue.global(qos: .background).async {
-                
-                // loading Image Into Filter....
-                let CiImage = CIImage(data: self.imageData)
-                
-                filter.setValue(CiImage!, forKey: kCIInputImageKey)
-                
-                guard let newImage = filter.outputImage else{return}
-                let cgimage = context.createCGImage(newImage, from: newImage.extent)
-                
-                let isEditable = filter.inputKeys.count > 1
-                let filteredData = FilteredImage(name: filter.name, image: UIImage(cgImage: cgimage!), filter: filter, isEditable: isEditable)
-                
-                DispatchQueue.main.async {
-                    self.allImages.append(filteredData)
-                    if self.mainView == nil{self.mainView = self.allImages.first}
-                }
-            }
-        }
-    }
-    
-    func updateEffect(){
-        
-        let context = CIContext()
-        
-        DispatchQueue.global(qos: .userInteractive).async {
-            
+
+        DispatchQueue.main.async {
             // loading Image Into Filter....
-            let CiImage = CIImage(data: self.imageData)
-            
-            let filter = self.mainView.filter
-            
-            filter.setValue(CiImage!, forKey: kCIInputImageKey)
-            
-            // retreving Image....
-            
-            // there are lot of custom options are available
-            // im only using radius and intensity..
-            // use your own based on your usage...
-            
-            // radius you can give up to 100
-            // im using only 10....
-            
-            if filter.inputKeys.contains("inputRadius"){
-                
-                filter.setValue(self.value * 10, forKey: kCIInputRadiusKey)
+            guard let CiImage = CIImage(data: self.imageData) else { return }
+
+            var finalCIImage = CiImage
+
+            let saturation = ((Double(settings.saturation) ?? 0) / 100) + 1
+            let contrast = ((Double(settings.contrast) ?? 0) / 100) + 1
+
+            finalCIImage = finalCIImage.applyingFilter("CIColorControls", parameters: [kCIInputImageKey: finalCIImage,
+                                                                                  kCIInputSaturationKey:saturation,
+                                                                                    kCIInputContrastKey:contrast])
+
+            guard let filter = CIFilter(name: "CIExposureAdjust") else {
+                print("Failed to instantiate filter")
+                return
             }
-            if filter.inputKeys.contains("inputIntensity"){
-                
-                filter.setValue(self.value, forKey: kCIInputIntensityKey)
-            }
-            
-            guard let newImage = filter.outputImage else{return}
-            
-            // creating UIImage...
-            
-            let cgimage = context.createCGImage(newImage, from: newImage.extent)
-            
+            filter.setValue(settings.exposure, forKey: "inputEV")
+            filter.setValue(finalCIImage, forKey: kCIInputImageKey)
+            finalCIImage = filter.outputImage!
+
+            //            guard let colorControlFilter = CIFilter(name: "CIColorControls")
+            //            else { return }
+            //
+            //            colorControlFilter.setValue(settings.contrast, forKey: kCIInputContrastKey)
+            //            colorControlFilter.setValue(settings.brightness, forKey: KCIInrig)
+            //
+            //            exposureFilter.setValue(settings.exposure, forKey: "inputEV")
+            //            exposureFilter.setValue(CiImage, forKey: kCIInputImageKey)
+            //            finalCIImage = exposureFilter.outputImage
+
+
+            let cgimage = context.createCGImage(finalCIImage, from: finalCIImage.extent)
+            let filteredData = FilteredImage(name: "Name", image: UIImage(cgImage: cgimage!), filter: CIFilter(), isEditable: true)
+
             DispatchQueue.main.async {
-                self.mainView.image = UIImage(cgImage: cgimage!)
+                self.mainView = filteredData
             }
         }
     }
+
 }
 
 import SwiftUI

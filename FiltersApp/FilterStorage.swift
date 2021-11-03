@@ -20,7 +20,7 @@ public class FilterStorage: ObservableObject  {
     
     var circleCategories: [String] = ["travel", "color", "nature", "urban", "summer"]
     
-    var expandableLoad: [String] = ["Porta_PACK","Drake_PACK","Cinematic_PACK","winter_filters","Autumn_PACK","atmosphere_filters","color_filters","summer_filter","Portraits_PACK","Night_life_PACK","Moody_PACK","Stay_home_PACK","France_PACK", "neon_filters", "Influencers_PACK","Sun_kissed_PACK","urban_filters","nature_filters", "lights_filters","asia_filters", "DONTDELETE"]
+    var expandableLoad: [String] = ["Porta_PACK","Drake_PACK","Cinematic_PACK","Autumn_PACK","Urban_Life_PACK","Portraits_PACK","atmosphere_filters","Lovely_Autumn_PACK","winter_filters", "color_filters","summer_filter","Night_life_PACK","Moody_PACK","Stay_home_PACK","France_PACK", "neon_filters", "Influencers_PACK","Sun_kissed_PACK","urban_filters","nature_filters", "lights_filters","asia_filters", "DONTDELETE"]
     
     
     
