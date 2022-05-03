@@ -12,9 +12,9 @@ import SwiftyJSON
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     private var filters: Results<filter>?
-    private var packs: Results<pack>?
+    private var packs: Results<Pack>?
     private var filterstosave: [filter] = []
-    private var packstosave: [pack] = []
+    private var packstosave: [Pack] = []
     var window: UIWindow?
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -54,7 +54,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 do {
                     var realm2 = try Realm()
                     filters = realm2.objects(filter.self)
-                    packs = realm2.objects(pack.self)
+                    packs = realm2.objects(Pack.self)
 
                     //localFiters
                     
@@ -112,7 +112,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         do {
             var realm2 = try Realm()
             filters = realm2.objects(filter.self)
-            packs = realm2.objects(pack.self)
+            packs = realm2.objects(Pack.self)
 
             //localFiters
             
@@ -139,7 +139,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             
             for element in packstosave {
                 var alreadyHasPack = false
-                for el in packs?.toArray(ofType: pack.self) ?? [] {
+                for el in packs?.toArray(ofType: Pack.self) ?? [] {
                     if el.name == element.name { alreadyHasPack = true; break}
                 }
                 
@@ -181,7 +181,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 }
                 //processing packs
                 for fltr_obj in dict!["packs"]! {
-                    let pck = pack(id: Int(fltr_obj["id"] as! String)!, name: (fltr_obj["name"] as! String).replacingOccurrences(of: "_", with: " "), isFree: fltr_obj["isFree"] as! Int)
+                    let pck = Pack(id: Int(fltr_obj["id"] as! String)!, name: (fltr_obj["name"] as! String).replacingOccurrences(of: "_", with: " "), isFree: fltr_obj["isFree"] as! Int)
                     self.packstosave.append(pck)
                     print(pck.name)
                 }

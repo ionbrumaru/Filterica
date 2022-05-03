@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import RealmSwift
 
-class pack: Object {
+class Pack: Object {
     @objc dynamic var id: Int = 0
     @objc dynamic var name: String = ""
     @objc dynamic var isFree: Int = 1

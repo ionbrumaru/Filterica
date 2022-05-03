@@ -54,7 +54,7 @@ struct ContentView: View {
         recursion += 1
         // Delay of 7.5 seconds
         DispatchQueue.main.asyncAfter(deadline: .now() + timeout) {
-            fs.packs = Array(try! Realm(configuration: Realm.Configuration(schemaVersion: 1)).objects(pack.self))
+            fs.packs = Array(try! Realm(configuration: Realm.Configuration(schemaVersion: 1)).objects(Pack.self))
             fs.filters = Array(try! Realm(configuration: Realm.Configuration(schemaVersion: 1)).objects(filter.self))
             if fs.packs.count >= 3 {
                 hasLoaded = true

@@ -130,5 +130,5 @@ let localFiters: [filter] = [
 
 let localNames = ["Barberry","Caffeinated","Comfy_home","Florida","Hygge_vibes","Misty_rose","Orange_and_teal","Orange_and_teal_2","Pinky_teal","Summer_rocks","Late_summer"]
 
-let localPacks: [pack] = []
-var serverPacks: [pack] = []
+let localPacks: [Pack] = []
+var serverPacks: [Pack] = []

@@ -5,19 +5,13 @@ import RealmSwift
 import StoreKit
 
 struct PackView: View {
-    
-    var packItem: pack
-    var filters: [filter]?
     @EnvironmentObject var fs: FilterStorage
-    @State var isLiked: Bool = false
+
+    var packItem: Pack
+    var filters: [filter]?
     @State var currentImage = 0
-    @State private var isOriginalShowing = false
-    @State private var showImageInfo: Bool = false
-    @State private var showShareSheet = false
-    @State private var fileurl : String?
-    @State private var isLoading : Bool = false
-    @State private var showTutorialSheet : Bool = false
-    @State private var showRelated: Bool = true
+
+    @StateObject private var viewModel = PackViewModel()
     
     var body: some View {
         GeometryReader { geometry in
@@ -30,65 +24,71 @@ struct PackView: View {
                                 // if we have images in memory (local) and dont have to load it from server
                                 if (filters![currentImage].imageBefore.contains("LOCAL_")) {
                                     Image(uiImage:
-                                            UIImage(named: isOriginalShowing ? filters![currentImage].imageBefore.replacingOccurrences(of: "LOCAL_", with: ""): filters![currentImage].imageAfter.replacingOccurrences(of: "LOCAL_", with: ""))!)
-                                        .renderingMode(.original)
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(width: geometry.size.width, height: 400)
-                                        .clipped()
-                                        .contentShape(TapShape())
+                                            UIImage(named: viewModel.isOriginalShowing
+                                                    ? filters![currentImage].imageBefore.replacingOccurrences(of: "LOCAL_", with: "")
+                                                    : filters![currentImage].imageAfter.replacingOccurrences(of: "LOCAL_", with: ""))!)
+                                    .renderingMode(.original)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: geometry.size.width, height: 400)
+                                    .clipped()
+                                    .contentShape(TapShape())
                                 }
                                 else { // we need to load 'after' image from server
-    
-                                    URLImage(url: URL(string: isOriginalShowing ? filters![currentImage].imageBefore: filters![currentImage].imageAfter)!,
+
+                                    URLImage(url: URL(string: viewModel.isOriginalShowing
+                                                      ? filters![currentImage].imageBefore
+                                                      : filters![currentImage].imageAfter)!,
                                              options: URLImageOptions(
                                                 cachePolicy: .returnCacheElseLoad(cacheDelay: nil, downloadDelay: 0.25) // Return cached image or download after delay
                                              ),
                                              empty: {
-                                                Text("nothing")            // This view is displayed before download starts
-                                             },
+                                        Text("nothing")            // This view is displayed before download starts
+                                    },
                                              inProgress: { progress in
-                                                VStack(alignment: .center) {
-                                                    if #available(iOS 14.0, *) {
-                                                        
-                                                        ProgressView()
-                                                        
-                                                    } else {
-                                                        // Fallback on earlier versions
-                                                        
-                                                        ActivityIndicator(isAnimating: .constant(true), style: .large)
-                                                        
-                                                    }
-                                                }.frame(width: 330, height: 300)
-                                                
-                                             },
+                                        VStack(alignment: .center) {
+                                            if #available(iOS 14.0, *) {
+
+                                                ProgressView()
+
+                                            } else {
+                                                // Fallback on earlier versions
+
+                                                ActivityIndicator(isAnimating: .constant(true), style: .large)
+
+                                            }
+                                        }.frame(width: 330, height: 300)
+
+                                    },
                                              failure: { error, retry in         // Display error and retry button
-                                                VStack {
-                                                    Text(error.localizedDescription)
-                                                    Button("Retry", action: retry)
-                                                }
-                                             },
+                                        VStack {
+                                            Text(error.localizedDescription)
+                                            Button("Retry", action: retry)
+                                        }
+                                    },
                                              content: { image in                // Content view
-                                                image
-                                                    .renderingMode(.original)
-                                                    .resizable()
-                                                    .aspectRatio(contentMode: .fill)
-                                                    .frame(width: geometry.size.width, height: 400)
-                                                    .clipped()
-                                                    .contentShape(TapShape())
-                                             })
+                                        image
+                                            .renderingMode(.original)
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                            .frame(width: geometry.size.width, height: 400)
+                                            .clipped()
+                                            .contentShape(TapShape())
+                                    })
                                 }
                                 
                             }
                             .frame(width: geometry.size.width, height: 400)
                             .onTouchDown({ //swaps before/after images on hold
-                                isOriginalShowing = true
+                                viewModel.isOriginalShowing = true
                             }) {
-                                isOriginalShowing = false
+                                viewModel.isOriginalShowing = false
                             }
                             
                             // arrows to swipe fitlers in pack in different directions
-                            PackNavigationItems(isLiked: $isLiked, currentImage: $currentImage, filters: filters)
+                            PackNavigationItems(isLiked: $viewModel.isLiked,
+                                                currentImage: $currentImage,
+                                                filters: filters)
                                 .frame(width: geometry.size.width)
                         }
                         HStack(alignment: .center) {
@@ -106,56 +106,20 @@ struct PackView: View {
                         Spacer()
                         Text("Hold photo to see without filter") .font(.system(size: 12))
                         Spacer()
-                    }.sheet(isPresented: $showTutorialSheet) {
+                    }.sheet(isPresented: $viewModel.showTutorialSheet) {
                         ScrollView {
                             TutorialView().padding()
                         }
                     }
                     
-                    Divider().padding(.bottom, 8).padding(.leading).padding(.trailing)
-                    
-                    HStack{
-                        Text(filters![currentImage].name).bold()
-                        
-                        LikeButton(isLiked: $isLiked, currentImage: $currentImage, filters: filters)
-                        
-                        Spacer()
-                        
-                        //displays progress of download
-                        ActivityIndicator(isAnimating: $isLoading, style: .large)
-                        
-                        Button(action: {
-                            showImageInfo.toggle()
-                        }) {
-                            Image(systemName: "info.circle.fill")
-                                .foregroundColor(Color.secondary)
-                        }.padding(.leading,4)
-                        
-                        
-                        // by tap .dng file (filter) download starts
-                        Button(action: {
-                            isLoading = true
-                            DispatchQueue.main.async {
-                                fileurl = getURLtoFile()
-                                downloadFilter(filterfileurl: filters![currentImage].filterFileUrl)
-                            }
-                        }) {
-                            Text("  Get filter  ")
-                                .font(.system(size: 20))
-                                .padding(2)
-                                .foregroundColor(Color.white)
-                                .background(Color(mainColor))
-                                .cornerRadius(10)
-                        }
-                        
-                    }.padding(.leading,8).padding(.trailing,8).sheet(isPresented: $showShareSheet) {
-                        ShareSheet(activityItems: [NSURL(fileURLWithPath: getURLtoFile())])
-                    }
-                    
-                    Divider().padding(.bottom, 8).padding(.leading).padding(.trailing)
+                    UnderImageLinedView(filterItem: filters![currentImage],
+                                        showShareSheet: $viewModel.showShareSheet,
+                                        showImageInfo: $viewModel.showImageInfo,
+                                        isLoading: $viewModel.isLoading,
+                                        isLiked: filters![currentImage].liked)
                     
                     VStack(alignment: .leading){
-                        if (showRelated) {
+                        if (viewModel.showRelated) {
                             let relatedFilters = fs.filters.filter{ HasAnyTag(filter1: $0, filter2: filters![0]) }
                             if relatedFilters.count > 2 {
                                 Text("More like this").font(.title).bold().padding(.leading)
@@ -174,75 +138,23 @@ struct PackView: View {
                         }
                     }
                 }.onAppear() {
-                    self.adviceReview()
+                    self.viewModel.adviceReview()
                 }
                 .navigationBarItems(trailing:
                                         HStack(spacing: 20) {
-                                            Button(action: {
-                                                self.showTutorialSheet = true
-                                            }) {
-                                                Text("Help")
-                                            }
-                                            .sheet(isPresented: $showImageInfo) {
-                                                ImageInfoView(filterItem: filters![currentImage])
-                                            }
-                                        })
+                    Button(action: {
+                        self.viewModel.showTutorialSheet = true
+                    }) {
+                        Text("Help")
+                    }
+                    .sheet(isPresented: $viewModel.showImageInfo) {
+                        ImageInfoView(filterItem: filters![currentImage])
+                    }
+                })
                 .navigationBarTitle(packItem.name)
             }
         }
         
-    }
-    
-    private func adviceReview() {
-        // If the count has not yet been stored, this will return 0
-        var count = UserDefaults.standard.integer(forKey: "reviewCounter")
-        count += 1
-        UserDefaults.standard.set(count, forKey: "reviewCounter")
-        
-        print("Process completed \(count) time(s)")
-        
-        // Get the current bundle version for the app
-        let infoDictionaryKey = kCFBundleVersionKey as String
-        guard let currentVersion = Bundle.main.object(forInfoDictionaryKey: infoDictionaryKey) as? String
-        else { fatalError("Expected to find a bundle version in the info dictionary") }
-        
-        
-        // Has the process been completed several times and the user has not already been prompted for this version?
-        if count == 4 {
-            let twoSecondsFromNow = DispatchTime.now() + 4.0
-            DispatchQueue.main.asyncAfter(deadline: twoSecondsFromNow) {
-                
-                SKStoreReviewController.requestReview()
-                
-            }
-        }
-    }
-    
-    private func downloadFilter(filterfileurl: String) {
-        print("started fetching url")
-        let urlString = filterfileurl
-        
-        guard let url = URL(string: urlString) else {
-            print("Bad URL: \(urlString)")
-            return
-        }
-        
-        print("before loading data")
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            if let data = data {
-                fileurl = (data.dataToFile(fileName: "filter.dng")?.absoluteString)!
-                showShareSheet.toggle()
-                isLoading = false
-            }
-        }.resume()
-    }
-    
-    private func getURLtoFile() -> String {
-        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-        let documentsDirectory = paths[0]
-        
-        let filePath = (documentsDirectory as NSString).appendingPathComponent("filter.dng")
-        return filePath
     }
     
 }

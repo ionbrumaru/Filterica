@@ -8,9 +8,11 @@
 import SwiftUI
 import UIKit
 
+typealias Callback = (_ activityType: UIActivity.ActivityType?,
+                      _ completed: Bool, _ returnedItems: [Any]?,
+                      _ error: Error?) -> Void
+
 struct ShareSheet: UIViewControllerRepresentable {
-    typealias Callback = (_ activityType: UIActivity.ActivityType?, _ completed: Bool, _ returnedItems: [Any]?, _ error: Error?) -> Void
-    
     let activityItems: [Any]
     let applicationActivities: [UIActivity]? = nil
     let excludedActivityTypes: [UIActivity.ActivityType]? = nil
@@ -25,9 +27,7 @@ struct ShareSheet: UIViewControllerRepresentable {
         return controller
     }
     
-    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {
-        // nothing to do here
-    }
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }
 
 struct ShareSheet_Previews: PreviewProvider {

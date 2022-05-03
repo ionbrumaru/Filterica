@@ -6,18 +6,19 @@
 //
 
 import SwiftUI
-// If you are using CocoaPods, in which the SwiftUI support is defined in the same module.
 import URLImage
 
 struct PackPreview: View {
-    var packItem: pack!
-    var filters: [filter]?
     @EnvironmentObject var fs: FilterStorage
     @State private var isOriginalShowing = false
+
+    var packItem: Pack!
+    var filters: [filter]?
+
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 16) {
-                ForEach(0..<filters!.count) { counter in
+                ForEach(0 ..< filters!.count) { counter in
                     
                     NavigationLink(destination: PackView(packItem: packItem, filters: fs.filters.filter{ Int($0.isInPack) == packItem!.id }, currentImage: counter)) {
                         
