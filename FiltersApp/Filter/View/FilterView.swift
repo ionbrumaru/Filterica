@@ -43,10 +43,10 @@ struct FilterView: View {
                                               ? filterItem.imageBefore
                                               : filterItem.imageAfter)!,
                                      options: URLImageOptions(
-                                        cachePolicy: .returnCacheElseLoad(cacheDelay: nil, downloadDelay: 0.25) // Return cached image or download after delay
+                                        cachePolicy: .returnCacheElseLoad(cacheDelay: nil, downloadDelay: 0.25)
                                      ),
                                      empty: {
-                                Text("nothing")            // This view is displayed before download starts
+                                Text("nothing")
                             },
                                      inProgress: { progress in
                                 VStack(alignment: .center) {
@@ -55,20 +55,19 @@ struct FilterView: View {
                                         ProgressView()
 
                                     } else {
-                                        // Fallback on earlier versions
                                         ActivityIndicator(isAnimating: .constant(true), style: .large)
 
                                     }
                                 }.frame(width: 330, height: 300)
 
                             },
-                                     failure: { error, retry in         // Display error and retry button
+                                     failure: { error, retry in
                                 VStack {
                                     Text(error.localizedDescription)
                                     Button("Retry", action: retry)
                                 }
                             },
-                                     content: { image in                // Content view
+                                     content: { image in
                                 image
                                     .renderingMode(.original)
                                     .resizable()

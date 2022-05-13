@@ -26,39 +26,36 @@ struct FilterPreviewCard: View {
                 
                 URLImage(url: URL(string: filterItem.imageAfter)!,
                          options: URLImageOptions(
-                            cachePolicy: .returnCacheElseLoad(cacheDelay: nil, downloadDelay: 0.25) // Return cached image or download after delay
+                            cachePolicy: .returnCacheElseLoad(cacheDelay: nil, downloadDelay: 0.25)
                          ),
                          empty: {
-                            Text("nothing")            // This view is displayed before download starts
-                         },
+                    Text("nothing")
+                },
                          inProgress: { progress in
-                            VStack(alignment: .center) {
-                                if #available(iOS 14.0, *) {
-                                    
-                                    ProgressView()
-                                    
-                                } else {
-                                    // Fallback on earlier versions
-                                    
-                                    ActivityIndicator(isAnimating: .constant(true), style: .large)
-                                    
-                                }
-                            }.frame(width: 330, height: 300)
-                         },
-                         failure: { error, retry in         // Display error and retry button
-                            VStack {
-                                Text(error.localizedDescription)
-                                Button("Retry", action: retry)
-                            }
-                         },
-                         content: { image in                // Content view
-                            image
-                                .renderingMode(.original)
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                                .frame(width: 330, height: 300)
-                                .cornerRadius(12)
-                         })
+                    VStack(alignment: .center) {
+                        if #available(iOS 14.0, *) {
+
+                            ProgressView()
+
+                        } else {
+                            ActivityIndicator(isAnimating: .constant(true), style: .large)
+                        }
+                    }.frame(width: 330, height: 300)
+                },
+                         failure: { error, retry in
+                    VStack {
+                        Text(error.localizedDescription)
+                        Button("Retry", action: retry)
+                    }
+                },
+                         content: { image in
+                    image
+                        .renderingMode(.original)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 330, height: 300)
+                        .cornerRadius(12)
+                })
             }
             
             HStack{

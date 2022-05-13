@@ -37,44 +37,44 @@ struct PackPreview: View {
                                 else {
                                     
                                     URLImage(url: URL(string: filters![counter].imageAfter)!,
-                                                     options: URLImageOptions(
-                                                        cachePolicy: .returnCacheElseLoad(cacheDelay: nil, downloadDelay: 0.25) // Return cached image or download after delay
-                                                     ),
-                                                     empty: {
-                                                        Text("nothing")            // This view is displayed before download starts
-                                                     },
-                                                     inProgress: { progress in
-                                                        VStack(alignment: .center) {
-                                                        if #available(iOS 14.0, *) {
-                                                            
-                                                                ProgressView()
-                                                            
-                                                        } else {
-                                                            // Fallback on earlier versions
-                                                            
-                                                                ActivityIndicator(isAnimating: .constant(true), style: .large)
-                                                            
-                                                        }
-                                                        }.frame(width: 330, height: 300)
-                                                                        
-                                                                      },
-                                                     failure: { error, retry in         // Display error and retry button
-                                                        VStack {
-                                                            Text(error.localizedDescription)
-                                                            Button("Retry", action: retry)
-                                                        }
-                                                     },
-                                                     content: { image in                // Content view
-                                                        image
-                                                            .renderingMode(.original)
-                                                            .resizable()
-                                                            .aspectRatio(contentMode: .fill)
-                                                            .frame(width: 330, height: 300) // height 240
-                                                            .cornerRadius(12)
-                                                     })
+                                             options: URLImageOptions(
+                                                cachePolicy: .returnCacheElseLoad(cacheDelay: nil, downloadDelay: 0.25)
+                                             ),
+                                             empty: {
+                                        Text("nothing")
+                                    },
+                                             inProgress: { progress in
+                                        VStack(alignment: .center) {
+                                            if #available(iOS 14.0, *) {
+
+                                                ProgressView()
+
+                                            } else {
+                                                // Fallback on earlier versions
+
+                                                ActivityIndicator(isAnimating: .constant(true), style: .large)
+
+                                            }
+                                        }.frame(width: 330, height: 300)
+
+                                    },
+                                             failure: { error, retry in
+                                        VStack {
+                                            Text(error.localizedDescription)
+                                            Button("Retry", action: retry)
+                                        }
+                                    },
+                                             content: { image in
+                                        image
+                                            .renderingMode(.original)
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                            .frame(width: 330, height: 300)
+                                            .cornerRadius(12)
+                                    })
 
                                 }
-                            }.frame(width: 330, height: 300) // height 240
+                            }.frame(width: 330, height: 300)
                             
                             HStack{
                                 Text(filters![counter].name.capitalizingFirstLetter()).bold().padding(.leading, 4).foregroundColor(Color.primary)
@@ -84,7 +84,7 @@ struct PackPreview: View {
                     }
                 }
             }.padding(.leading)
-            .padding(.trailing)
+                .padding(.trailing)
         }
     }
 }

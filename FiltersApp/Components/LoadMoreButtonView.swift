@@ -10,13 +10,14 @@ import SwiftUI
 struct LoadMoreButton: View {
     @Binding var showLoadMoreButton: Bool
     @Binding var expandableShowHowMany: Int
+
     let loadmetext: LocalizedStringKey =  "Load more"
     var expandableLoad: [String]
+
     var body: some View {
         HStack{
             if showLoadMoreButton {
                 Button(action: {
-                    //
                     if (expandableShowHowMany + 3 < expandableLoad.count) {
                         expandableShowHowMany += 3
                     }

@@ -60,7 +60,7 @@ struct UnderImageLinedView: View {
             
             Spacer()
             
-            ActivityIndicator(isAnimating: $isLoading, style: .large) /////////////
+            ActivityIndicator(isAnimating: $isLoading, style: .large)
             
             Button(action: {
                 showImageInfo.toggle()
@@ -92,7 +92,6 @@ struct UnderImageLinedView: View {
         Divider().padding(.bottom, 4).padding(.leading).padding(.trailing)
     }
     
-    // filter download from backend
     private func downloadFilter(filterfileurl: String) {
         print("started fetching url")
         let urlString = filterfileurl

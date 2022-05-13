@@ -30,6 +30,7 @@ struct FiltersCategory: View {
 
 struct FiltersCategory_Previews: PreviewProvider {
     static var previews: some View {
-        FiltersCategory(categoryName: "Summertime chill", categoryImage: Image(uiImage: UIImage(named: "test")!))
+        FiltersCategory(categoryName: "Summertime chill",
+                        categoryImage: Image(uiImage: UIImage(named: "test")!))
     }
 }

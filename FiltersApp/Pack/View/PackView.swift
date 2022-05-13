@@ -7,11 +7,11 @@ import StoreKit
 struct PackView: View {
     @EnvironmentObject var fs: FilterStorage
 
+    @State var currentImage = 0
+    @StateObject private var viewModel = PackViewModel()
+
     var packItem: Pack
     var filters: [filter]?
-    @State var currentImage = 0
-
-    @StateObject private var viewModel = PackViewModel()
     
     var body: some View {
         GeometryReader { geometry in
@@ -40,10 +40,10 @@ struct PackView: View {
                                                       ? filters![currentImage].imageBefore
                                                       : filters![currentImage].imageAfter)!,
                                              options: URLImageOptions(
-                                                cachePolicy: .returnCacheElseLoad(cacheDelay: nil, downloadDelay: 0.25) // Return cached image or download after delay
+                                                cachePolicy: .returnCacheElseLoad(cacheDelay: nil, downloadDelay: 0.25)
                                              ),
                                              empty: {
-                                        Text("nothing")            // This view is displayed before download starts
+                                        Text("Nothing")
                                     },
                                              inProgress: { progress in
                                         VStack(alignment: .center) {
@@ -53,7 +53,6 @@ struct PackView: View {
 
                                             } else {
                                                 // Fallback on earlier versions
-
                                                 ActivityIndicator(isAnimating: .constant(true), style: .large)
 
                                             }
@@ -84,12 +83,11 @@ struct PackView: View {
                             }) {
                                 viewModel.isOriginalShowing = false
                             }
-                            
-                            // arrows to swipe fitlers in pack in different directions
+
                             PackNavigationItems(isLiked: $viewModel.isLiked,
                                                 currentImage: $currentImage,
                                                 filters: filters)
-                                .frame(width: geometry.size.width)
+                            .frame(width: geometry.size.width)
                         }
                         HStack(alignment: .center) {
                             HStack(alignment: .center) {
@@ -108,7 +106,8 @@ struct PackView: View {
                         Spacer()
                     }.sheet(isPresented: $viewModel.showTutorialSheet) {
                         ScrollView {
-                            TutorialView().padding()
+                            TutorialView()
+                                .padding()
                         }
                     }
                     
@@ -122,7 +121,10 @@ struct PackView: View {
                         if (viewModel.showRelated) {
                             let relatedFilters = fs.filters.filter{ HasAnyTag(filter1: $0, filter2: filters![0]) }
                             if relatedFilters.count > 2 {
-                                Text("More like this").font(.title).bold().padding(.leading)
+                                Text("More like this")
+                                    .font(.title)
+                                    .bold()
+                                    .padding(.leading)
                                 
                                 ScrollView(.horizontal, showsIndicators: false) {
                                     HStack(spacing: 16) {
@@ -133,7 +135,9 @@ struct PackView: View {
                                         }
                                     }.padding()
                                     
-                                }.frame(height: 250).padding(.bottom, 30)
+                                }
+                                .frame(height: 250)
+                                .padding(.bottom, 30)
                             }
                         }
                     }
@@ -159,7 +163,7 @@ struct PackView: View {
     
 }
 
-struct TapShape : Shape {
+struct TapShape: Shape {
     func path(in rect: CGRect) -> Path {
         return Path(CGRect(x: 0, y: 0, width: rect.width, height: 350))
     }
