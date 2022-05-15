@@ -71,7 +71,6 @@ struct UnderImageLinedView: View {
             }.padding(.leading,4)
             
             Button(action: {
-                //self.showShareSheet.toggle()
                 isLoading = true
                 DispatchQueue.main.async {
                     fileurl = getURLtoFile()
@@ -89,23 +88,22 @@ struct UnderImageLinedView: View {
             ShareSheet(activityItems: [NSURL(fileURLWithPath: getURLtoFile())])
         }
         
-        Divider().padding(.bottom, 4).padding(.leading).padding(.trailing)
+        Divider()
+            .padding(.bottom, 4)
+            .padding(.horizontal)
     }
     
-    private func downloadFilter(filterfileurl: String) {
-        print("started fetching url")
-        let urlString = filterfileurl
-        
-        guard let url = URL(string: urlString) else {
-            print("Bad URL: \(urlString)")
-            return
-        }
-        
-        print("before loading data")
+    private func downloadFilter(urlString: String) {        
+        guard let url = URL(string: urlString) else { return }
+
         URLSession.shared.dataTask(with: url) { data, response, error in
-            if let data = data {
-                fileurl = (data.dataToFile(fileName: "filter.dng")?.absoluteString)!
+            if let data = data, 
+                let absoluteString = data.dataToFile(fileName: "filter.dng")?.absoluteString {
+                fileurl = absoluteString
                 showShareSheet.toggle()
+                isLoading = false
+            } else {
+                fileurl = nil
                 isLoading = false
             }
         }.resume()
