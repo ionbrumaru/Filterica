@@ -20,7 +20,13 @@ struct PackPreview: View {
             HStack(spacing: 16) {
                 ForEach(0 ..< filters!.count) { counter in
                     
-                    NavigationLink(destination: PackView(packItem: packItem, filters: fs.filters.filter{ Int($0.isInPack) == packItem!.id }, currentImage: counter)) {
+                    NavigationLink(destination:
+                                    PackView(
+                                        currentImage: counter,
+                                        packItem: packItem,
+                                        filters: fs.filters.filter{ Int($0.isInPack) == packItem!.id }
+                                    )
+                    ) {
                         
                         VStack(alignment: .leading) {
                             
