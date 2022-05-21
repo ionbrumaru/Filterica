@@ -43,31 +43,4 @@ class PackViewModel: ObservableObject {
             }
         }
     }
-    
-    func downloadFilter(filterfileurl: String) {
-        print("started fetching url")
-        let urlString = filterfileurl
-        
-        guard let url = URL(string: urlString) else {
-            print("Bad URL: \(urlString)")
-            return
-        }
-        
-        print("before loading data")
-        URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
-            if let data = data {
-                self?.fileurl = (data.dataToFile(fileName: "filter.dng")?.absoluteString)!
-                self?.showShareSheet.toggle()
-                self?.isLoading = false
-            }
-        }.resume()
-    }
-    
-    func getURLtoFile() -> String {
-        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-        let documentsDirectory = paths[0]
-        
-        let filePath = (documentsDirectory as NSString).appendingPathComponent("filter.dng")
-        return filePath
-    }
 }
